@@ -1,9 +1,9 @@
 services:
-  frontend:
+  mp-frontend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: ttl-frontend
+    container_name: mp-frontend
     ports:
       - "5173:5173"
     env_file:

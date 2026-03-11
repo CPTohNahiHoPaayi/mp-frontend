@@ -1,6 +1,6 @@
-# Text-to-Learn Frontend (decoupled)
+# mindPalace – mp-frontend
 
-Standalone frontend service. `.env` is in the repo; clone and run.
+Frontend service for mindPalace. `.env` is in the repo; clone and run.
 
 ## Clone and run
 
@@ -32,8 +32,8 @@ App is at http://localhost:5173. It will call the backends configured in `.env`.
 Build and run:
 
 ```bash
-docker build -t ttl-frontend .
-docker run -p 5173:5173 --env-file .env ttl-frontend
+docker build -t mp-frontend .
+docker run -p 5173:5173 --env-file .env mp-frontend
 ```
 
 Or use Compose:
@@ -42,7 +42,7 @@ Or use Compose:
 docker compose up --build
 ```
 
-Ensure `.env` exists (copy from `.env.example` and fill in values). The container uses it for `VITE_API_URL` and `VITE_TTS_URL`.
+`.env` is in the repo; the container uses it for `VITE_API_URL` and `VITE_TTS_URL`.
 
 ## Connecting to local vs cloud backends
 
