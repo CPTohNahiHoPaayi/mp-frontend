@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     Box, Button, Center, Flex, Grid, Heading, IconButton, Input, Select, Spinner, Tag, Text,
 } from '@chakra-ui/react';
-import { Search, Heart, Eye, Filter, X, TrendingUp, Clock, TestTube } from 'lucide-react';
+import { Search, Heart, Eye, Filter, X, TrendingUp, Clock, FileText, BookOpen } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import LandingPage from './LandingPage';
 import { useNavigate } from 'react-router-dom';
@@ -11,10 +11,12 @@ import {
     Portal,
     createListCollection
 } from "@chakra-ui/react"
+import NoteCard from '../components/notes/NoteCard';
 
 function Social() {
     const { isAuthenticated, token, user } = useAuth();
     const [courses, setCourses] = useState([]);
+    const [notes, setNotes] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [searchType, setSearchType] = useState('COMBINED');
     const [sortBy, setSortBy] = useState('RELEVANCE');
@@ -23,7 +25,8 @@ function Social() {
     const [maxLikes, setMaxLikes] = useState('');
     const [showFilters, setShowFilters] = useState(true);
     const [loading, setLoading] = useState(false);
-    const [mode, setMode] = useState('TRENDING'); // TRENDING | RECENT | SEARCH
+    const [mode, setMode] = useState('TRENDING');
+    const [contentType, setContentType] = useState('COURSES');
     const base_url = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
@@ -48,6 +51,7 @@ function Social() {
             { label: "Wildcard", value: "WILDCARD" },
         ],
     });
+
     const fetchCourses = async (type) => {
         setLoading(true);
         setMode(type);
@@ -79,9 +83,48 @@ function Social() {
         }
     };
 
+    const fetchNotes = async (type) => {
+        setLoading(true);
+        setMode(type);
+        try {
+            let endpoint = '';
+            if (type === 'TRENDING') endpoint = '/api/notes/popular?limit=50';
+            if (type === 'RECENT') endpoint = '/api/notes/recent?limit=50';
+
+            const res = await fetch(base_url + endpoint, {
+                headers: token ? { Authorization: `Bearer ${token}` } : {},
+            });
+            const data = await res.json();
+
+            const enriched = await Promise.all(data.map(async (note) => {
+                try {
+                    const likeRes = await fetch(`${base_url}/api/notes/${note.id}/${user.email}`);
+                    const liked = await likeRes.json();
+                    return { ...note, liked };
+                } catch {
+                    return { ...note, liked: false };
+                }
+            }));
+
+            setNotes(enriched);
+        } catch (e) {
+            console.error(e);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchContent = (type) => {
+        if (contentType === 'COURSES') {
+            fetchCourses(type);
+        } else {
+            fetchNotes(type);
+        }
+    };
+
     useEffect(() => {
-        fetchCourses('TRENDING');
-    }, [token]);
+        fetchContent('TRENDING');
+    }, [token, contentType]);
 
     const handleLike = async (courseId) => {
         const update = (list) =>
@@ -118,6 +161,40 @@ function Social() {
         }
     };
 
+    const handleNoteLike = async (noteId) => {
+        const update = (list) =>
+            list.map((n) => {
+                if (n.id !== noteId) return n;
+
+                const likedByList = (n.likedBy || '').split(',').map((email) => email.trim()).filter(Boolean);
+                const alreadyLiked = likedByList.includes(user.email);
+
+                const newLikedBy = alreadyLiked
+                    ? likedByList.filter((email) => email !== user.email)
+                    : [...likedByList, user.email];
+
+                return {
+                    ...n,
+                    liked: !alreadyLiked,
+                    likedBy: newLikedBy.join(','),
+                    likesCount: alreadyLiked ? parseInt(n.likesCount) - 1 : parseInt(n.likesCount) + 1,
+                };
+            });
+
+        setNotes(update);
+
+        try {
+            await fetch(`${base_url}/api/notes/${noteId}/like`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
     const handleSearch = async () => {
         if (!searchQuery.trim()) return;
@@ -136,23 +213,30 @@ function Social() {
         if (minLikes) params.append('minLikes', minLikes);
         if (maxLikes) params.append('maxLikes', maxLikes);
 
+        const apiBase = contentType === 'COURSES' ? '/api/courses' : '/api/notes';
+
         try {
-            const res = await fetch(`${base_url}/api/courses/search/advanced?${params.toString()}`, {
+            const res = await fetch(`${base_url}${apiBase}/search/advanced?${params.toString()}`, {
                 headers: token ? { Authorization: `Bearer ${token}` } : {},
             });
             const data = await res.json();
 
-            const enriched = await Promise.all(data.map(async (course) => {
+            const likeBase = contentType === 'COURSES' ? '/api/courses' : '/api/notes';
+            const enriched = await Promise.all(data.map(async (item) => {
                 try {
-                    const likeRes = await fetch(`${base_url}/api/courses/${course.id}/${user.email}`);
+                    const likeRes = await fetch(`${base_url}${likeBase}/${item.id}/${user.email}`);
                     const liked = await likeRes.json();
-                    return { ...course, liked };
+                    return { ...item, liked };
                 } catch {
-                    return { ...course, liked: false };
+                    return { ...item, liked: false };
                 }
             }));
 
-            setCourses(enriched);
+            if (contentType === 'COURSES') {
+                setCourses(enriched);
+            } else {
+                setNotes(enriched);
+            }
         } catch (err) {
             console.error(err);
         } finally {
@@ -161,12 +245,8 @@ function Social() {
     };
 
     const CourseCard = ({ course }) => {
-        // console.log(course);
         const tagsArray = (course.tags || '').split(',').filter(Boolean).slice(0, 2);
         const likedBy = (course.likedBy || '').split(',');
-        // console.log(user);
-        // console.log(likedBy);
-        // return <>{course.title}</>
         return (
             <Box p={4} bg="gray.800" rounded="xl" shadow="md" _hover={{ shadow: 'xl', transform: 'translateY(-4px)' }} transition="all 0.2s">
                 <Box h="150px" bgGradient="linear(to-br, blue.500, pink.500)" rounded="lg" position="relative">
@@ -198,11 +278,6 @@ function Social() {
                             
                             {course.likesCount}
                         </Button>
-
-                        {/* <Flex align="center" gap={1} color="gray.400">
-                            <Eye size={16} />
-                            <Text fontSize="sm">{course.views || 0}</Text>
-                        </Flex> */}
                     </Flex>
                     <Button colorScheme="blue" size="sm" onClick={() => navigate(`/courses/${course.id}/module/0/lesson/0`)}>
                         View Course
@@ -214,9 +289,11 @@ function Social() {
 
     if (!isAuthenticated()) return <LandingPage />;
 
+    const contentLabel = contentType === 'COURSES' ? 'Courses' : 'Notes';
+
     return (
         <Box minH="100vh" bg="gray.900" py={10} px={4} color="white">
-            <Center mb={16} flexDirection="column" textAlign="center" px={4}>
+            <Center mb={10} flexDirection="column" textAlign="center" px={4}>
                 <Heading
                     fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
                     mb={4}
@@ -226,7 +303,7 @@ function Social() {
                     bgClip="text"
                     fontWeight="extrabold"
                 >
-                    Discover Courses
+                    Discover {contentLabel}
                 </Heading>
                 <Text
                     color="gray.400"
@@ -235,11 +312,34 @@ function Social() {
                     lineHeight="tall"
                     fontWeight="medium"
                 >
-                    Find the perfect course to <Text as="span" color="blue.300" fontWeight="semibold">enhance your skills</Text> and expand your knowledge in any domain.
+                    {contentType === 'COURSES'
+                        ? <>Find the perfect course to <Text as="span" color="blue.300" fontWeight="semibold">enhance your skills</Text> and expand your knowledge.</>
+                        : <>Explore community <Text as="span" color="blue.300" fontWeight="semibold">notes and ideas</Text> shared by others.</>
+                    }
                 </Text>
             </Center>
 
-
+            {/* Content Type Toggle */}
+            <Flex justify="center" gap={2} mb={6}>
+                <Button
+                    onClick={() => setContentType('COURSES')}
+                    variant={contentType === 'COURSES' ? 'solid' : 'outline'}
+                    colorScheme="blue"
+                    size="md"
+                >
+                    <BookOpen size={16} />
+                    <Text ml={2}>Courses</Text>
+                </Button>
+                <Button
+                    onClick={() => setContentType('NOTES')}
+                    variant={contentType === 'NOTES' ? 'solid' : 'outline'}
+                    colorScheme="blue"
+                    size="md"
+                >
+                    <FileText size={16} />
+                    <Text ml={2}>Notes</Text>
+                </Button>
+            </Flex>
 
             <Box maxW="4xl" mx="auto" mb={6}>
                 {/* Search bar */}
@@ -255,7 +355,7 @@ function Social() {
                     <Search size={20} color="gray" />
                     <Input
                         variant="unstyled"
-                        placeholder="Search for courses..."
+                        placeholder={`Search for ${contentLabel.toLowerCase()}...`}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -279,14 +379,14 @@ function Social() {
                 {/* Mode Buttons */}
                 <Flex justify="center" gap={4} mt={4}>
                     <Button
-                        onClick={() => fetchCourses('TRENDING')}
+                        onClick={() => fetchContent('TRENDING')}
                         variant={mode === 'TRENDING' ? 'solid' : 'outline'}
                         colorScheme="blue"
                     >
                         Trending
                     </Button>
                     <Button
-                        onClick={() => fetchCourses('RECENT')}
+                        onClick={() => fetchContent('RECENT')}
                         variant={mode === 'RECENT' ? 'solid' : 'outline'}
                         colorScheme="blue"
                     >
@@ -403,7 +503,7 @@ function Social() {
                 )}
             </Box>
 
-            {/* Course List */}
+            {/* Content List */}
             {loading ? (
                 <Center py={12}>
                     <Spinner size="lg" color="blue.300" />
@@ -415,22 +515,35 @@ function Social() {
                         {mode === 'TRENDING' && (
                             <Flex align="center">
                                 <TrendingUp size={24} />
-                                <Text ml={3}>Trending Courses</Text>
+                                <Text ml={3}>Trending {contentLabel}</Text>
                             </Flex>
                         )}
                         {mode === 'RECENT' && (
                             <Flex align="center">
                                 <Clock size={24} />
-                                <Text ml={3}>Recently Added</Text>
+                                <Text ml={3}>Recently Added {contentLabel}</Text>
                             </Flex>
                         )}
-                        {mode === 'SEARCH' && <Text>Search Results ({courses.length})</Text>}
+                        {mode === 'SEARCH' && (
+                            <Text>Search Results ({contentType === 'COURSES' ? courses.length : notes.length})</Text>
+                        )}
                     </Heading>
 
                     <Grid templateColumns={{ base: '1fr', md: '1fr 1fr', lg: 'repeat(3, 1fr)' }} gap={6}>
-                        {courses.map((course) => (
-                            <CourseCard key={course.id} course={course} />
-                        ))}
+                        {contentType === 'COURSES'
+                            ? courses.map((course) => (
+                                <CourseCard key={course.id} course={course} />
+                            ))
+                            : notes.map((note) => (
+                                <NoteCard
+                                    key={note.id}
+                                    note={note}
+                                    user={user}
+                                    onLike={handleNoteLike}
+                                    showActions={false}
+                                />
+                            ))
+                        }
                     </Grid>
                 </Box>
             )}

@@ -138,6 +138,18 @@ function App() {
     variant="ghost"
     colorScheme="blue"
     size="lg"
+    onClick={() => navigate("/notes")}
+    _hover={{ bg: "blue.100", transform: "translateY(-2px)", boxShadow: "md" ,color:"black"}}
+    _active={{ bg: "blue.200", transform: "translateY(0px)" }}
+    transition="all 0.2s ease-in-out"
+  >
+    Notes
+  </Button>
+
+  <Button
+    variant="ghost"
+    colorScheme="blue"
+    size="lg"
     onClick={() => navigate("/social")}
     _hover={{ bg: "blue.100", transform: "translateY(-2px)", boxShadow: "md" ,color:"black"}}
     _active={{ bg: "blue.200", transform: "translateY(0px)" }}

@@ -8,6 +8,8 @@ import EmptyElement from './components/MainContent/EmptyElement';
 import { Signin } from './pages/Signin';
 import GoogleCallback from './pages/GoogleCallback'; // adjust the path if needed
 import Social from './pages/Social';
+import Notes from './pages/Notes';
+import NoteEditorPage from './pages/NoteEditorPage';
 import { Signup } from './pages/Signup';
 import { AuthProvider } from './context/AuthContext';
 
@@ -30,6 +32,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               element={<LessonPage />}
             />
             <Route path="/social" element={<Social/>}/>
+            <Route path="/notes" element={<Notes/>}/>
+            <Route path="/notes/:noteId/edit" element={<NoteEditorPage/>}/>
           </Route>
 
         </Routes>
