@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Flex, Input, Button, Text, Spinner, Center, IconButton, Tag } from '@chakra-ui/react';
+import { Box, Flex, Input, Button, Text, Spinner, Center, IconButton, Tag, Textarea } from '@chakra-ui/react';
 import { ArrowLeft, Sparkles, Eye, EyeOff, Check } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import NoteEditor from '../components/notes/NoteEditor';
+import { sanitizeEnhancedNoteHtml } from '../utils/enhanceNoteHtml';
 import axios from 'axios';
 
 export default function NoteEditorPage() {
@@ -42,6 +43,14 @@ export default function NoteEditorPage() {
     if (token && noteId) fetchNote();
   }, [token, noteId]);
 
+  // Auto-resize title textarea when note loads
+  useEffect(() => {
+    if (titleRef.current && title && !loading) {
+      titleRef.current.style.height = 'auto';
+      titleRef.current.style.height = titleRef.current.scrollHeight + 'px';
+    }
+  }, [title, loading]);
+
   const saveNote = async (updates) => {
     setSaving(true);
     try {
@@ -74,6 +83,12 @@ export default function NoteEditorPage() {
       e.preventDefault();
       e.target.blur();
     }
+  };
+
+  const handleTitleInput = (e) => {
+    const el = e.target;
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
   };
 
   const handleAddTag = (e) => {
@@ -123,7 +138,7 @@ export default function NoteEditorPage() {
 
       const enhancedHtml = res.data?.html;
       if (enhancedHtml) {
-        editor.commands.setContent(enhancedHtml, false);
+        editor.commands.setContent(sanitizeEnhancedNoteHtml(enhancedHtml), false);
       }
     } catch (err) {
       console.error('Failed to enhance note:', err);
@@ -153,45 +168,35 @@ export default function NoteEditorPage() {
   }
 
   return (
-    <Box h="calc(100dvh - 56px)" display="flex" flexDirection="column" bg="gray.900" color="white">
-      {/* Top bar */}
+    <Box minH="calc(100dvh - 56px)" display="flex" flexDirection="column" bg="gray.900" color="white">
+      {/* Top bar — navigation + actions only, sticky below App nav */}
       <Flex
         px={4}
-        py={2}
-        bg="gray.800"
+        py={3}
+        bg="gray.900"
         borderBottom="1px solid"
         borderColor="gray.700"
         align="center"
         justify="space-between"
         flexShrink={0}
+        position="sticky"
+        top={0}
+        zIndex={11}
       >
-        <Flex align="center" gap={3}>
+        <Flex align="center" gap={2}>
           <IconButton
-            aria-label="Back"
+            aria-label="Back to Notes"
             variant="ghost"
             size="sm"
             onClick={() => navigate('/notes')}
           >
             <ArrowLeft size={18} />
           </IconButton>
-          <Input
-            ref={titleRef}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            onBlur={handleTitleBlur}
-            onKeyDown={handleTitleKeyDown}
-            variant="unstyled"
-            fontSize="xl"
-            fontWeight="bold"
-            color="white"
-            placeholder="Untitled"
-            _placeholder={{ color: 'gray.500' }}
-            maxW="400px"
-          />
+          <Text fontSize="sm" color="gray.500" userSelect="none">Notes</Text>
         </Flex>
 
         <Flex align="center" gap={3}>
-          {lastSaved && (
+          {lastSaved && !saving && (
             <Flex align="center" gap={1}>
               <Check size={12} color="#68d391" />
               <Text fontSize="xs" color="gray.500">Saved</Text>
@@ -209,40 +214,83 @@ export default function NoteEditorPage() {
             <Text ml={2}>Enhance</Text>
           </Button>
           <IconButton
-            aria-label="Toggle visibility"
+            aria-label={note.isPublic ? 'Make private' : 'Make public'}
             variant="ghost"
             size="sm"
             onClick={handleToggleVisibility}
+            title={note.isPublic ? 'Public — click to make private' : 'Private — click to make public'}
           >
             {note.isPublic ? <Eye size={16} /> : <EyeOff size={16} />}
           </IconButton>
         </Flex>
       </Flex>
 
-      {/* Tags bar */}
-      <Flex px={6} py={2} gap={2} wrap="wrap" align="center" bg="gray.850" flexShrink={0}>
-        {tags.map((tag, i) => (
-          <Tag.Root key={i} colorPalette="blue" size="sm" variant="solid" cursor="pointer" onClick={() => handleRemoveTag(tag)}>
-            <Tag.Label>{tag} ×</Tag.Label>
-          </Tag.Root>
-        ))}
-        <Input
-          value={tagInput}
-          onChange={(e) => setTagInput(e.target.value)}
-          onKeyDown={handleAddTag}
-          placeholder="Add tag..."
-          variant="unstyled"
-          fontSize="sm"
-          color="gray.400"
-          _placeholder={{ color: 'gray.600' }}
-          w="120px"
-        />
-      </Flex>
+      {/* Document content area */}
+      <Box flex={1} bg="gray.900">
+        <Box maxW="4xl" mx="auto" px={{ base: 4, md: 12 }} pt={10} pb={4}>
 
-      {/* Editor */}
-      <Box flex={1} overflow="auto" px={{ base: 2, md: 8 }} py={4}>
-        <Box maxW="4xl" mx="auto" h="100%">
+          {/* Document title */}
+          <Textarea
+            ref={titleRef}
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            onBlur={handleTitleBlur}
+            onKeyDown={handleTitleKeyDown}
+            onInput={handleTitleInput}
+            variant="unstyled"
+            fontSize={{ base: '2xl', md: '4xl' }}
+            fontWeight="bold"
+            color="white"
+            placeholder="Untitled"
+            _placeholder={{ color: 'gray.600' }}
+            resize="none"
+            overflow="hidden"
+            lineHeight="1.25"
+            rows={1}
+            mb={3}
+            display="block"
+            w="100%"
+          />
+
+          {/* Tags metadata row */}
+          <Flex
+            gap={2}
+            wrap="wrap"
+            align="center"
+            pb={4}
+            mb={6}
+            borderBottom="1px solid"
+            borderColor="gray.800"
+          >
+            {tags.map((tag, i) => (
+              <Tag.Root
+                key={i}
+                colorPalette="blue"
+                size="sm"
+                variant="subtle"
+                cursor="pointer"
+                onClick={() => handleRemoveTag(tag)}
+                title="Click to remove"
+              >
+                <Tag.Label>{tag} ×</Tag.Label>
+              </Tag.Root>
+            ))}
+            <Input
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={handleAddTag}
+              placeholder="Add tag..."
+              variant="unstyled"
+              fontSize="sm"
+              color="gray.400"
+              _placeholder={{ color: 'gray.600' }}
+              w="100px"
+            />
+          </Flex>
+
+          {/* Rich text editor */}
           <NoteEditor content={note.content} onUpdate={handleContentUpdate} editorRef={editorRef} />
+
         </Box>
       </Box>
     </Box>

@@ -12,6 +12,8 @@ import Highlight from '@tiptap/extension-highlight';
 import { Color } from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Image from '@tiptap/extension-image';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { all, createLowlight } from 'lowlight';
 import SlashCommand from './slashCommand';
 import { Box, Flex, IconButton } from '@chakra-ui/react';
 import {
@@ -19,6 +21,8 @@ import {
   List, ListOrdered, CheckSquare, Quote, Minus, Undo, Redo, Highlighter, Table as TableIcon,
 } from 'lucide-react';
 import './NoteEditor.css';
+
+const lowlight = createLowlight(all);
 
 const ToolbarButton = ({ onClick, isActive, children, label }) => (
   <IconButton
@@ -41,7 +45,9 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
     extensions: [
       StarterKit.configure({
         heading: { levels: [1, 2, 3] },
+        codeBlock: false,
       }),
+      CodeBlockLowlight.configure({ lowlight }),
       Placeholder.configure({
         placeholder: "Type '/' for commands...",
       }),
@@ -100,8 +106,23 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
   if (!editor) return null;
 
   return (
-    <Box className="note-editor-wrapper">
-      <Flex className="note-editor-toolbar" wrap="wrap" gap="2px" p={2} align="center">
+    <Box display="flex" flexDirection="column" w="100%">
+      {/* Sticky toolbar — docks below the 56px App nav when scrolling */}
+      <Flex
+        wrap="wrap"
+        gap="2px"
+        p={2}
+        align="center"
+        position="sticky"
+        top="56px"
+        zIndex={10}
+        bg="gray.900"
+        borderBottom="1px solid"
+        borderColor="gray.700"
+        borderTop="1px solid"
+        borderTopColor="gray.800"
+        mb={2}
+      >
         <ToolbarButton label="Bold" isActive={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()}>
           <Bold size={14} />
         </ToolbarButton>
@@ -118,7 +139,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <Highlighter size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.600" mx={1} />
+        <Box w="1px" h="20px" bg="gray.700" mx={1} />
 
         <ToolbarButton label="Heading 1" isActive={editor.isActive('heading', { level: 1 })} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
           <Heading1 size={14} />
@@ -130,7 +151,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <Heading3 size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.600" mx={1} />
+        <Box w="1px" h="20px" bg="gray.700" mx={1} />
 
         <ToolbarButton label="Bullet List" isActive={editor.isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()}>
           <List size={14} />
@@ -142,7 +163,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <CheckSquare size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.600" mx={1} />
+        <Box w="1px" h="20px" bg="gray.700" mx={1} />
 
         <ToolbarButton label="Blockquote" isActive={editor.isActive('blockquote')} onClick={() => editor.chain().focus().toggleBlockquote().run()}>
           <Quote size={14} />
@@ -154,7 +175,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <TableIcon size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.600" mx={1} />
+        <Box w="1px" h="20px" bg="gray.700" mx={1} />
 
         <ToolbarButton label="Undo" onClick={() => editor.chain().focus().undo().run()}>
           <Undo size={14} />
@@ -163,7 +184,8 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <Redo size={14} />
         </ToolbarButton>
       </Flex>
-      <Box flex="1" minH={0} overflow="auto">
+
+      <Box>
         <EditorContent editor={editor} />
       </Box>
     </Box>

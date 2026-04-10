@@ -1,10 +1,13 @@
 import React from 'react';
-import { Box, Flex, Heading, Text, Button, IconButton, Tag } from '@chakra-ui/react';
-import { Heart, Trash2, Eye, EyeOff, FileText } from 'lucide-react';
+import { Box, Flex, Heading, Text, Button, IconButton, Tag, Spinner } from '@chakra-ui/react';
+import { Heart, Trash2, Eye, EyeOff, FileText, Upload, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 
-export default function NoteCard({ note, onDelete, onToggleVisibility, onLike, user, showActions = true }) {
+export default function NoteCard({
+  note, onDelete, onToggleVisibility, onLike, user, showActions = true,
+  selectable, selected, onSelect, onIngest, ingesting, ingested,
+}) {
   const navigate = useNavigate();
   const tagsArray = Array.isArray(note.tags)
     ? note.tags.filter(Boolean).slice(0, 3)
@@ -39,6 +42,8 @@ export default function NoteCard({ note, onDelete, onToggleVisibility, onLike, u
       cursor="pointer"
       onClick={() => navigate(`/notes/${note.id}/edit`)}
       position="relative"
+      border={selected ? '2px solid' : '2px solid transparent'}
+      borderColor={selected ? 'blue.400' : 'transparent'}
     >
       <Box
         h="100px"
@@ -51,6 +56,24 @@ export default function NoteCard({ note, onDelete, onToggleVisibility, onLike, u
         mb={3}
       >
         <FileText size={32} color="white" opacity={0.6} />
+        {selectable && (
+          <Box
+            position="absolute"
+            top={2}
+            left={2}
+            onClick={(e) => { e.stopPropagation(); onSelect?.(note.id); }}
+          >
+            <Box
+              w="20px" h="20px" rounded="md"
+              border="2px solid" borderColor="whiteAlpha.700"
+              bg={selected ? 'blue.500' : 'whiteAlpha.200'}
+              display="flex" alignItems="center" justifyContent="center"
+              _hover={{ borderColor: 'white' }}
+            >
+              {selected && <Check size={14} color="white" />}
+            </Box>
+          </Box>
+        )}
       </Box>
 
       <Heading size="sm" color="white" mb={2} lineClamp={2}>
@@ -70,6 +93,18 @@ export default function NoteCard({ note, onDelete, onToggleVisibility, onLike, u
           {timeAgo}
         </Text>
         <Flex gap={2} align="center" onClick={(e) => e.stopPropagation()}>
+          {onIngest && isOwner && (
+            <IconButton
+              aria-label="Ingest to RAG"
+              size="xs"
+              variant="ghost"
+              color={ingested ? 'green.400' : undefined}
+              onClick={() => onIngest(note.id)}
+              disabled={ingesting}
+            >
+              {ingesting ? <Spinner size="xs" /> : ingested ? <Check size={14} /> : <Upload size={14} />}
+            </IconButton>
+          )}
           {onLike && (
             <Button size="xs" variant="ghost" onClick={() => onLike(note.id)}>
               <Heart size={14} fill={isLiked ? 'red' : 'none'} stroke={isLiked ? 'red' : 'white'} />

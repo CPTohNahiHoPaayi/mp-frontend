@@ -1,26 +1,23 @@
+/* Editor wrapper — transparent, blends with page background */
 .note-editor-wrapper {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  background: #1a1a2e;
+  width: 100%;
 }
 
+/* Toolbar — background handled by Chakra props (sticky, gray.900) */
 .note-editor-toolbar {
-  background: #16162a;
-  border-bottom: 1px solid #2d2d4a;
   flex-shrink: 0;
 }
 
+/* Editor content area */
 .note-editor-content {
-  padding: 24px 32px;
-  min-height: 400px;
+  padding: 8px 0 120px 0;
+  min-height: 60vh;
   outline: none;
   color: #e2e8f0;
   font-size: 16px;
   line-height: 1.75;
-  /* Let the wrapper provide scrolling */
 }
 
 .note-editor-content:focus {
@@ -134,14 +131,14 @@
 /* Horizontal rule */
 .note-editor-content hr {
   border: none;
-  border-top: 1px solid #2d2d4a;
+  border-top: 1px solid #374151;
   margin: 1.5em 0;
 }
 
-/* Code block */
+/* Code block — Catppuccin Mocha theme (matches courses) */
 .note-editor-content pre {
-  background: #0d1117;
-  border: 1px solid #2d2d4a;
+  background: #1e1e2e;
+  border: 1px solid #313244;
   border-radius: 8px;
   padding: 16px;
   margin: 0.8em 0;
@@ -152,16 +149,71 @@
 }
 
 .note-editor-content pre code {
-  color: #e6edf3;
+  color: #cdd6f4;
   background: none;
   padding: 0;
   border-radius: 0;
+  font-size: inherit;
 }
+
+/* Language label on code blocks */
+.note-editor-content pre::before {
+  content: attr(data-language);
+  display: block;
+  font-size: 11px;
+  color: #6c7086;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  font-family: system-ui, sans-serif;
+}
+
+/* Catppuccin Mocha — lowlight / highlight.js token colors */
+.note-editor-content .hljs-keyword,
+.note-editor-content .hljs-selector-tag,
+.note-editor-content .hljs-built_in,
+.note-editor-content .hljs-tag { color: #cba6f7; }          /* mauve */
+
+.note-editor-content .hljs-string,
+.note-editor-content .hljs-attr,
+.note-editor-content .hljs-attribute { color: #a6e3a1; }     /* green */
+
+.note-editor-content .hljs-number,
+.note-editor-content .hljs-literal { color: #fab387; }       /* peach */
+
+.note-editor-content .hljs-comment,
+.note-editor-content .hljs-quote { color: #6c7086; font-style: italic; } /* overlay0 */
+
+.note-editor-content .hljs-title,
+.note-editor-content .hljs-function,
+.note-editor-content .hljs-title.function_ { color: #89b4fa; } /* blue */
+
+.note-editor-content .hljs-type,
+.note-editor-content .hljs-class { color: #f9e2af; }         /* yellow */
+
+.note-editor-content .hljs-variable,
+.note-editor-content .hljs-params { color: #cdd6f4; }        /* text */
+
+.note-editor-content .hljs-operator,
+.note-editor-content .hljs-punctuation { color: #89dceb; }   /* sky */
+
+.note-editor-content .hljs-property { color: #f38ba8; }      /* red */
+
+.note-editor-content .hljs-regexp { color: #f5c2e7; }        /* pink */
+
+.note-editor-content .hljs-meta,
+.note-editor-content .hljs-meta-string { color: #94e2d5; }   /* teal */
+
+.note-editor-content .hljs-subst,
+.note-editor-content .hljs-symbol { color: #cdd6f4; }
+
+.note-editor-content .hljs-deletion { color: #f38ba8; background: rgba(243,139,168,0.1); }
+.note-editor-content .hljs-addition { color: #a6e3a1; background: rgba(166,227,161,0.1); }
 
 /* Inline code */
 .note-editor-content code {
-  background: rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
+  background: rgba(203, 166, 247, 0.12);
+  color: #cba6f7;
   padding: 2px 6px;
   border-radius: 4px;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
@@ -218,13 +270,13 @@
 }
 
 .note-editor-content th {
-  background: #1e1e3a;
+  background: #1f2937;
   font-weight: 600;
   color: #e2e8f0;
 }
 
 .note-editor-content td {
-  background: #16162a;
+  background: #111827;
 }
 
 .note-editor-content .selectedCell {
@@ -314,6 +366,23 @@
   color: #64748b;
   font-size: 14px;
   text-align: center;
+}
+
+/* AI enhance fallbacks (LaTeX stripped / not renderable in TipTap) */
+.note-enhance-fallback {
+  border-left: 3px solid #a78bfa;
+  padding: 8px 12px;
+  margin: 0.75em 0;
+  background: rgba(167, 139, 250, 0.08);
+  color: #c4b5fd;
+  font-size: 0.95em;
+}
+
+.note-inline-math-fallback {
+  background: rgba(148, 163, 184, 0.2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 
 /* Tippy overrides */
