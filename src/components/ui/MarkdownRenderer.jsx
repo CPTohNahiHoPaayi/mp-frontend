@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import { Box, Text, Link, Table } from '@chakra-ui/react';
+import { Box, Text, Link } from '@chakra-ui/react';
 import CodeBlock from '../blocks/CodeBlock';
 
 const MarkdownRenderer = ({ content }) => {
@@ -19,68 +19,84 @@ const MarkdownRenderer = ({ content }) => {
         remarkPlugins={[remarkGfm]}
         components={{
           h1: ({ children }) => (
-            <Text as="h1" fontSize="2xl" fontWeight="bold" color="blue.300" mt={6} mb={3}>
+            <Text as="h1" fontSize="2xl" fontWeight="700" color="#E2E8F0" mt={8} mb={3}>
               {children}
             </Text>
           ),
           h2: ({ children }) => (
-            <Text as="h2" fontSize="xl" fontWeight="bold" color="blue.300" mt={5} mb={2}>
+            <Text as="h2" fontSize="xl" fontWeight="700" color="#E2E8F0" mt={6} mb={3}>
               {children}
             </Text>
           ),
           h3: ({ children }) => (
-            <Text as="h3" fontSize="lg" fontWeight="semibold" color="blue.200" mt={4} mb={2}>
+            <Text as="h3" fontSize="lg" fontWeight="600" color="#CBD5E0" mt={5} mb={2}>
               {children}
             </Text>
           ),
           h4: ({ children }) => (
-            <Text as="h4" fontSize="md" fontWeight="semibold" color="blue.200" mt={3} mb={1}>
+            <Text as="h4" fontSize="md" fontWeight="600" color="#CBD5E0" mt={4} mb={2}>
               {children}
             </Text>
           ),
           p: ({ children }) => (
-            <Text color="gray.200" fontSize="md" lineHeight="1.8" mb={3}>
+            <Text color="#A0AEC0" fontSize="md" lineHeight="1.85" mb={4}>
               {children}
             </Text>
           ),
           strong: ({ children }) => (
-            <Text as="span" fontWeight="bold" color="#89b4fa">
+            <Text as="span" fontWeight="600" color="#E2E8F0">
               {children}
             </Text>
           ),
           em: ({ children }) => (
-            <Text as="span" fontStyle="italic" color="gray.300">
+            <Text as="span" fontStyle="italic" color="#A0AEC0">
               {children}
             </Text>
           ),
           a: ({ href, children }) => (
-            <Link href={href} color="blue.400" textDecoration="underline" target="_blank" rel="noopener noreferrer">
+            <Link href={href} color="#00C9A7" textDecoration="underline" textDecorationColor="rgba(0,201,167,0.3)" _hover={{ textDecorationColor: '#00C9A7' }} target="_blank" rel="noopener noreferrer">
               {children}
             </Link>
           ),
           ul: ({ children }) => (
-            <Box as="ul" pl={6} mb={3} sx={{ listStyleType: 'disc' }}>
+            <Box as="ul" pl={5} mb={4} sx={{
+              listStyleType: 'none',
+              '& > li': {
+                position: 'relative',
+                pl: 3,
+                _before: {
+                  content: '"•"',
+                  position: 'absolute',
+                  left: 0,
+                  color: '#00C9A7',
+                  fontWeight: 'bold',
+                },
+              },
+            }}>
               {children}
             </Box>
           ),
           ol: ({ children }) => (
-            <Box as="ol" pl={6} mb={3} sx={{ listStyleType: 'decimal' }}>
+            <Box as="ol" pl={5} mb={4} sx={{
+              listStyleType: 'decimal',
+              '& > li::marker': { color: '#00C9A7' },
+            }}>
               {children}
             </Box>
           ),
           li: ({ children }) => (
-            <Box as="li" color="gray.200" fontSize="md" lineHeight="1.8" mb={1}>
+            <Box as="li" color="#A0AEC0" fontSize="md" lineHeight="1.85" mb={1.5}>
               {children}
             </Box>
           ),
           blockquote: ({ children }) => (
             <Box
               borderLeft="3px solid"
-              borderColor="blue.500"
+              borderColor="#00C9A7"
               pl={4}
-              py={1}
-              my={3}
-              bg="gray.800"
+              py={2}
+              my={4}
+              bg="rgba(0,201,167,0.04)"
               rounded="md"
             >
               {children}
@@ -97,13 +113,13 @@ const MarkdownRenderer = ({ content }) => {
             return (
               <Text
                 as="code"
-                bg="gray.700"
-                color="#f9e2af"
+                bg="rgba(0,201,167,0.08)"
+                color="#00C9A7"
                 px={1.5}
                 py={0.5}
                 rounded="md"
                 fontSize="sm"
-                fontFamily="Fira Code, monospace"
+                fontFamily="'Fira Code', monospace"
                 {...props}
               >
                 {children}
@@ -112,7 +128,7 @@ const MarkdownRenderer = ({ content }) => {
           },
           pre: ({ children }) => <>{children}</>,
           hr: () => (
-            <Box borderBottom="1px solid" borderColor="gray.700" my={4} />
+            <Box borderBottom="1px solid" borderColor="#1C2030" my={6} />
           ),
           table: ({ children }) => (
             <Box overflowX="auto" my={4}>
@@ -122,23 +138,23 @@ const MarkdownRenderer = ({ content }) => {
             </Box>
           ),
           thead: ({ children }) => (
-            <Box as="thead" bg="gray.800">
+            <Box as="thead" bg="rgba(0,201,167,0.04)">
               {children}
             </Box>
           ),
           tbody: ({ children }) => <Box as="tbody">{children}</Box>,
           tr: ({ children }) => (
-            <Box as="tr" borderBottom="1px solid" borderColor="gray.700">
+            <Box as="tr" borderBottom="1px solid" borderColor="#1C2030">
               {children}
             </Box>
           ),
           th: ({ children }) => (
-            <Box as="th" px={3} py={2} textAlign="left" fontSize="sm" fontWeight="semibold" color="blue.300">
+            <Box as="th" px={3} py={2} textAlign="left" fontSize="sm" fontWeight="600" color="#E2E8F0">
               {children}
             </Box>
           ),
           td: ({ children }) => (
-            <Box as="td" px={3} py={2} fontSize="sm" color="gray.200">
+            <Box as="td" px={3} py={2} fontSize="sm" color="#A0AEC0">
               {children}
             </Box>
           ),

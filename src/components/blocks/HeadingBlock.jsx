@@ -1,4 +1,4 @@
-import { Heading, Box } from "@chakra-ui/react";
+import { Heading, Box, Flex } from "@chakra-ui/react";
 
 const HeadingBlock = ({
   level = 4,
@@ -6,40 +6,41 @@ const HeadingBlock = ({
   align = "left",
   margin = 6,
 }) => {
-  const sizeMap = {
-    1: { fontSize: { base: "2xl", md: "3xl" }, color: "white" },
-    2: { fontSize: { base: "xl", md: "2xl" }, color: "white" },
-    3: { fontSize: { base: "lg", md: "xl" }, color: "gray.200" },
-    4: { fontSize: { base: "md", md: "lg" }, color: "gray.200" },
-    5: { fontSize: "md", color: "gray.300" },
-    6: { fontSize: "sm", color: "gray.400" },
-  };
-
-  const config = sizeMap[level] || sizeMap[4];
+  const config = {
+    1: { fontSize: { base: "2xl", md: "3xl" }, color: "#E2E8F0", weight: "800" },
+    2: { fontSize: { base: "xl", md: "2xl" }, color: "#E2E8F0", weight: "700" },
+    3: { fontSize: { base: "lg", md: "xl" }, color: "#CBD5E0", weight: "600" },
+    4: { fontSize: { base: "md", md: "lg" }, color: "#CBD5E0", weight: "600" },
+    5: { fontSize: "md", color: "#A0AEC0", weight: "600" },
+    6: { fontSize: "sm", color: "#A0AEC0", weight: "600" },
+  }[level] || { fontSize: "md", color: "#CBD5E0", weight: "600" };
 
   return (
-    <Box w="full" mb={margin}>
+    <Box w="full" mb={margin} mt={level <= 2 ? 10 : 6}>
       {level <= 2 && (
-        <Box
-          h="2px"
-          w="40px"
-          bg="linear-gradient(90deg, #00C9A7, #3B82F6)"
-          rounded="full"
-          mb={3}
-        />
+        <Box h="1px" bg="#1C2030" mb={6} />
       )}
-      <Heading
-        as={`h${level}`}
-        fontSize={config.fontSize}
-        color={config.color}
-        fontWeight={level <= 2 ? "800" : "700"}
-        lineHeight="1.3"
-        letterSpacing="-0.01em"
-        textAlign={align}
-        wordBreak="break-word"
-      >
-        {text}
-      </Heading>
+      <Flex align="center" gap={3}>
+        <Box
+          w="3px"
+          h={level <= 2 ? "28px" : "20px"}
+          bg={level <= 2 ? "#00C9A7" : "#2A3A50"}
+          rounded="full"
+          flexShrink={0}
+        />
+        <Heading
+          as={`h${level}`}
+          fontSize={config.fontSize}
+          color={config.color}
+          fontWeight={config.weight}
+          lineHeight="1.35"
+          letterSpacing="-0.01em"
+          textAlign={align}
+          wordBreak="break-word"
+        >
+          {text}
+        </Heading>
+      </Flex>
     </Box>
   );
 };

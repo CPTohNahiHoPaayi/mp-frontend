@@ -125,14 +125,16 @@ function LessonPage() {
                   disabled={isFirstLesson}
                   variant="ghost"
                   size="sm"
-                  color="gray.400"
-                  _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+                  color="#A0AEC0"
+                  border="1px solid"
+                  borderColor="#1C2030"
+                  _hover={{ color: '#E2E8F0', borderColor: '#2A3A50', bg: 'rgba(255,255,255,0.02)' }}
                   _disabled={{ opacity: 0.2, cursor: 'not-allowed' }}
                   rounded="lg"
                   h={9}
-                  px={3}
+                  px={4}
                 >
-                  <ChevronLeft size={16} />
+                  <ChevronLeft size={15} />
                   <Text ml={1} display={{ base: 'none', sm: 'block' }}>Previous</Text>
                 </Button>
 
@@ -158,8 +160,8 @@ function LessonPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      color="gray.400"
-                      _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+                      color="#718096"
+                      _hover={{ color: '#A0AEC0', bg: 'rgba(255,255,255,0.03)' }}
                       rounded="lg"
                       h={9}
                       px={3}
@@ -182,17 +184,19 @@ function LessonPage() {
                   onClick={goToNext}
                   disabled={isLastLesson}
                   size="sm"
-                  bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
-                  color="white"
-                  _hover={{ opacity: 0.9, transform: 'translateY(-1px)' }}
-                  _disabled={{ opacity: 0.2, cursor: 'not-allowed', transform: 'none' }}
+                  color="#E2E8F0"
+                  border="1px solid"
+                  borderColor="#00C9A7"
+                  bg="rgba(0,201,167,0.08)"
+                  _hover={{ bg: 'rgba(0,201,167,0.15)', borderColor: '#00C9A7' }}
+                  _disabled={{ opacity: 0.2, cursor: 'not-allowed' }}
                   rounded="lg"
                   h={9}
                   px={4}
                   transition="all 0.15s"
                 >
                   <Text mr={1} display={{ base: 'none', sm: 'block' }}>Next</Text>
-                  <ChevronRight size={16} />
+                  <ChevronRight size={15} />
                 </Button>
               </Flex>
             </Box>
