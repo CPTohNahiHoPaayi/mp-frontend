@@ -12,13 +12,14 @@ import {
   GoSidebarExpand,
   GoSidebarCollapse,
 } from "react-icons/go";
-import { BookOpen, Home, StickyNote, Brain, Users, LogOut } from "lucide-react";
+import { Home, StickyNote, Brain, Users, LogOut, BookOpen } from "lucide-react";
 import { Tooltip } from "@/components/ui/tooltip";
 import MyCourseList from "./components/sidebar/MyCourseList";
 import { Outlet, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/LandingPage";
 import ThemePicker from "./components/ui/ThemePicker";
+import UsageGuide from "./components/ui/UsageGuide";
 
 function NavLink({ icon: Icon, label, path, active, onClick }) {
   return (
@@ -107,10 +108,10 @@ function App() {
                 alignItems="center"
                 justifyContent="center"
               >
-                <BookOpen size={14} color="var(--text-primary)" />
+                <Brain size={14} color="var(--text-primary)" />
               </Box>
               <Text fontSize="sm" fontWeight="bold" color="var(--text-primary)">
-                Text<Box as="span" color="var(--accent)">ToLearn</Box>
+                Mind<Box as="span" color="var(--accent)">Palace</Box>
               </Text>
             </HStack>
             <Tooltip content="Close sidebar" positioning={{ placement: "right-end" }} showArrow>
@@ -192,10 +193,10 @@ function App() {
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <BookOpen size={12} color="var(--text-primary)" />
+                  <Brain size={12} color="var(--text-primary)" />
                 </Box>
                 <Text fontSize="sm" fontWeight="bold" color="var(--text-primary)" display={{ base: "none", sm: "block" }}>
-                  Text<Box as="span" color="var(--accent)">ToLearn</Box>
+                  Mind<Box as="span" color="var(--accent)">Palace</Box>
                 </Text>
               </HStack>
             )}
@@ -252,6 +253,7 @@ function App() {
           <Outlet context={{ triggerRefresh, meta, setMeta }} />
         </Box>
       </Box>
+      <UsageGuide />
       <ThemePicker />
     </Flex>
   ) : (

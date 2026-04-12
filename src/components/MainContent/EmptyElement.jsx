@@ -195,7 +195,7 @@ function EmptyElement() {
             >
               {userName ? `Welcome back, ${userName}` : 'Welcome to '}
               {!userName && (
-                <Text as="span" color="var(--accent)">TextToLearn</Text>
+                <Text as="span" color="var(--accent)">Mind Palace</Text>
               )}
             </Heading>
           </MotionBox>

@@ -1,16 +1,14 @@
 import {
   Box,
   Button,
-  Center,
   Flex,
-  Input,
   Stack,
   Text,
   HStack,
 } from '@chakra-ui/react';
 import { FcGoogle } from 'react-icons/fc';
-import { BookOpen, ArrowLeft } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Brain, ArrowLeft } from 'lucide-react';
+import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -39,13 +37,9 @@ const scaleIn = {
 };
 
 export const Signin = () => {
-  const { loginWithCredentials, loginWithToken } = useAuth();
+  const { loginWithToken } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -55,16 +49,6 @@ export const Signin = () => {
       navigate('/');
     }
   }, [location]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      await loginWithCredentials(email, password);
-    } catch {
-      setError('Invalid credentials');
-    }
-  };
 
   const handleGoogleLogin = () => {
     const clientId = '972601767507-ddad99bsvtbv889o9bsr9mj8qgp59ef4.apps.googleusercontent.com';
@@ -168,10 +152,10 @@ export const Signin = () => {
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <BookOpen size={18} color="var(--text-primary)" />
+                  <Brain size={18} color="var(--text-primary)" />
                 </Box>
                 <Text fontSize="lg" fontWeight="bold" color="var(--text-primary)">
-                  Text<Box as="span" color="var(--accent)">ToLearn</Box>
+                  Mind<Box as="span" color="var(--accent)">Palace</Box>
                 </Text>
               </HStack>
             </MotionBox>
@@ -182,95 +166,12 @@ export const Signin = () => {
                 Welcome back
               </Text>
               <Text fontSize="2xl" fontWeight="bold" color="var(--text-primary)">
-                Sign in to your account
+                Sign in to continue
               </Text>
             </MotionBox>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit}>
-              <Stack gap={4}>
-                <MotionBox variants={fadeUp} custom={2}>
-                  <Text mb={1.5} fontSize="sm" color="var(--text-secondary)">
-                    Email
-                  </Text>
-                  <Input
-                    type="email"
-                    placeholder="you@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    bg="var(--bg-input)"
-                    border="1px solid"
-                    borderColor="var(--border-light)"
-                    color="var(--text-primary)"
-                    rounded="xl"
-                    h={12}
-                    _placeholder={{ color: 'var(--text-dim)' }}
-                    _hover={{ borderColor: 'var(--border-hover)' }}
-                    _focus={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px var(--accent)' }}
-                  />
-                </MotionBox>
-
-                <MotionBox variants={fadeUp} custom={3}>
-                  <Text mb={1.5} fontSize="sm" color="var(--text-secondary)">
-                    Password
-                  </Text>
-                  <Input
-                    type="password"
-                    placeholder="••••••••"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    bg="var(--bg-input)"
-                    border="1px solid"
-                    borderColor="var(--border-light)"
-                    color="var(--text-primary)"
-                    rounded="xl"
-                    h={12}
-                    _placeholder={{ color: 'var(--text-dim)' }}
-                    _hover={{ borderColor: 'var(--border-hover)' }}
-                    _focus={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px var(--accent)' }}
-                  />
-                </MotionBox>
-
-                {error && (
-                  <MotionBox variants={fadeUp} custom={4}>
-                    <Text color="red.400" fontSize="sm">{error}</Text>
-                  </MotionBox>
-                )}
-
-                <MotionBox variants={fadeUp} custom={4}>
-                  <Button
-                    type="submit"
-                    w="full"
-                    h={12}
-                    bg="linear-gradient(135deg, var(--accent) 0%, var(--blue) 100%)"
-                    color="var(--text-primary)"
-                    fontWeight="semibold"
-                    rounded="xl"
-                    _hover={{
-                      transform: 'translateY(-1px)',
-                      boxShadow: '0 8px 25px rgba(var(--accent-rgb),0.25)',
-                    }}
-                    transition="all 0.2s ease"
-                  >
-                    Sign In / Sign Up
-                  </Button>
-                </MotionBox>
-              </Stack>
-            </form>
-
-            {/* Divider */}
-            <MotionBox variants={fadeUp} custom={5}>
-              <Flex align="center">
-                <Box flex="1" h="1px" bg="var(--border-light)" />
-                <Text px={3} color="var(--text-dim)" fontSize="xs">
-                  or continue with
-                </Text>
-                <Box flex="1" h="1px" bg="var(--border-light)" />
-              </Flex>
-            </MotionBox>
-
             {/* Google */}
-            <MotionBox variants={fadeUp} custom={6}>
+            <MotionBox variants={fadeUp} custom={2}>
               <Button
                 onClick={handleGoogleLogin}
                 w="full"
