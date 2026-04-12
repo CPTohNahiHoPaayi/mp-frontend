@@ -70,7 +70,7 @@ import {
   
               {/* Optional Footer */}
               <Drawer.Footer>
-                <Text fontSize="sm" color="gray.500">
+                <Text fontSize="sm" color="var(--text-muted)">
                   Navigate to any lesson
                 </Text>
               </Drawer.Footer>

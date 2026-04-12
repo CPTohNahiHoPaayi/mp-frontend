@@ -477,8 +477,8 @@ const LessonPDFExporter = ({ contentData, fileName = 'lesson.pdf', lessonTitle =
     <Button
       variant="ghost"
       size="sm"
-      color="gray.400"
-      _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+      color="var(--text-secondary)"
+      _hover={{ color: 'var(--text-primary)', bg: 'var(--bg-hover)' }}
       rounded="lg"
       h={9}
       px={3}
@@ -520,8 +520,8 @@ export const CoursePDFButton = ({ courseId, courseTitle }) => {
     <Button
       variant="ghost"
       size="xs"
-      color="gray.500"
-      _hover={{ color: '#00C9A7', bg: 'whiteAlpha.50' }}
+      color="var(--text-muted)"
+      _hover={{ color: 'var(--accent)', bg: 'var(--bg-hover)' }}
       rounded="lg"
       h={7}
       px={2}

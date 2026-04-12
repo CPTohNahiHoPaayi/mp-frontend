@@ -91,8 +91,8 @@ function LessonPage() {
     <Box h="full" display="flex" flexDir="column">
       {loading ? (
         <Flex h="100%" align="center" justify="center" gap={3}>
-          <Spinner color="#00C9A7" />
-          <Text color="gray.500" fontSize="sm">Loading lesson...</Text>
+          <Spinner color="var(--accent)" />
+          <Text color="var(--text-muted)" fontSize="sm">Loading lesson...</Text>
         </Flex>
       ) : !lesson ? (
         <Flex flex="1" align="center" justify="center">
@@ -110,8 +110,8 @@ function LessonPage() {
           {/* Bottom navigation bar */}
           <Box
             borderTop="1px solid"
-            borderColor="whiteAlpha.100"
-            bg="rgba(6,8,15,0.95)"
+            borderColor="var(--border-light)"
+            bg="var(--bg-nav)"
             backdropFilter="blur(12px)"
             px={{ base: 3, md: 6 }}
             py={3}
@@ -124,10 +124,10 @@ function LessonPage() {
                 disabled={isFirstLesson}
                 variant="ghost"
                 size="sm"
-                color="#A0AEC0"
+                color="var(--text-secondary)"
                 border="1px solid"
-                borderColor="#1C2030"
-                _hover={{ color: '#E2E8F0', borderColor: '#2A3A50', bg: 'rgba(255,255,255,0.02)' }}
+                borderColor="var(--border-base)"
+                _hover={{ color: 'var(--text-primary)', borderColor: 'var(--border-hover)', bg: 'var(--bg-elevated)' }}
                 _disabled={{ opacity: 0.2, cursor: 'not-allowed' }}
                 rounded="lg"
                 h={9}
@@ -142,7 +142,7 @@ function LessonPage() {
                 {/* Lesson info */}
                 <Text
                   fontSize="xs"
-                  color="gray.600"
+                  color="var(--text-dim)"
                   display={{ base: 'none', md: 'block' }}
                   overflow="hidden"
                   textOverflow="ellipsis"
@@ -158,8 +158,8 @@ function LessonPage() {
                 <Button
                   variant="ghost"
                   size="sm"
-                  color="#718096"
-                  _hover={{ color: '#A0AEC0', bg: 'rgba(255,255,255,0.03)' }}
+                  color="var(--text-muted)"
+                  _hover={{ color: 'var(--text-secondary)', bg: 'var(--bg-elevated)' }}
                   rounded="lg"
                   h={9}
                   px={3}
@@ -183,11 +183,11 @@ function LessonPage() {
                 onClick={goToNext}
                 disabled={isLastLesson}
                 size="sm"
-                color="#E2E8F0"
+                color="var(--text-primary)"
                 border="1px solid"
-                borderColor="#00C9A7"
-                bg="rgba(0,201,167,0.08)"
-                _hover={{ bg: 'rgba(0,201,167,0.15)', borderColor: '#00C9A7' }}
+                borderColor="var(--accent)"
+                bg="rgba(var(--accent-rgb),0.08)"
+                _hover={{ bg: 'rgba(var(--accent-rgb),0.15)', borderColor: 'var(--accent)' }}
                 _disabled={{ opacity: 0.2, cursor: 'not-allowed' }}
                 rounded="lg"
                 h={9}
@@ -208,7 +208,7 @@ function LessonPage() {
                 inset={0}
                 zIndex={1400}
                 onClick={() => setDrawerOpen(false)}
-                bg="blackAlpha.700"
+                bg="var(--bg-overlay)"
               />
               <Box
                 position="fixed"
@@ -216,14 +216,14 @@ function LessonPage() {
                 right={0}
                 bottom={0}
                 zIndex={1401}
-                bg="#0A0C14"
-                color="white"
+                bg="var(--bg-surface)"
+                color="var(--text-primary)"
                 w="380px"
                 maxW="90vw"
                 display="flex"
                 flexDirection="column"
                 borderLeft="1px solid"
-                borderColor="whiteAlpha.50"
+                borderColor="var(--border-subtle)"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}
@@ -233,21 +233,21 @@ function LessonPage() {
                   px={5}
                   py={4}
                   borderBottom="1px solid"
-                  borderColor="whiteAlpha.50"
+                  borderColor="var(--border-subtle)"
                 >
                   <Box>
-                    <Text fontSize="sm" fontWeight="semibold" color="white">
+                    <Text fontSize="sm" fontWeight="semibold" color="var(--text-primary)">
                       Course Contents
                     </Text>
-                    <Text fontSize="xs" color="gray.600">
+                    <Text fontSize="xs" color="var(--text-dim)">
                       {meta.modules.length} modules · {meta.modules.reduce((a, m) => a + m.lessons.length, 0)} lessons
                     </Text>
                   </Box>
                   <IconButton
                     size="sm"
                     variant="ghost"
-                    color="gray.500"
-                    _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+                    color="var(--text-muted)"
+                    _hover={{ color: 'var(--text-primary)', bg: 'var(--bg-hover)' }}
                     aria-label="Close"
                     type="button"
                     onClick={() => setDrawerOpen(false)}
@@ -267,13 +267,13 @@ function LessonPage() {
                             w={5}
                             h={5}
                             rounded="md"
-                            bg={mIdx === mIndex ? 'rgba(0,201,167,0.15)' : 'whiteAlpha.50'}
+                            bg={mIdx === mIndex ? 'rgba(var(--accent-rgb),0.15)' : 'var(--border-subtle)'}
                             display="flex"
                             alignItems="center"
                             justifyContent="center"
                             flexShrink={0}
                           >
-                            <Text fontSize="xs" fontWeight="bold" color={mIdx === mIndex ? '#00C9A7' : 'gray.500'}>
+                            <Text fontSize="xs" fontWeight="bold" color={mIdx === mIndex ? 'var(--accent)' : 'gray.500'}>
                               {mIdx + 1}
                             </Text>
                           </Box>
@@ -305,13 +305,13 @@ function LessonPage() {
                                 px={3}
                                 py={2}
                                 rounded="lg"
-                                bg={isActive ? 'rgba(0,201,167,0.1)' : 'transparent'}
+                                bg={isActive ? 'rgba(var(--accent-rgb),0.1)' : 'transparent'}
                                 borderLeft="2px solid"
-                                borderColor={isActive ? '#00C9A7' : 'transparent'}
+                                borderColor={isActive ? 'var(--accent)' : 'transparent'}
                                 color={isActive ? 'white' : 'gray.400'}
                                 _hover={{
-                                  bg: isActive ? 'rgba(0,201,167,0.12)' : 'whiteAlpha.50',
-                                  color: 'white',
+                                  bg: isActive ? 'rgba(var(--accent-rgb),0.12)' : 'var(--border-subtle)',
+                                  color: 'var(--text-primary)',
                                 }}
                                 transition="all 0.15s"
                                 onClick={() => navigateToLesson(mIdx, lIdx)}
@@ -320,7 +320,7 @@ function LessonPage() {
                               >
                                 <Text
                                   fontSize="xs"
-                                  color={isActive ? '#00C9A7' : 'gray.600'}
+                                  color={isActive ? 'var(--accent)' : 'gray.600'}
                                   fontWeight="bold"
                                   flexShrink={0}
                                   w={4}

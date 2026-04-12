@@ -7,37 +7,37 @@ const VARIANTS = {
   tip: {
     icon: Lightbulb,
     label: 'Pro Tip',
-    color: '#00C9A7',
-    bg: 'rgba(0,201,167,0.06)',
-    border: 'rgba(0,201,167,0.15)',
+    color: 'var(--accent)',
+    bg: 'rgba(var(--accent-rgb),0.06)',
+    border: 'rgba(var(--accent-rgb),0.15)',
   },
   warning: {
     icon: AlertTriangle,
     label: 'Watch Out',
-    color: '#F59E0B',
-    bg: 'rgba(245,158,11,0.06)',
-    border: 'rgba(245,158,11,0.15)',
+    color: 'var(--warning)',
+    bg: 'rgba(var(--warning-rgb),0.06)',
+    border: 'rgba(var(--warning-rgb),0.15)',
   },
   takeaway: {
     icon: Bookmark,
     label: 'Key Takeaway',
-    color: '#7C3AED',
-    bg: 'rgba(124,58,237,0.06)',
-    border: 'rgba(124,58,237,0.15)',
+    color: 'var(--purple)',
+    bg: 'rgba(var(--purple-rgb),0.06)',
+    border: 'rgba(var(--purple-rgb),0.15)',
   },
   fun_fact: {
     icon: Zap,
     label: 'Fun Fact',
-    color: '#EC4899',
-    bg: 'rgba(236,72,153,0.06)',
-    border: 'rgba(236,72,153,0.15)',
+    color: 'var(--pink)',
+    bg: 'rgba(var(--pink-rgb),0.06)',
+    border: 'rgba(var(--pink-rgb),0.15)',
   },
   info: {
     icon: Info,
     label: 'Note',
-    color: '#3B82F6',
-    bg: 'rgba(59,130,246,0.06)',
-    border: 'rgba(59,130,246,0.15)',
+    color: 'var(--blue)',
+    bg: 'rgba(var(--blue-rgb),0.06)',
+    border: 'rgba(var(--blue-rgb),0.15)',
   },
 };
 
@@ -63,7 +63,7 @@ const CalloutBlock = ({ variant = 'tip', text }) => {
           {v.label}
         </Text>
       </Flex>
-      <MathText color="#C4CDD8" fontSize="md" lineHeight="1.8">
+      <MathText color="var(--text-body)" fontSize="md" lineHeight="1.8">
         {text}
       </MathText>
     </Box>

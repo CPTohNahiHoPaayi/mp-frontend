@@ -5,12 +5,12 @@ import { useNavigate } from 'react-router-dom';
 import { formatDistanceToNow } from 'date-fns';
 
 const ACCENT_COLORS = [
-  { border: 'rgba(0,201,167,0.25)', bg: 'rgba(0,201,167,0.06)', icon: '#00C9A7' },
-  { border: 'rgba(124,58,237,0.25)', bg: 'rgba(124,58,237,0.06)', icon: '#A78BFA' },
-  { border: 'rgba(59,130,246,0.25)', bg: 'rgba(59,130,246,0.06)', icon: '#60A5FA' },
-  { border: 'rgba(245,158,11,0.25)', bg: 'rgba(245,158,11,0.06)', icon: '#FBBF24' },
-  { border: 'rgba(236,72,153,0.25)', bg: 'rgba(236,72,153,0.06)', icon: '#F472B6' },
-  { border: 'rgba(16,185,129,0.25)', bg: 'rgba(16,185,129,0.06)', icon: '#34D399' },
+  { border: 'rgba(var(--accent-rgb),0.25)', bg: 'rgba(var(--accent-rgb),0.06)', icon: 'var(--accent)' },
+  { border: 'rgba(var(--purple-rgb),0.25)', bg: 'rgba(var(--purple-rgb),0.06)', icon: 'var(--purple-light)' },
+  { border: 'rgba(var(--blue-rgb),0.25)', bg: 'rgba(var(--blue-rgb),0.06)', icon: 'var(--blue-light)' },
+  { border: 'rgba(var(--warning-rgb),0.25)', bg: 'rgba(var(--warning-rgb),0.06)', icon: 'var(--amber)' },
+  { border: 'rgba(var(--pink-rgb),0.25)', bg: 'rgba(var(--pink-rgb),0.06)', icon: 'var(--pink)' },
+  { border: 'rgba(var(--accent-light-rgb),0.25)', bg: 'rgba(var(--accent-light-rgb),0.06)', icon: 'var(--accent-light)' },
 ];
 
 function hashStr(s) {
@@ -74,12 +74,12 @@ export default function NoteCard({
 
   return (
     <Box
-      bg="rgba(255,255,255,0.02)"
+      bg="var(--bg-elevated)"
       border="1px solid"
-      borderColor={selected ? '#00C9A7' : 'whiteAlpha.50'}
+      borderColor={selected ? 'var(--accent)' : 'var(--border-subtle)'}
       rounded="2xl"
       overflow="hidden"
-      _hover={{ borderColor: selected ? '#00C9A7' : 'whiteAlpha.200', transform: 'translateY(-3px)', boxShadow: '0 8px 30px rgba(0,0,0,0.25)' }}
+      _hover={{ borderColor: selected ? 'var(--accent)' : 'var(--border-hover)', transform: 'translateY(-3px)', boxShadow: '0 8px 30px rgba(0,0,0,0.25)' }}
       transition="all 0.25s ease"
       cursor="pointer"
       onClick={() => navigate(`/notes/${note.id}/edit`)}
@@ -113,7 +113,7 @@ export default function NoteCard({
             <Text
               fontSize="sm"
               fontWeight="600"
-              color="#E2E8F0"
+              color="var(--text-primary)"
               lineHeight="1.4"
               noOfLines={2}
               mb={0.5}
@@ -123,14 +123,14 @@ export default function NoteCard({
             <Flex align="center" gap={2}>
               {timeAgo && (
                 <Flex align="center" gap={1}>
-                  <Clock size={10} color="#4A5568" />
-                  <Text fontSize="2xs" color="#4A5568">{timeAgo}</Text>
+                  <Clock size={10} color="var(--text-dim)" />
+                  <Text fontSize="2xs" color="var(--text-dim)">{timeAgo}</Text>
                 </Flex>
               )}
               {note.isPublic != null && (
                 <Flex align="center" gap={1}>
-                  {note.isPublic ? <Globe size={10} color="#4A5568" /> : <Lock size={10} color="#4A5568" />}
-                  <Text fontSize="2xs" color="#4A5568">{note.isPublic ? 'Public' : 'Private'}</Text>
+                  {note.isPublic ? <Globe size={10} color="var(--text-dim)" /> : <Lock size={10} color="var(--text-dim)" />}
+                  <Text fontSize="2xs" color="var(--text-dim)">{note.isPublic ? 'Public' : 'Private'}</Text>
                 </Flex>
               )}
             </Flex>
@@ -144,13 +144,13 @@ export default function NoteCard({
               <Box
                 w={5} h={5} rounded="md"
                 border="2px solid"
-                borderColor={selected ? '#00C9A7' : 'whiteAlpha.200'}
-                bg={selected ? 'rgba(0,201,167,0.15)' : 'transparent'}
+                borderColor={selected ? 'var(--accent)' : 'var(--border-hover)'}
+                bg={selected ? 'rgba(var(--accent-rgb),0.15)' : 'transparent'}
                 display="flex" alignItems="center" justifyContent="center"
-                _hover={{ borderColor: selected ? '#00C9A7' : 'whiteAlpha.400' }}
+                _hover={{ borderColor: selected ? 'var(--accent)' : 'var(--border-hover)' }}
                 transition="all 0.15s"
               >
-                {selected && <Check size={12} color="#00C9A7" />}
+                {selected && <Check size={12} color="var(--accent)" />}
               </Box>
             </Box>
           )}
@@ -158,7 +158,7 @@ export default function NoteCard({
 
         {/* Preview text */}
         {preview && (
-          <Text fontSize="xs" color="#4A5568" lineHeight="1.6" noOfLines={2} mb={3} pl={12}>
+          <Text fontSize="xs" color="var(--text-dim)" lineHeight="1.6" noOfLines={2} mb={3} pl={12}>
             {preview}
           </Text>
         )}
@@ -172,11 +172,11 @@ export default function NoteCard({
                 px={2}
                 py={0.5}
                 rounded="md"
-                bg="rgba(59,130,246,0.06)"
+                bg="rgba(var(--blue-rgb),0.06)"
                 border="1px solid"
-                borderColor="rgba(59,130,246,0.12)"
+                borderColor="rgba(var(--blue-rgb),0.12)"
               >
-                <Text fontSize="2xs" color="#60A5FA" fontWeight="500">{tag.trim()}</Text>
+                <Text fontSize="2xs" color="var(--blue-light)" fontWeight="500">{tag.trim()}</Text>
               </Box>
             ))}
           </Flex>
@@ -189,7 +189,7 @@ export default function NoteCard({
           pt={3}
           mt="auto"
           borderTop="1px solid"
-          borderColor="whiteAlpha.50"
+          borderColor="var(--border-subtle)"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Left: like + creator */}
@@ -202,18 +202,18 @@ export default function NoteCard({
                 px={2}
                 py={1}
                 rounded="md"
-                bg={isLiked ? 'rgba(239,68,68,0.08)' : 'transparent'}
-                _hover={{ bg: isLiked ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.04)' }}
+                bg={isLiked ? 'rgba(var(--error-rgb),0.08)' : 'transparent'}
+                _hover={{ bg: isLiked ? 'rgba(var(--error-rgb),0.12)' : 'var(--bg-input)' }}
                 transition="all 0.15s"
                 onClick={() => onLike(note.id)}
               >
-                <Heart size={12} fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : '#4A5568'} />
-                <Text fontSize="2xs" color={isLiked ? '#EF4444' : '#4A5568'} fontWeight="500">{note.likesCount || 0}</Text>
+                <Heart size={12} fill={isLiked ? 'var(--error)' : 'none'} stroke={isLiked ? 'var(--error)' : 'var(--text-dim)'} />
+                <Text fontSize="2xs" color={isLiked ? 'var(--error)' : 'var(--text-dim)'} fontWeight="500">{note.likesCount || 0}</Text>
               </Flex>
             )}
             {note.creator && !isOwner && (
-              <Text fontSize="2xs" color="#4A5568">
-                by <Text as="span" color="#718096" fontWeight="500">{note.creator}</Text>
+              <Text fontSize="2xs" color="var(--text-dim)">
+                by <Text as="span" color="var(--text-muted)" fontWeight="500">{note.creator}</Text>
               </Text>
             )}
           </Flex>
@@ -225,8 +225,8 @@ export default function NoteCard({
                 aria-label="Ingest"
                 size="xs"
                 variant="ghost"
-                color={ingested ? '#00C9A7' : '#4A5568'}
-                _hover={{ color: '#A78BFA', bg: 'rgba(124,58,237,0.06)' }}
+                color={ingested ? 'var(--accent)' : 'var(--text-dim)'}
+                _hover={{ color: 'var(--purple-light)', bg: 'rgba(var(--purple-rgb),0.06)' }}
                 rounded="lg"
                 h={7}
                 w={7}
@@ -241,8 +241,8 @@ export default function NoteCard({
                 aria-label="Visibility"
                 size="xs"
                 variant="ghost"
-                color="#4A5568"
-                _hover={{ color: '#A0AEC0', bg: 'rgba(255,255,255,0.04)' }}
+                color="var(--text-dim)"
+                _hover={{ color: 'var(--text-secondary)', bg: 'var(--bg-input)' }}
                 rounded="lg"
                 h={7}
                 w={7}
@@ -256,8 +256,8 @@ export default function NoteCard({
                 aria-label="Delete"
                 size="xs"
                 variant="ghost"
-                color="#4A5568"
-                _hover={{ color: '#EF4444', bg: 'rgba(239,68,68,0.06)' }}
+                color="var(--text-dim)"
+                _hover={{ color: 'var(--error)', bg: 'rgba(var(--error-rgb),0.06)' }}
                 rounded="lg"
                 h={7}
                 w={7}

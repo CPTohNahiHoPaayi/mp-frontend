@@ -70,15 +70,15 @@ function FeatureCard({ icon: Icon, label, desc, index }) {
   return (
     <MotionBox
       variants={fadeUp}
-      bg="rgba(255,255,255,0.03)"
+      bg="var(--bg-elevated)"
       border="1px solid"
-      borderColor="whiteAlpha.100"
+      borderColor="var(--border-light)"
       rounded="2xl"
       p={6}
       backdropFilter="blur(10px)"
       _hover={{
-        borderColor: 'whiteAlpha.300',
-        bg: 'rgba(255,255,255,0.06)',
+        borderColor: 'var(--border-hover)',
+        bg: 'var(--bg-hover)',
         transform: 'translateY(-4px)',
       }}
       transition="all 0.3s ease"
@@ -88,18 +88,18 @@ function FeatureCard({ icon: Icon, label, desc, index }) {
         w={12}
         h={12}
         rounded="xl"
-        bg="linear-gradient(135deg, rgba(0,201,167,0.2), rgba(59,130,246,0.2))"
+        bg="linear-gradient(135deg, rgba(var(--accent-rgb),0.2), rgba(var(--blue-rgb),0.2))"
         display="flex"
         alignItems="center"
         justifyContent="center"
         mb={4}
       >
-        <Icon size={24} color="#00C9A7" />
+        <Icon size={24} color="var(--accent)" />
       </Box>
-      <Text fontSize="lg" fontWeight="semibold" color="white" mb={2}>
+      <Text fontSize="lg" fontWeight="semibold" color="var(--text-primary)" mb={2}>
         {label}
       </Text>
-      <Text fontSize="sm" color="gray.400" lineHeight="1.6">
+      <Text fontSize="sm" color="var(--text-secondary)" lineHeight="1.6">
         {desc}
       </Text>
     </MotionBox>
@@ -125,7 +125,7 @@ function TypewriterText({ text, delay = 0 }) {
   return (
     <Text
       as="span"
-      bg="linear-gradient(135deg, #00C9A7 0%, #3B82F6 100%)"
+      bg="linear-gradient(135deg, var(--accent) 0%, var(--blue) 100%)"
       bgClip="text"
       fontWeight="extrabold"
     >
@@ -135,7 +135,7 @@ function TypewriterText({ text, delay = 0 }) {
         display="inline-block"
         w="3px"
         h="1em"
-        bg="#00C9A7"
+        bg="var(--accent)"
         ml={1}
         verticalAlign="text-bottom"
         animate={{ opacity: [1, 0, 1] }}
@@ -151,16 +151,16 @@ function LandingPage() {
   return (
     <Box
       minH="100vh"
-      bg="#06080F"
-      color="white"
+      bg="var(--bg-base)"
+      color="var(--text-primary)"
       overflowX="hidden"
       position="relative"
     >
       {/* Background effects */}
       <GridPattern />
-      <MotionBox {...floatingOrb(0, '10%', '20%', '400px', 'rgba(59,130,246,0.15)')} />
-      <MotionBox {...floatingOrb(2, '70%', '10%', '350px', 'rgba(0,201,167,0.12)')} />
-      <MotionBox {...floatingOrb(4, '50%', '60%', '300px', 'rgba(124,58,237,0.1)')} />
+      <MotionBox {...floatingOrb(0, '10%', '20%', '400px', 'rgba(var(--blue-rgb),0.15)')} />
+      <MotionBox {...floatingOrb(2, '70%', '10%', '350px', 'rgba(var(--accent-rgb),0.12)')} />
+      <MotionBox {...floatingOrb(4, '50%', '60%', '300px', 'rgba(var(--purple-rgb),0.1)')} />
 
       {/* Navbar */}
       <MotionFlex
@@ -179,22 +179,22 @@ function LandingPage() {
             w={8}
             h={8}
             rounded="lg"
-            bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+            bg="linear-gradient(135deg, var(--accent), var(--blue))"
             display="flex"
             alignItems="center"
             justifyContent="center"
           >
-            <BookOpen size={18} color="white" />
+            <BookOpen size={18} color="var(--text-primary)" />
           </Box>
           <Text fontSize="xl" fontWeight="bold" letterSpacing="tight">
-            Text<Box as="span" color="#00C9A7">ToLearn</Box>
+            Text<Box as="span" color="var(--accent)">ToLearn</Box>
           </Text>
         </HStack>
         <Button
           size="sm"
           variant="ghost"
-          color="gray.300"
-          _hover={{ color: 'white', bg: 'whiteAlpha.100' }}
+          color="var(--text-body)"
+          _hover={{ color: 'var(--text-primary)', bg: 'var(--border-light)' }}
           onClick={() => navigate('/signin')}
         >
           Sign In
@@ -222,17 +222,17 @@ function LandingPage() {
         <Box flex="1.2" maxW={{ lg: '600px' }}>
           <MotionBox variants={fadeUp}>
             <HStack
-              bg="whiteAlpha.50"
+              bg="var(--bg-hover)"
               border="1px solid"
-              borderColor="whiteAlpha.100"
+              borderColor="var(--border-light)"
               rounded="full"
               px={4}
               py={1.5}
               w="fit-content"
               mb={6}
             >
-              <Sparkles size={14} color="#00C9A7" />
-              <Text fontSize="xs" color="gray.400" fontWeight="medium">
+              <Sparkles size={14} color="var(--accent)" />
+              <Text fontSize="xs" color="var(--text-secondary)" fontWeight="medium">
                 AI-powered learning platform
               </Text>
             </HStack>
@@ -261,7 +261,7 @@ function LandingPage() {
           <MotionBox variants={fadeUp} mt={6}>
             <Text
               fontSize={{ base: 'md', md: 'lg' }}
-              color="gray.400"
+              color="var(--text-secondary)"
               lineHeight="1.7"
               maxW="480px"
             >
@@ -278,7 +278,7 @@ function LandingPage() {
                 h={14}
                 fontWeight="bold"
                 color="black"
-                bg="linear-gradient(135deg, #00C9A7 0%, #92FE9D 100%)"
+                bg="linear-gradient(135deg, var(--accent) 0%, #92FE9D 100%)"
                 rounded="xl"
                 _hover={{
                   transform: 'translateY(-2px)',
@@ -296,13 +296,13 @@ function LandingPage() {
                 px={8}
                 h={14}
                 variant="ghost"
-                color="gray.300"
+                color="var(--text-body)"
                 border="1px solid"
-                borderColor="whiteAlpha.200"
+                borderColor="var(--border-hover)"
                 rounded="xl"
                 _hover={{
-                  bg: 'whiteAlpha.50',
-                  borderColor: 'whiteAlpha.400',
+                  bg: 'var(--bg-hover)',
+                  borderColor: 'var(--border-hover)',
                   transform: 'translateY(-2px)',
                 }}
                 transition="all 0.2s ease"
@@ -317,7 +317,7 @@ function LandingPage() {
           <MotionBox variants={fadeUp} mt={10}>
             <HStack gap={6}>
               <HStack gap={-2}>
-                {['#3B82F6', '#00C9A7', '#7C3AED', '#F59E0B'].map((c, i) => (
+                {['var(--blue)', 'var(--accent)', 'var(--purple)', 'var(--warning)'].map((c, i) => (
                   <Box
                     key={i}
                     w={8}
@@ -330,7 +330,7 @@ function LandingPage() {
                   />
                 ))}
               </HStack>
-              <Text fontSize="sm" color="gray.500">
+              <Text fontSize="sm" color="var(--text-muted)">
                 Join learners mastering topics every day
               </Text>
             </HStack>
@@ -347,7 +347,7 @@ function LandingPage() {
           <Box
             position="absolute"
             inset={-4}
-            bg="linear-gradient(135deg, rgba(0,201,167,0.15), rgba(59,130,246,0.15))"
+            bg="linear-gradient(135deg, rgba(var(--accent-rgb),0.15), rgba(var(--blue-rgb),0.15))"
             rounded="3xl"
             filter="blur(40px)"
           />
@@ -356,7 +356,7 @@ function LandingPage() {
             rounded="2xl"
             overflow="hidden"
             border="1px solid"
-            borderColor="whiteAlpha.100"
+            borderColor="var(--border-light)"
             boxShadow="0 25px 50px rgba(0,0,0,0.5)"
           >
             <img
@@ -397,7 +397,7 @@ function LandingPage() {
             textAlign="center"
           >
             Everything you need to{' '}
-            <Box as="span" color="#00C9A7">learn faster</Box>
+            <Box as="span" color="var(--accent)">learn faster</Box>
           </Text>
         </MotionBox>
 
@@ -427,7 +427,7 @@ function LandingPage() {
         position="relative"
         zIndex={5}
       >
-        <Text fontSize="lg" color="gray.500" mb={6}>
+        <Text fontSize="lg" color="var(--text-muted)" mb={6}>
           Ready to learn smarter?
         </Text>
         <Button
@@ -436,7 +436,7 @@ function LandingPage() {
           h={14}
           fontWeight="bold"
           color="black"
-          bg="linear-gradient(135deg, #00C9A7 0%, #92FE9D 100%)"
+          bg="linear-gradient(135deg, var(--accent) 0%, #92FE9D 100%)"
           rounded="xl"
           _hover={{
             transform: 'translateY(-2px)',

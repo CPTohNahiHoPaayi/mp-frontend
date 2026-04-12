@@ -82,17 +82,17 @@ function MiniCourseCreator({ onCourseGenerated }) {
       mx="auto"
       align="center"
       gap={3}
-      bg="rgba(255,255,255,0.03)"
+      bg="var(--bg-elevated)"
       border="1px solid"
-      borderColor="whiteAlpha.50"
+      borderColor="var(--border-subtle)"
       rounded="full"
       pl={5}
       pr={1.5}
       py={1.5}
-      _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
+      _focusWithin={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px rgba(var(--accent-rgb),0.2)' }}
       transition="all 0.2s ease"
     >
-      <Sparkles size={16} color="rgba(255,255,255,0.2)" style={{ flexShrink: 0 }} />
+      <Sparkles size={16} color="var(--text-dim)" style={{ flexShrink: 0 }} />
       <input
         placeholder="What do you want to learn?"
         value={topic}
@@ -102,11 +102,11 @@ function MiniCourseCreator({ onCourseGenerated }) {
           background: 'transparent',
           border: 'none',
           outline: 'none',
-          color: 'white',
+          color: 'var(--text-primary)',
           fontSize: '14px',
           height: '36px',
           width: '100%',
-          caretColor: '#00C9A7',
+          caretColor: 'var(--accent)',
         }}
       />
       <IconButton
@@ -115,7 +115,7 @@ function MiniCourseCreator({ onCourseGenerated }) {
         disabled={loading}
         size="sm"
         rounded="full"
-        bg={topic.trim() ? 'linear-gradient(135deg, #00C9A7, #3B82F6)' : 'whiteAlpha.50'}
+        bg={topic.trim() ? 'linear-gradient(135deg, var(--accent), var(--blue))' : 'var(--border-subtle)'}
         color={topic.trim() ? 'white' : 'gray.600'}
         _hover={{ opacity: 0.85 }}
         transition="all 0.15s ease"
@@ -166,7 +166,7 @@ function EmptyElement() {
         w="600px"
         h="400px"
         borderRadius="50%"
-        bg="rgba(0,201,167,0.04)"
+        bg="rgba(var(--accent-rgb),0.04)"
         filter="blur(100px)"
         pointerEvents="none"
       />
@@ -181,7 +181,7 @@ function EmptyElement() {
           mb={10}
         >
           <MotionBox variants={fadeUp} custom={0}>
-            <Text fontSize="sm" color="#718096" mb={2}>
+            <Text fontSize="sm" color="var(--text-muted)" mb={2}>
               {new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 17 ? 'Good afternoon' : 'Good evening'}
             </Text>
           </MotionBox>
@@ -190,18 +190,18 @@ function EmptyElement() {
             <Heading
               fontSize={{ base: '2xl', md: '3xl', lg: '4xl' }}
               fontWeight="800"
-              color="white"
+              color="var(--text-primary)"
               letterSpacing="-0.02em"
             >
               {userName ? `Welcome back, ${userName}` : 'Welcome to '}
               {!userName && (
-                <Text as="span" color="#00C9A7">TextToLearn</Text>
+                <Text as="span" color="var(--accent)">TextToLearn</Text>
               )}
             </Heading>
           </MotionBox>
 
           <MotionBox variants={fadeUp} custom={2}>
-            <Text fontSize="md" color="#A0AEC0" mt={3} maxW="500px" mx="auto">
+            <Text fontSize="md" color="var(--text-secondary)" mt={3} maxW="500px" mx="auto">
               Create AI-powered courses in seconds. Just type a topic below.
             </Text>
           </MotionBox>
@@ -225,11 +225,11 @@ function EmptyElement() {
         >
           {courses.length > 0 && (
             <Flex align="center" gap={2} mb={6}>
-              <BookOpen size={18} color="#00C9A7" />
-              <Text fontSize="lg" fontWeight="semibold" color="white">
+              <BookOpen size={18} color="var(--accent)" />
+              <Text fontSize="lg" fontWeight="semibold" color="var(--text-primary)">
                 Your Courses
               </Text>
-              <Text fontSize="sm" color="#718096">
+              <Text fontSize="sm" color="var(--text-muted)">
                 ({courses.length})
               </Text>
             </Flex>
@@ -237,8 +237,8 @@ function EmptyElement() {
 
           {loading ? (
             <VStack py={12}>
-              <Spinner size="md" color="#00C9A7" />
-              <Text fontSize="sm" color="#718096">Loading courses...</Text>
+              <Spinner size="md" color="var(--accent)" />
+              <Text fontSize="sm" color="var(--text-muted)">Loading courses...</Text>
             </VStack>
           ) : courses.length === 0 ? (
             <VStack py={16} gap={4}>
@@ -246,14 +246,14 @@ function EmptyElement() {
                 w={16}
                 h={16}
                 rounded="2xl"
-                bg="rgba(0,201,167,0.08)"
+                bg="rgba(var(--accent-rgb),0.08)"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
               >
-                <Zap size={28} color="#00C9A7" />
+                <Zap size={28} color="var(--accent)" />
               </Box>
-              <Text fontSize="md" color="#A0AEC0" textAlign="center">
+              <Text fontSize="md" color="var(--text-secondary)" textAlign="center">
                 No courses yet. Create your first one above!
               </Text>
             </VStack>

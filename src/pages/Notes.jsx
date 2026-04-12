@@ -225,18 +225,18 @@ export default function Notes() {
   const allSelected = filteredNotes.length > 0 && selectedNoteIds.size === filteredNotes.length;
 
   return (
-    <Box minH="full" bg="#06080F" py={10} px={4} color="white">
+    <Box minH="full" bg="var(--bg-base)" py={10} px={4} color="var(--text-primary)">
       <Box mb={10} maxW="6xl" mx="auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <Flex align="center" gap={3} mb={2}>
-            <Box w={10} h={10} rounded="xl" bg="rgba(0,201,167,0.08)" display="flex" alignItems="center" justifyContent="center">
-              <StickyNote size={20} color="#00C9A7" />
+            <Box w={10} h={10} rounded="xl" bg="rgba(var(--accent-rgb),0.08)" display="flex" alignItems="center" justifyContent="center">
+              <StickyNote size={20} color="var(--accent)" />
             </Box>
             <Box>
-              <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="#E2E8F0" letterSpacing="-0.01em">
+              <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="var(--text-primary)" letterSpacing="-0.01em">
                 My Notes
               </Heading>
-              <Text fontSize="sm" color="#718096">
+              <Text fontSize="sm" color="var(--text-muted)">
                 {notes.length} notes · {folders.length} folders
               </Text>
             </Box>
@@ -252,9 +252,9 @@ export default function Notes() {
           align="center"
           mb={6}
           p={3}
-          bg="rgba(255,255,255,0.02)"
+          bg="var(--bg-elevated)"
           border="1px solid"
-          borderColor="whiteAlpha.50"
+          borderColor="var(--border-subtle)"
           rounded="2xl"
           wrap="wrap"
         >
@@ -262,15 +262,15 @@ export default function Notes() {
           <Flex
             flex={1}
             align="center"
-            bg="rgba(255,255,255,0.04)"
+            bg="var(--bg-input)"
             rounded="xl"
             px={3}
             py={1}
             minW="200px"
-            _focusWithin={{ bg: 'rgba(255,255,255,0.06)', boxShadow: '0 0 0 1px rgba(0,201,167,0.15)' }}
+            _focusWithin={{ bg: 'var(--bg-hover)', boxShadow: '0 0 0 1px rgba(var(--accent-rgb),0.15)' }}
             transition="all 0.2s"
           >
-            <Search size={14} color="#4A5568" />
+            <Search size={14} color="var(--text-dim)" />
             <input
               placeholder="Search notes..."
               value={searchQuery}
@@ -279,18 +279,18 @@ export default function Notes() {
                 background: 'transparent',
                 border: 'none',
                 outline: 'none',
-                color: 'white',
+                color: 'var(--text-primary)',
                 fontSize: '13px',
                 height: '32px',
                 width: '100%',
                 marginLeft: '8px',
-                caretColor: '#00C9A7',
+                caretColor: 'var(--accent)',
               }}
             />
           </Flex>
 
           {/* Divider */}
-          <Box w="1px" h={6} bg="whiteAlpha.100" display={{ base: 'none', md: 'block' }} />
+          <Box w="1px" h={6} bg="var(--border-light)" display={{ base: 'none', md: 'block' }} />
 
           {/* Selection & Ingest group */}
           <Flex align="center" gap={1.5}>
@@ -298,8 +298,8 @@ export default function Notes() {
               variant="ghost"
               size="xs"
               onClick={toggleSelectAll}
-              color={allSelected ? '#00C9A7' : '#4A5568'}
-              _hover={{ color: '#A0AEC0', bg: 'rgba(255,255,255,0.04)' }}
+              color={allSelected ? 'var(--accent)' : 'var(--text-dim)'}
+              _hover={{ color: 'var(--text-secondary)', bg: 'var(--bg-input)' }}
               rounded="lg"
               h={8}
               px={2.5}
@@ -313,11 +313,11 @@ export default function Notes() {
                 size="xs"
                 onClick={() => handleBulkIngest([...selectedNoteIds])}
                 loading={bulkIngesting}
-                bg="rgba(124,58,237,0.1)"
-                color="#A78BFA"
+                bg="rgba(var(--purple-rgb),0.1)"
+                color="var(--purple-light)"
                 border="1px solid"
-                borderColor="rgba(124,58,237,0.2)"
-                _hover={{ bg: 'rgba(124,58,237,0.18)' }}
+                borderColor="rgba(var(--purple-rgb),0.2)"
+                _hover={{ bg: 'rgba(var(--purple-rgb),0.18)' }}
                 rounded="lg"
                 h={8}
                 px={3}
@@ -331,8 +331,8 @@ export default function Notes() {
                 onClick={() => handleBulkIngest(filteredNotes.map((n) => n.id))}
                 loading={bulkIngesting}
                 variant="ghost"
-                color="#4A5568"
-                _hover={{ color: '#A78BFA', bg: 'rgba(124,58,237,0.06)' }}
+                color="var(--text-dim)"
+                _hover={{ color: 'var(--purple-light)', bg: 'rgba(var(--purple-rgb),0.06)' }}
                 rounded="lg"
                 h={8}
                 px={2.5}
@@ -344,18 +344,18 @@ export default function Notes() {
           </Flex>
 
           {/* Divider */}
-          <Box w="1px" h={6} bg="whiteAlpha.100" display={{ base: 'none', md: 'block' }} />
+          <Box w="1px" h={6} bg="var(--border-light)" display={{ base: 'none', md: 'block' }} />
 
           {/* Actions group */}
           <Flex align="center" gap={2}>
             <Button
               size="sm"
               onClick={() => navigate('/notes/rag')}
-              bg="rgba(59,130,246,0.1)"
-              color="#60A5FA"
+              bg="rgba(var(--blue-rgb),0.1)"
+              color="var(--blue-light)"
               border="1px solid"
-              borderColor="rgba(59,130,246,0.2)"
-              _hover={{ bg: 'rgba(59,130,246,0.18)', borderColor: 'rgba(59,130,246,0.35)' }}
+              borderColor="rgba(var(--blue-rgb),0.2)"
+              _hover={{ bg: 'rgba(var(--blue-rgb),0.18)', borderColor: 'rgba(var(--blue-rgb),0.35)' }}
               rounded="xl"
               h={9}
               px={4}
@@ -368,9 +368,9 @@ export default function Notes() {
             <Button
               onClick={handleCreateNote}
               loading={creating}
-              bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
-              color="white"
-              _hover={{ opacity: 0.9, transform: 'translateY(-1px)', boxShadow: '0 4px 12px rgba(0,201,167,0.25)' }}
+              bg="linear-gradient(135deg, var(--accent), var(--blue))"
+              color="var(--text-primary)"
+              _hover={{ opacity: 0.9, transform: 'translateY(-1px)', boxShadow: '0 4px 12px rgba(var(--accent-rgb),0.25)' }}
               rounded="xl"
               size="sm"
               h={9}
@@ -395,13 +395,13 @@ export default function Notes() {
             <Box
               w="220px"
               flexShrink={0}
-              bg="rgba(255,255,255,0.02)"
+              bg="var(--bg-elevated)"
               borderRadius="xl"
               border="1px solid"
-              borderColor="whiteAlpha.100"
+              borderColor="var(--border-light)"
               p={3}
             >
-              <Text fontSize="xs" fontWeight="semibold" color="gray.500" mb={2} textTransform="uppercase" letterSpacing="wider">
+              <Text fontSize="xs" fontWeight="semibold" color="var(--text-muted)" mb={2} textTransform="uppercase" letterSpacing="wider">
                 Folders
               </Text>
               <FolderTree
@@ -418,14 +418,14 @@ export default function Notes() {
             {/* Notes Grid */}
             <Box flex={1}>
               {selectedFolderName && (
-                <Text fontSize="sm" color="gray.400" mb={4}>
+                <Text fontSize="sm" color="var(--text-secondary)" mb={4}>
                   Showing notes in <Text as="span" color="blue.300" fontWeight="semibold">{selectedFolderName}</Text>
                 </Text>
               )}
               {filteredNotes.length === 0 ? (
                 <Center py={16} flexDirection="column" gap={4}>
                   <FileText size={48} color="#4a5568" />
-                  <Text color="gray.500" fontSize="lg">
+                  <Text color="var(--text-muted)" fontSize="lg">
                     {searchQuery ? 'No notes match your search.' : 'No notes here. Create your first note!'}
                   </Text>
                   {!searchQuery && (
@@ -470,7 +470,7 @@ export default function Notes() {
       <Dialog.Root open={isFolderModalOpen} onOpenChange={(e) => !e.open && closeFolderModal()} placement="center">
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content bg="rgba(255,255,255,0.02)" color="white">
+          <Dialog.Content bg="var(--bg-elevated)" color="var(--text-primary)">
             <Dialog.Header>
               <Dialog.Title>New Folder</Dialog.Title>
             </Dialog.Header>
@@ -481,10 +481,10 @@ export default function Notes() {
                 onChange={(e) => setNewFolderName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleCreateFolderSubmit(); }}
                 autoFocus
-                bg="rgba(255,255,255,0.04)"
+                bg="var(--bg-input)"
                 border="none"
-                color="white"
-                _placeholder={{ color: 'gray.400' }}
+                color="var(--text-primary)"
+                _placeholder={{ color: 'var(--text-secondary)' }}
               />
             </Dialog.Body>
             <Dialog.Footer gap={2}>

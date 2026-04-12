@@ -122,7 +122,7 @@ const MCQBlock = ({ question, options, correctIndex, explanation }) => {
           border="1px"
           borderColor="blue.300"
           rounded="md"
-          color="gray.800"
+          color="var(--text-body)"
         >
           <Text fontWeight="bold" mb={1}>
             Explanation:

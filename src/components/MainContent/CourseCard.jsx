@@ -32,15 +32,15 @@ function CourseCard({ course }) {
     <Box
       w="100%"
       h="full"
-      bg="#0E1117"
+      bg="var(--bg-elevated)"
       border="1px solid"
-      borderColor="#1C2030"
+      borderColor="var(--border-base)"
       borderRadius="xl"
       p={5}
       transition="all 0.25s ease"
       _hover={{
-        borderColor: '#2A3A50',
-        bg: '#111620',
+        borderColor: 'var(--border-hover)',
+        bg: 'var(--bg-hover)',
         transform: 'translateY(-2px)',
       }}
       cursor="pointer"
@@ -53,8 +53,8 @@ function CourseCard({ course }) {
         <Button
           size="xs"
           variant="ghost"
-          color={isPublic ? '#00C9A7' : '#4A5568'}
-          _hover={{ bg: 'rgba(255,255,255,0.04)' }}
+          color={isPublic ? 'var(--accent)' : 'var(--text-dim)'}
+          _hover={{ bg: 'var(--bg-input)' }}
           onClick={(e) => { e.stopPropagation(); toggleVisibility(); }}
           rounded="full"
           h={6}
@@ -70,7 +70,7 @@ function CourseCard({ course }) {
       <Heading
         fontSize="md"
         fontWeight="600"
-        color="#E2E8F0"
+        color="var(--text-primary)"
         mb={2}
         lineHeight="1.5"
         noOfLines={2}
@@ -80,7 +80,7 @@ function CourseCard({ course }) {
       </Heading>
 
       {/* Meta */}
-      <Text fontSize="xs" color="#718096" mb={3}>
+      <Text fontSize="xs" color="var(--text-muted)" mb={3}>
         {course.creator.split('@')[0]} · {format(createdDate, 'MMM yyyy')}
       </Text>
 
@@ -92,10 +92,10 @@ function CourseCard({ course }) {
               <Text
                 key={i}
                 fontSize="10px"
-                color="#8BB8A8"
-                bg="rgba(0,201,167,0.08)"
+                color="var(--accent)"
+                bg="rgba(var(--accent-rgb),0.08)"
                 border="1px solid"
-                borderColor="rgba(0,201,167,0.15)"
+                borderColor="rgba(var(--accent-rgb),0.15)"
                 px={2}
                 py={0.5}
                 rounded="full"
@@ -105,22 +105,22 @@ function CourseCard({ course }) {
               </Text>
             ))}
             {course.tags.length > 3 && (
-              <Text fontSize="10px" color="#4A5568">+{course.tags.length - 3}</Text>
+              <Text fontSize="10px" color="var(--text-dim)">+{course.tags.length - 3}</Text>
             )}
           </HStack>
         )}
       </Box>
 
       {/* Footer */}
-      <Flex align="center" justify="space-between" mt="auto" pt={3} borderTop="1px solid" borderColor="#1C2030">
-        <HStack gap={3} color="#4A5568">
+      <Flex align="center" justify="space-between" mt="auto" pt={3} borderTop="1px solid" borderColor="var(--border-base)">
+        <HStack gap={3} color="var(--text-dim)">
           <HStack gap={1}>
             <Heart size={12} />
             <Text fontSize="xs">{course.likesCount}</Text>
           </HStack>
           <CoursePDFButton courseId={course.id} courseTitle={course.title} />
         </HStack>
-        <HStack gap={1} color="#00C9A7" fontSize="xs" fontWeight="medium">
+        <HStack gap={1} color="var(--accent)" fontSize="xs" fontWeight="medium">
           <Text>Start</Text>
           <ArrowRight size={12} />
         </HStack>

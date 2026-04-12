@@ -17,7 +17,7 @@ export const CourseCard = ({ course, user, handleLike }) => {
   return (
     <Box
       p={4}
-      bg="gray.800"
+      bg="var(--bg-surface)"
       rounded="xl"
       shadow="md"
       _hover={{ shadow: 'xl', transform: 'translateY(-4px)' }}
@@ -29,15 +29,15 @@ export const CourseCard = ({ course, user, handleLike }) => {
         rounded="lg"
         position="relative"
       >
-        <Center position="absolute" inset={0} bg="blackAlpha.300">
-          <Heading size="md" color="white" textAlign="center">
+        <Center position="absolute" inset={0} bg="var(--bg-overlay)">
+          <Heading size="md" color="var(--text-primary)" textAlign="center">
             {course.title}
           </Heading>
         </Center>
       </Box>
 
       <Flex justify="space-between" align="center" mt={4}>
-        <Text fontSize="sm" color="gray.400">
+        <Text fontSize="sm" color="var(--text-secondary)">
           By {course.creator || 'Anonymous'}
         </Text>
 

@@ -18,15 +18,16 @@ import MyCourseList from "./components/sidebar/MyCourseList";
 import { Outlet, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/LandingPage";
+import ThemePicker from "./components/ui/ThemePicker";
 
 function NavLink({ icon: Icon, label, path, active, onClick }) {
   return (
     <Button
       variant="ghost"
       size="sm"
-      color={active ? "#E2E8F0" : "#718096"}
+      color={active ? "var(--accent)" : "var(--text-muted)"}
       bg="transparent"
-      _hover={{ color: "#CBD5E0" }}
+      _hover={{ color: active ? "var(--accent)" : "var(--text-secondary)" }}
       onClick={onClick}
       rounded="lg"
       px={3}
@@ -43,7 +44,7 @@ function NavLink({ icon: Icon, label, path, active, onClick }) {
         transform: 'translateX(-50%)',
         width: '16px',
         height: '2px',
-        bg: '#00C9A7',
+        bg: 'var(--accent)',
         borderRadius: 'full',
       } : {}}
     >
@@ -66,8 +67,8 @@ function App() {
 
   if (isLoading) {
     return (
-      <Flex align="center" justify="center" h="100vh" bg="#06080F" color="white">
-        <Text color="#718096">Restoring session...</Text>
+      <Flex align="center" justify="center" h="100vh" bg="var(--bg-base)" color="var(--text-primary)">
+        <Text color="var(--text-muted)">Restoring session...</Text>
       </Flex>
     );
   }
@@ -80,11 +81,11 @@ function App() {
   ];
 
   return isAuthenticated() ? (
-    <Flex minH="100dvh" overflowX="hidden" bg="#06080F">
+    <Flex minH="100dvh" overflowX="hidden" bg="var(--bg-base)">
       {/* Sidebar */}
       {sidebarOpen && (
         <Box
-          bg="#0A0C14"
+          bg="var(--bg-surface)"
           w="300px"
           minW="300px"
           maxW="300px"
@@ -93,7 +94,7 @@ function App() {
           display="flex"
           flexDirection="column"
           borderRight="1px solid"
-          borderColor="#1C2030"
+          borderColor="var(--border-base)"
         >
           <Flex align="center" justify="space-between" px={4} py={3}>
             <HStack gap={2}>
@@ -101,15 +102,15 @@ function App() {
                 w={7}
                 h={7}
                 rounded="lg"
-                bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+                bg="linear-gradient(135deg, var(--accent), var(--blue))"
                 display="flex"
                 alignItems="center"
                 justifyContent="center"
               >
-                <BookOpen size={14} color="white" />
+                <BookOpen size={14} color="var(--text-primary)" />
               </Box>
-              <Text fontSize="sm" fontWeight="bold" color="white">
-                Text<Box as="span" color="#00C9A7">ToLearn</Box>
+              <Text fontSize="sm" fontWeight="bold" color="var(--text-primary)">
+                Text<Box as="span" color="var(--accent)">ToLearn</Box>
               </Text>
             </HStack>
             <Tooltip content="Close sidebar" positioning={{ placement: "right-end" }} showArrow>
@@ -117,8 +118,8 @@ function App() {
                 aria-label="Close sidebar"
                 size="sm"
                 variant="ghost"
-                color="#718096"
-                _hover={{ color: "white", bg: "rgba(255,255,255,0.03)" }}
+                color="var(--text-muted)"
+                _hover={{ color: "white", bg: "var(--bg-elevated)" }}
                 onClick={() => setSidebarOpen(false)}
               >
                 <GoSidebarExpand />
@@ -129,13 +130,13 @@ function App() {
             <MyCourseList email={user?.email} refreshTrigger={refreshCourses} />
           </Box>
           {/* Quick links */}
-          <Box px={3} pb={3} borderTop="1px solid" borderColor="#1C2030" pt={3}>
+          <Box px={3} pb={3} borderTop="1px solid" borderColor="var(--border-base)" pt={3}>
             <Button
               w="full"
               size="sm"
               variant="ghost"
-              color="#718096"
-              _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+              color="var(--text-muted)"
+              _hover={{ color: 'var(--text-primary)', bg: 'var(--bg-hover)' }}
               rounded="lg"
               justifyContent="flex-start"
               onClick={() => navigate('/notes')}
@@ -153,10 +154,10 @@ function App() {
         {/* Top Nav */}
         <Box
           as="nav"
-          bg="rgba(6,8,15,0.8)"
+          bg="var(--bg-nav)"
           backdropFilter="blur(12px)"
           borderBottom="1px solid"
-          borderColor="#1C2030"
+          borderColor="var(--border-base)"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -172,8 +173,8 @@ function App() {
                   aria-label="Open sidebar"
                   size="sm"
                   variant="ghost"
-                  color="#718096"
-                  _hover={{ color: "white", bg: "rgba(255,255,255,0.03)" }}
+                  color="var(--text-muted)"
+                  _hover={{ color: "white", bg: "var(--bg-elevated)" }}
                   onClick={() => setSidebarOpen(true)}
                 >
                   <GoSidebarCollapse />
@@ -186,15 +187,15 @@ function App() {
                   w={6}
                   h={6}
                   rounded="md"
-                  bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+                  bg="linear-gradient(135deg, var(--accent), var(--blue))"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <BookOpen size={12} color="white" />
+                  <BookOpen size={12} color="var(--text-primary)" />
                 </Box>
-                <Text fontSize="sm" fontWeight="bold" color="white" display={{ base: "none", sm: "block" }}>
-                  Text<Box as="span" color="#00C9A7">ToLearn</Box>
+                <Text fontSize="sm" fontWeight="bold" color="var(--text-primary)" display={{ base: "none", sm: "block" }}>
+                  Text<Box as="span" color="var(--accent)">ToLearn</Box>
                 </Text>
               </HStack>
             )}
@@ -226,7 +227,7 @@ function App() {
                   height: "32px",
                   borderRadius: "50%",
                   objectFit: "cover",
-                  border: "2px solid rgba(255,255,255,0.1)",
+                  border: "2px solid var(--border-light)",
                 }}
               />
             )}
@@ -234,8 +235,8 @@ function App() {
               onClick={logout}
               size="sm"
               variant="ghost"
-              color="#718096"
-              _hover={{ color: "red.400", bg: "rgba(255,255,255,0.03)" }}
+              color="var(--text-muted)"
+              _hover={{ color: "red.400", bg: "var(--bg-elevated)" }}
               rounded="lg"
               h={8}
               px={2}
@@ -247,10 +248,11 @@ function App() {
         </Box>
 
         {/* Page Content */}
-        <Box flex={1} overflowY="auto" bg="#06080F">
+        <Box flex={1} overflowY="auto" bg="var(--bg-base)">
           <Outlet context={{ triggerRefresh, meta, setMeta }} />
         </Box>
       </Box>
+      <ThemePicker />
     </Flex>
   ) : (
     <LandingPage />

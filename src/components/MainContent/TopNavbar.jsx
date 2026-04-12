@@ -63,7 +63,7 @@ function TopNavbar({
             separator=">"
             bg="transparent"
             borderBottom="1px solid"
-            borderColor="gray.700"
+            borderColor="var(--border-base)"
           >
             <Breadcrumb.List alignItems="center" flexWrap="wrap" gap={2} w="full">
               {/* Course Title */}
@@ -83,7 +83,7 @@ function TopNavbar({
                 </Tooltip>
               </Breadcrumb.Item>
 
-              <Breadcrumb.Separator color="gray.500" fontWeight="bold" />
+              <Breadcrumb.Separator color="var(--text-muted)" fontWeight="bold" />
 
               {/* Module Title Dropdown */}
               <BreadcrumbMenuItem
@@ -95,7 +95,7 @@ function TopNavbar({
                 tooltip={meta?.modules?.[moduleIndex]?.title}
               />
 
-              <Breadcrumb.Separator color="gray.500" fontWeight="bold" />
+              <Breadcrumb.Separator color="var(--text-muted)" fontWeight="bold" />
 
               {/* Lesson Title Dropdown */}
               <BreadcrumbMenuItem

@@ -34,11 +34,11 @@ export default function GoogleCallback() {
 
 
   return (
-    <Center minH="100vh" bg="gray.900" px={4} color="white">
+    <Center minH="100vh" bg="var(--bg-base)" px={4} color="var(--text-primary)">
       <VStack spacing={4} textAlign="center">
         <Spinner size="xl" thickness="4px" color="blue.400" />
         <Heading size="md">Signing you in with Google...</Heading>
-        <Text fontSize="sm" color="gray.400">
+        <Text fontSize="sm" color="var(--text-secondary)">
           Please wait while we authenticate your account.
         </Text>
       </VStack>

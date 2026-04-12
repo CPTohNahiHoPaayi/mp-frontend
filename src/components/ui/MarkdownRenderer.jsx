@@ -33,15 +33,15 @@ const MarkdownRenderer = ({ content }) => {
         rehypePlugins={[rehypeKatex]}
         components={{
           h1: ({ children }) => (
-            <Text as="h1" fontSize="2xl" fontWeight="700" color="#E2E8F0" mt={8} mb={3}
-              borderBottom="2px solid" borderColor="rgba(0,201,167,0.2)" pb={2}
+            <Text as="h1" fontSize="2xl" fontWeight="700" color="var(--text-primary)" mt={8} mb={3}
+              borderBottom="2px solid" borderColor="rgba(var(--accent-rgb),0.2)" pb={2}
             >
               {children}
             </Text>
           ),
           h2: ({ children }) => (
-            <Text as="h2" fontSize="xl" fontWeight="700" color="#E2E8F0" mt={6} mb={3}
-              borderBottom="1px solid" borderColor="#1C2030" pb={2}
+            <Text as="h2" fontSize="xl" fontWeight="700" color="var(--text-primary)" mt={6} mb={3}
+              borderBottom="1px solid" borderColor="var(--border-base)" pb={2}
             >
               {children}
             </Text>
@@ -49,21 +49,21 @@ const MarkdownRenderer = ({ content }) => {
           h3: ({ children }) => (
             <Flex as="h3" align="center" gap={2} mt={5} mb={2}>
               <Box w="6px" h="6px" rounded="full" bg="#7C3AED" flexShrink={0} />
-              <Text fontSize="lg" fontWeight="600" color="#A78BFA">{children}</Text>
+              <Text fontSize="lg" fontWeight="600" color="var(--purple-light)">{children}</Text>
             </Flex>
           ),
           h4: ({ children }) => (
-            <Text as="h4" fontSize="md" fontWeight="600" color="#60A5FA" mt={4} mb={2}>
+            <Text as="h4" fontSize="md" fontWeight="600" color="var(--blue-light)" mt={4} mb={2}>
               {children}
             </Text>
           ),
           p: ({ children }) => (
-            <Text color="#C4CDD8" fontSize="md" lineHeight="1.9" mb={4}>
+            <Text color="var(--text-body)" fontSize="md" lineHeight="1.9" mb={4}>
               {children}
             </Text>
           ),
           strong: ({ children }) => (
-            <Text as="span" fontWeight="600" color="#F0F4F8">
+            <Text as="span" fontWeight="600" color="var(--text-primary)">
               {children}
             </Text>
           ),
@@ -73,7 +73,7 @@ const MarkdownRenderer = ({ content }) => {
             </Text>
           ),
           a: ({ href, children }) => (
-            <Link href={href} color="#00C9A7" fontWeight="500" textDecoration="underline" textDecorationColor="rgba(0,201,167,0.3)" _hover={{ textDecorationColor: '#00C9A7', color: '#34D399' }} target="_blank" rel="noopener noreferrer">
+            <Link href={href} color="var(--accent)" fontWeight="500" textDecoration="underline" textDecorationColor="rgba(var(--accent-rgb),0.3)" _hover={{ textDecorationColor: 'var(--accent)', color: 'var(--accent-light)' }} target="_blank" rel="noopener noreferrer">
               {children}
             </Link>
           ),
@@ -90,7 +90,7 @@ const MarkdownRenderer = ({ content }) => {
                 counterIncrement: 'item',
                 _before: {
                   content: 'counter(item) "."',
-                  color: '#F59E0B',
+                  color: 'var(--warning)',
                   fontWeight: '700',
                   fontSize: 'sm',
                   mr: 2,
@@ -103,13 +103,13 @@ const MarkdownRenderer = ({ content }) => {
             </Box>
           ),
           li: ({ children }) => (
-            <Flex as="li" color="#C4CDD8" fontSize="md" lineHeight="1.9" mb={2} align="flex-start">
+            <Flex as="li" color="var(--text-body)" fontSize="md" lineHeight="1.9" mb={2} align="flex-start">
               <Box
                 as="span"
                 w="6px"
                 h="6px"
                 rounded="full"
-                bg="#00C9A7"
+                bg="var(--accent)"
                 mt="10px"
                 mr={3}
                 flexShrink={0}
@@ -124,10 +124,10 @@ const MarkdownRenderer = ({ content }) => {
               pl={5}
               py={3}
               my={5}
-              bg="rgba(124,58,237,0.06)"
+              bg="rgba(var(--purple-rgb),0.06)"
               rounded="md"
               roundedLeft="none"
-              sx={{ '& p': { color: '#A78BFA', mb: 0 } }}
+              sx={{ '& p': { color: 'var(--purple-light)', mb: 0 } }}
             >
               {children}
             </Box>
@@ -143,8 +143,8 @@ const MarkdownRenderer = ({ content }) => {
             return (
               <Text
                 as="code"
-                bg="rgba(245,158,11,0.1)"
-                color="#FBBF24"
+                bg="rgba(var(--warning-rgb),0.1)"
+                color="var(--amber)"
                 px={1.5}
                 py={0.5}
                 rounded="md"
@@ -160,38 +160,38 @@ const MarkdownRenderer = ({ content }) => {
           pre: ({ children }) => <>{children}</>,
           hr: () => (
             <Flex align="center" my={8}>
-              <Box flex={1} h="1px" bg="#1C2030" />
+              <Box flex={1} h="1px" bg="var(--border-base)" />
               <Box mx={3}>
-                <Box w="6px" h="6px" rounded="full" bg="#00C9A7" />
+                <Box w="6px" h="6px" rounded="full" bg="var(--accent)" />
               </Box>
-              <Box flex={1} h="1px" bg="#1C2030" />
+              <Box flex={1} h="1px" bg="var(--border-base)" />
             </Flex>
           ),
           table: ({ children }) => (
-            <Box overflowX="auto" my={5} rounded="lg" border="1px solid" borderColor="#1C2030">
+            <Box overflowX="auto" my={5} rounded="lg" border="1px solid" borderColor="var(--border-base)">
               <Box as="table" w="full" borderCollapse="collapse">
                 {children}
               </Box>
             </Box>
           ),
           thead: ({ children }) => (
-            <Box as="thead" bg="rgba(59,130,246,0.06)">
+            <Box as="thead" bg="rgba(var(--blue-rgb),0.06)">
               {children}
             </Box>
           ),
           tbody: ({ children }) => <Box as="tbody">{children}</Box>,
           tr: ({ children }) => (
-            <Box as="tr" borderBottom="1px solid" borderColor="#1C2030" _hover={{ bg: 'rgba(255,255,255,0.02)' }}>
+            <Box as="tr" borderBottom="1px solid" borderColor="var(--border-base)" _hover={{ bg: 'var(--bg-elevated)' }}>
               {children}
             </Box>
           ),
           th: ({ children }) => (
-            <Box as="th" px={4} py={2.5} textAlign="left" fontSize="sm" fontWeight="600" color="#60A5FA">
+            <Box as="th" px={4} py={2.5} textAlign="left" fontSize="sm" fontWeight="600" color="var(--blue-light)">
               {children}
             </Box>
           ),
           td: ({ children }) => (
-            <Box as="td" px={4} py={2.5} fontSize="sm" color="#C4CDD8">
+            <Box as="td" px={4} py={2.5} fontSize="sm" color="var(--text-body)">
               {children}
             </Box>
           ),

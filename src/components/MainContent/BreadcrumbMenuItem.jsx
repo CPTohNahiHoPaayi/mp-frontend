@@ -24,7 +24,7 @@ const BreadcrumbMenuItem = ({ label = "", items = [], isCurrent = false, tooltip
             whiteSpace="nowrap"
             fontWeight={isCurrent ? "bold" : "medium"}
             fontSize={isCurrent ? "20px" : "22px"}
-            color={isCurrent ? "white" : "gray.300"}
+            color={isCurrent ? "white" : "var(--text-body)"}
             cursor="pointer"
             bg="transparent"
             border="none"

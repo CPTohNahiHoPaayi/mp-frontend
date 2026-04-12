@@ -23,19 +23,19 @@ const TrueFalseBlock = ({ statement, answer, explanation }) => {
     <Box
       my={6}
       p={5}
-      bg="rgba(255,255,255,0.02)"
+      bg="var(--bg-elevated)"
       border="1px solid"
-      borderColor="#1E2536"
+      borderColor="var(--border-base)"
       rounded="xl"
     >
       <Flex align="center" gap={2} mb={4}>
         <Box w="6px" h="6px" rounded="full" bg="#F59E0B" />
-        <Text fontSize="xs" fontWeight="600" color="#F59E0B" textTransform="uppercase" letterSpacing="0.06em">
+        <Text fontSize="xs" fontWeight="600" color="var(--warning)" textTransform="uppercase" letterSpacing="0.06em">
           True or False
         </Text>
       </Flex>
 
-      <MathText color="#E2E8F0" fontSize="md" lineHeight="1.8" mb={5}>
+      <MathText color="var(--text-primary)" fontSize="md" lineHeight="1.8" mb={5}>
         {statement}
       </MathText>
 
@@ -54,21 +54,21 @@ const TrueFalseBlock = ({ statement, answer, explanation }) => {
               rounded="xl"
               border="1px solid"
               borderColor={
-                showCorrect ? '#00C9A7' :
-                showWrong ? '#EF4444' :
-                isThis ? '#3B82F6' : '#1E2536'
+                showCorrect ? 'var(--accent)' :
+                showWrong ? 'var(--error)' :
+                isThis ? 'var(--blue)' : 'var(--border-base)'
               }
               bg={
-                showCorrect ? 'rgba(0,201,167,0.08)' :
-                showWrong ? 'rgba(239,68,68,0.08)' :
-                isThis ? 'rgba(59,130,246,0.08)' : 'transparent'
+                showCorrect ? 'rgba(var(--accent-rgb),0.08)' :
+                showWrong ? 'rgba(var(--error-rgb),0.08)' :
+                isThis ? 'rgba(var(--blue-rgb),0.08)' : 'transparent'
               }
               color={
-                showCorrect ? '#00C9A7' :
-                showWrong ? '#EF4444' :
-                '#A0AEC0'
+                showCorrect ? 'var(--accent)' :
+                showWrong ? 'var(--error)' :
+                'var(--text-secondary)'
               }
-              _hover={!revealed ? { borderColor: '#3B82F6', bg: 'rgba(59,130,246,0.05)' } : {}}
+              _hover={!revealed ? { borderColor: 'var(--blue)', bg: 'rgba(var(--blue-rgb),0.05)' } : {}}
               fontWeight="600"
               fontSize="sm"
               transition="all 0.2s"
@@ -92,25 +92,25 @@ const TrueFalseBlock = ({ statement, answer, explanation }) => {
       {revealed && (
         <Flex align="center" gap={2} mt={3}>
           {isCorrect ? (
-            <Text fontSize="sm" color="#00C9A7" fontWeight="500">Correct!</Text>
+            <Text fontSize="sm" color="var(--accent)" fontWeight="500">Correct!</Text>
           ) : (
-            <Text fontSize="sm" color="#EF4444" fontWeight="500">
+            <Text fontSize="sm" color="var(--error)" fontWeight="500">
               Wrong — the answer is {answer ? 'True' : 'False'}
             </Text>
           )}
-          <Button size="xs" variant="ghost" color="#4A5568" onClick={() => { setSelected(null); setRevealed(false); }} rounded="lg">
+          <Button size="xs" variant="ghost" color="var(--text-dim)" onClick={() => { setSelected(null); setRevealed(false); }} rounded="lg">
             <RotateCcw size={12} />
           </Button>
         </Flex>
       )}
 
       {revealed && explanation && (
-        <Box mt={3} p={3} bg="rgba(245,158,11,0.05)" border="1px solid" borderColor="rgba(245,158,11,0.12)" rounded="lg">
+        <Box mt={3} p={3} bg="rgba(var(--warning-rgb),0.05)" border="1px solid" borderColor="rgba(var(--warning-rgb),0.12)" rounded="lg">
           <Flex align="center" gap={1.5} mb={1}>
-            <Lightbulb size={13} color="#F59E0B" />
-            <Text fontSize="xs" fontWeight="600" color="#F59E0B">Explanation</Text>
+            <Lightbulb size={13} color="var(--warning)" />
+            <Text fontSize="xs" fontWeight="600" color="var(--warning)">Explanation</Text>
           </Flex>
-          <MathText fontSize="sm" color="#A0AEC0" lineHeight="1.7">{explanation}</MathText>
+          <MathText fontSize="sm" color="var(--text-secondary)" lineHeight="1.7">{explanation}</MathText>
         </Box>
       )}
     </Box>

@@ -13,8 +13,11 @@ import NoteEditorPage from './pages/NoteEditorPage';
 import NotesRAG from './pages/NotesRAG';
 import { Signup } from './pages/Signup';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './theme/ThemeContext';
+import './theme/tokens.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
+  <ThemeProvider>
   <AuthProvider>
     <BrowserRouter>
       <Provider>
@@ -42,4 +45,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </Provider>
     </BrowserRouter>
   </AuthProvider>
+  </ThemeProvider>
 );

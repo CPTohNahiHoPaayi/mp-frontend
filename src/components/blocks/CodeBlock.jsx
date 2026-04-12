@@ -30,7 +30,7 @@ const CodeBlock = ({ code = "", language = "javascript" }) => {
       rounded="xl"
       overflow="hidden"
       border="1px solid"
-      borderColor="#1E2536"
+      borderColor="var(--border-base)"
       fontFamily="'Fira Code', 'JetBrains Mono', monospace"
       bg="#0C0F1A"
     >
@@ -40,13 +40,13 @@ const CodeBlock = ({ code = "", language = "javascript" }) => {
         align="center"
         px={4}
         py={2}
-        bg="linear-gradient(90deg, rgba(59,130,246,0.08), rgba(124,58,237,0.05))"
+        bg="linear-gradient(90deg, rgba(var(--blue-rgb),0.08), rgba(var(--purple-rgb),0.05))"
         borderBottom="1px solid"
-        borderColor="#1E2536"
+        borderColor="var(--border-base)"
       >
         <Flex align="center" gap={2}>
-          <Terminal size={13} color="#60A5FA" />
-          <Text fontSize="xs" fontWeight="600" color="#60A5FA" textTransform="uppercase" letterSpacing="0.06em">
+          <Terminal size={13} color="var(--blue-light)" />
+          <Text fontSize="xs" fontWeight="600" color="var(--blue-light)" textTransform="uppercase" letterSpacing="0.06em">
             {language}
           </Text>
         </Flex>
@@ -54,8 +54,8 @@ const CodeBlock = ({ code = "", language = "javascript" }) => {
           onClick={onCopy}
           size="xs"
           variant="ghost"
-          color={hasCopied ? "#00C9A7" : "#4A5568"}
-          _hover={{ color: "#A0AEC0", bg: "rgba(255,255,255,0.04)" }}
+          color={hasCopied ? "var(--accent)" : "#4A5568"}
+          _hover={{ color: "#A0AEC0", bg: "var(--bg-input)" }}
           rounded="lg"
           h={6}
           px={2}
@@ -86,7 +86,7 @@ const CodeBlock = ({ code = "", language = "javascript" }) => {
       />
 
       {/* Bottom line count */}
-      <Flex px={4} py={1.5} borderTop="1px solid" borderColor="#1E2536" justify="flex-end">
+      <Flex px={4} py={1.5} borderTop="1px solid" borderColor="var(--border-base)" justify="flex-end">
         <Text fontSize="xs" color="#2D3748">
           {code.split('\n').length} lines
         </Text>

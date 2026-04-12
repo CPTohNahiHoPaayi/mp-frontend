@@ -50,24 +50,24 @@ export default function NotesRAG() {
   };
 
   return (
-    <Box minH="full" bg="#06080F" py={10} px={4} color="white">
+    <Box minH="full" bg="var(--bg-base)" py={10} px={4} color="var(--text-primary)">
       <Box maxW="3xl" mx="auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <Flex align="center" justify="space-between" mb={8}>
             <Flex align="center" gap={3}>
-              <Box w={10} h={10} rounded="xl" bg="rgba(0,201,167,0.08)" display="flex" alignItems="center" justifyContent="center">
-                <Sparkles size={20} color="#00C9A7" />
+              <Box w={10} h={10} rounded="xl" bg="rgba(var(--accent-rgb),0.08)" display="flex" alignItems="center" justifyContent="center">
+                <Sparkles size={20} color="var(--accent)" />
               </Box>
               <Box>
-                <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="#E2E8F0" letterSpacing="-0.01em">
+                <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="var(--text-primary)" letterSpacing="-0.01em">
                   Ask Your Notes
                 </Heading>
-                <Text fontSize="sm" color="#718096">
+                <Text fontSize="sm" color="var(--text-muted)">
                   AI-powered retrieval from your ingested notes
                 </Text>
               </Box>
             </Flex>
-            <Button variant="ghost" size="sm" onClick={() => navigate('/notes')} color="#718096" _hover={{ color: '#E2E8F0' }} rounded="lg">
+            <Button variant="ghost" size="sm" onClick={() => navigate('/notes')} color="var(--text-muted)" _hover={{ color: 'var(--text-primary)' }} rounded="lg">
               <ArrowLeft size={14} />
               <Text ml={1.5} fontSize="xs">Notes</Text>
             </Button>
@@ -77,19 +77,19 @@ export default function NotesRAG() {
         {/* Question input */}
         <Flex
           align="center"
-          bg="rgba(255,255,255,0.03)"
+          bg="var(--bg-elevated)"
           border="1px solid"
-          borderColor="whiteAlpha.50"
+          borderColor="var(--border-subtle)"
           rounded="full"
           pl={5}
           pr={1.5}
           py={1.5}
           mb={6}
-          _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
+          _focusWithin={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px rgba(var(--accent-rgb),0.2)' }}
           transition="all 0.2s"
           gap={3}
         >
-          <Brain size={16} color="rgba(255,255,255,0.2)" style={{ flexShrink: 0 }} />
+          <Brain size={16} color="var(--text-dim)" style={{ flexShrink: 0 }} />
           <input
             placeholder="Ask a question about your notes..."
             value={question}
@@ -99,11 +99,11 @@ export default function NotesRAG() {
               background: 'transparent',
               border: 'none',
               outline: 'none',
-              color: 'white',
+              color: 'var(--text-primary)',
               fontSize: '14px',
               height: '36px',
               width: '100%',
-              caretColor: '#00C9A7',
+              caretColor: 'var(--accent)',
             }}
           />
           <Button
@@ -112,7 +112,7 @@ export default function NotesRAG() {
             disabled={!question.trim()}
             size="sm"
             rounded="full"
-            bg={question.trim() ? 'linear-gradient(135deg, #00C9A7, #3B82F6)' : 'whiteAlpha.50'}
+            bg={question.trim() ? 'linear-gradient(135deg, var(--accent), var(--blue))' : 'var(--border-subtle)'}
             color={question.trim() ? 'white' : 'gray.600'}
             _hover={{ opacity: 0.85 }}
             _disabled={{ opacity: 0.3, cursor: 'not-allowed' }}
@@ -128,7 +128,7 @@ export default function NotesRAG() {
         {/* Error */}
         {error && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-            <Box bg="rgba(239,68,68,0.08)" border="1px solid" borderColor="rgba(239,68,68,0.2)" rounded="xl" p={4} mb={6}>
+            <Box bg="rgba(var(--error-rgb),0.08)" border="1px solid" borderColor="rgba(var(--error-rgb),0.2)" rounded="xl" p={4} mb={6}>
               <Text color="#FC8181">{error}</Text>
             </Box>
           </motion.div>
@@ -138,8 +138,8 @@ export default function NotesRAG() {
         {loading && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
             <Center py={8}>
-              <Spinner size="md" color="#00C9A7" />
-              <Text ml={4} color="#718096">Searching your notes...</Text>
+              <Spinner size="md" color="var(--accent)" />
+              <Text ml={4} color="var(--text-muted)">Searching your notes...</Text>
             </Center>
           </motion.div>
         )}
@@ -147,8 +147,8 @@ export default function NotesRAG() {
         {/* Answer */}
         {answer && !loading && (
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="#1C2030" p={6} mb={6}>
-              <Text fontSize="xs" fontWeight="600" color="#00C9A7" mb={3} textTransform="uppercase" letterSpacing="0.05em">Answer</Text>
+            <Box bg="var(--bg-elevated)" rounded="xl" border="1px solid" borderColor="var(--border-base)" p={6} mb={6}>
+              <Text fontSize="xs" fontWeight="600" color="var(--accent)" mb={3} textTransform="uppercase" letterSpacing="0.05em">Answer</Text>
               <MarkdownRenderer content={answer} />
             </Box>
           </motion.div>
@@ -157,12 +157,12 @@ export default function NotesRAG() {
         {/* Sources */}
         {context.length > 0 && !loading && (
           <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
-          <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="#1C2030" p={6}>
+          <Box bg="var(--bg-elevated)" rounded="xl" border="1px solid" borderColor="var(--border-base)" p={6}>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowSources(!showSources)}
-              color="gray.400"
+              color="var(--text-secondary)"
               mb={showSources ? 4 : 0}
               w="100%"
               justifyContent="space-between"
@@ -174,7 +174,7 @@ export default function NotesRAG() {
             {showSources && (
               <Flex direction="column" gap={2}>
                 {context.map((chunk, i) => (
-                  <Box key={i} bg="rgba(255,255,255,0.04)" rounded="lg" overflow="hidden">
+                  <Box key={i} bg="var(--bg-input)" rounded="lg" overflow="hidden">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -184,14 +184,14 @@ export default function NotesRAG() {
                       px={4}
                       py={3}
                       h="auto"
-                      color="gray.300"
-                      _hover={{ bg: 'whiteAlpha.100' }}
+                      color="var(--text-body)"
+                      _hover={{ bg: 'var(--border-light)' }}
                     >
                       <Flex gap={2} align="center">
                         <Text fontSize="xs" color="blue.300" fontWeight="semibold">
                           {sources[i]?.source || 'unknown'}
                         </Text>
-                        <Text fontSize="xs" color="gray.500">
+                        <Text fontSize="xs" color="var(--text-muted)">
                           Chunk #{sources[i]?.chunk_index ?? i}
                         </Text>
                       </Flex>

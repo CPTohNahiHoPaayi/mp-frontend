@@ -152,7 +152,7 @@ export default function NoteEditorPage() {
     return (
       <Center h="80vh">
         <Spinner size="lg" color="blue.300" />
-        <Text ml={4} color="white">Loading note...</Text>
+        <Text ml={4} color="var(--text-primary)">Loading note...</Text>
       </Center>
     );
   }
@@ -160,7 +160,7 @@ export default function NoteEditorPage() {
   if (!note) {
     return (
       <Center h="80vh" flexDirection="column" gap={4}>
-        <Text color="gray.400" fontSize="lg">Note not found.</Text>
+        <Text color="var(--text-secondary)" fontSize="lg">Note not found.</Text>
         <Button onClick={() => navigate('/notes')} colorScheme="blue">
           Back to Notes
         </Button>
@@ -170,14 +170,14 @@ export default function NoteEditorPage() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} style={{ minHeight: 'calc(100dvh - 56px)', display: 'flex', flexDirection: 'column' }}>
-    <Box flex="1" display="flex" flexDirection="column" bg="#06080F" color="white">
+    <Box flex="1" display="flex" flexDirection="column" bg="var(--bg-base)" color="var(--text-primary)">
       {/* Top bar — navigation + actions only, sticky below App nav */}
       <Flex
         px={4}
         py={3}
-        bg="#06080F"
+        bg="var(--bg-base)"
         borderBottom="1px solid"
-        borderColor="#1C2030"
+        borderColor="var(--border-base)"
         align="center"
         justify="space-between"
         flexShrink={0}
@@ -194,17 +194,17 @@ export default function NoteEditorPage() {
           >
             <ArrowLeft size={18} />
           </IconButton>
-          <Text fontSize="sm" color="gray.500" userSelect="none">Notes</Text>
+          <Text fontSize="sm" color="var(--text-muted)" userSelect="none">Notes</Text>
         </Flex>
 
         <Flex align="center" gap={3}>
           {lastSaved && !saving && (
             <Flex align="center" gap={1}>
-              <Check size={12} color="#68d391" />
-              <Text fontSize="xs" color="gray.500">Saved</Text>
+              <Check size={12} color="var(--success)" />
+              <Text fontSize="xs" color="var(--text-muted)">Saved</Text>
             </Flex>
           )}
-          {saving && <Text fontSize="xs" color="gray.500">Saving...</Text>}
+          {saving && <Text fontSize="xs" color="var(--text-muted)">Saving...</Text>}
           <Button
             size="sm"
             variant="solid"
@@ -228,7 +228,7 @@ export default function NoteEditorPage() {
       </Flex>
 
       {/* Document content area */}
-      <Box flex={1} bg="#06080F">
+      <Box flex={1} bg="var(--bg-base)">
         <Box maxW="4xl" mx="auto" px={{ base: 4, md: 12 }} pt={10} pb={4}>
 
           {/* Document title */}
@@ -245,7 +245,7 @@ export default function NoteEditorPage() {
               background: 'transparent',
               border: 'none',
               outline: 'none',
-              color: '#E2E8F0',
+              color: 'var(--text-primary)',
               fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
               fontWeight: 700,
               lineHeight: 1.25,
@@ -253,7 +253,7 @@ export default function NoteEditorPage() {
               overflow: 'hidden',
               width: '100%',
               marginBottom: '12px',
-              caretColor: '#00C9A7',
+              caretColor: 'var(--accent)',
               fontFamily: 'inherit',
             }}
           />
@@ -266,24 +266,24 @@ export default function NoteEditorPage() {
             pb={4}
             mb={6}
             borderBottom="1px solid"
-            borderColor="#1C2030"
+            borderColor="var(--border-base)"
           >
             {tags.map((tag, i) => (
               <Text
                 key={i}
                 as="span"
                 fontSize="xs"
-                color="#8BB8A8"
-                bg="rgba(0,201,167,0.08)"
+                color="var(--accent)"
+                bg="rgba(var(--accent-rgb),0.08)"
                 border="1px solid"
-                borderColor="rgba(0,201,167,0.15)"
+                borderColor="rgba(var(--accent-rgb),0.15)"
                 px={2}
                 py={0.5}
                 rounded="full"
                 cursor="pointer"
                 onClick={() => handleRemoveTag(tag)}
                 title="Click to remove"
-                _hover={{ borderColor: 'rgba(0,201,167,0.4)' }}
+                _hover={{ borderColor: 'rgba(var(--accent-rgb),0.4)' }}
                 transition="all 0.15s"
               >
                 {tag} ×
@@ -298,10 +298,10 @@ export default function NoteEditorPage() {
                 background: 'transparent',
                 border: 'none',
                 outline: 'none',
-                color: '#A0AEC0',
+                color: 'var(--text-secondary)',
                 fontSize: '13px',
                 width: '100px',
-                caretColor: '#00C9A7',
+                caretColor: 'var(--accent)',
               }}
             />
           </Flex>

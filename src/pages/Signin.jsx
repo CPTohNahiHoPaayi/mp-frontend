@@ -77,7 +77,7 @@ export const Signin = () => {
   return (
     <Box
       minH="100vh"
-      bg="#06080F"
+      bg="var(--bg-base)"
       display="flex"
       alignItems="center"
       justifyContent="center"
@@ -90,7 +90,7 @@ export const Signin = () => {
         w="500px"
         h="500px"
         borderRadius="50%"
-        bg="rgba(59,130,246,0.08)"
+        bg="rgba(var(--blue-rgb),0.08)"
         filter="blur(100px)"
         top="-10%"
         right="-10%"
@@ -102,7 +102,7 @@ export const Signin = () => {
         w="400px"
         h="400px"
         borderRadius="50%"
-        bg="rgba(0,201,167,0.06)"
+        bg="rgba(var(--accent-rgb),0.06)"
         filter="blur(100px)"
         bottom="-10%"
         left="-5%"
@@ -123,8 +123,8 @@ export const Signin = () => {
         <Button
           variant="ghost"
           size="sm"
-          color="gray.500"
-          _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+          color="var(--text-muted)"
+          _hover={{ color: 'var(--text-primary)', bg: 'var(--bg-hover)' }}
           onClick={() => navigate('/')}
         >
           <ArrowLeft size={16} />
@@ -142,9 +142,9 @@ export const Signin = () => {
         rounded="2xl"
         overflow="hidden"
         border="1px solid"
-        borderColor="whiteAlpha.100"
+        borderColor="var(--border-light)"
         boxShadow="0 25px 60px rgba(0,0,0,0.5)"
-        bg="rgba(255,255,255,0.02)"
+        bg="var(--bg-elevated)"
         backdropFilter="blur(20px)"
       >
         {/* Left — Form */}
@@ -163,25 +163,25 @@ export const Signin = () => {
                   w={8}
                   h={8}
                   rounded="lg"
-                  bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+                  bg="linear-gradient(135deg, var(--accent), var(--blue))"
                   display="flex"
                   alignItems="center"
                   justifyContent="center"
                 >
-                  <BookOpen size={18} color="white" />
+                  <BookOpen size={18} color="var(--text-primary)" />
                 </Box>
-                <Text fontSize="lg" fontWeight="bold" color="white">
-                  Text<Box as="span" color="#00C9A7">ToLearn</Box>
+                <Text fontSize="lg" fontWeight="bold" color="var(--text-primary)">
+                  Text<Box as="span" color="var(--accent)">ToLearn</Box>
                 </Text>
               </HStack>
             </MotionBox>
 
             {/* Heading */}
             <MotionBox variants={fadeUp} custom={1}>
-              <Text fontSize="sm" color="gray.500" mb={1}>
+              <Text fontSize="sm" color="var(--text-muted)" mb={1}>
                 Welcome back
               </Text>
-              <Text fontSize="2xl" fontWeight="bold" color="white">
+              <Text fontSize="2xl" fontWeight="bold" color="var(--text-primary)">
                 Sign in to your account
               </Text>
             </MotionBox>
@@ -190,7 +190,7 @@ export const Signin = () => {
             <form onSubmit={handleSubmit}>
               <Stack gap={4}>
                 <MotionBox variants={fadeUp} custom={2}>
-                  <Text mb={1.5} fontSize="sm" color="gray.400">
+                  <Text mb={1.5} fontSize="sm" color="var(--text-secondary)">
                     Email
                   </Text>
                   <Input
@@ -198,20 +198,20 @@ export const Signin = () => {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    bg="rgba(255,255,255,0.04)"
+                    bg="var(--bg-input)"
                     border="1px solid"
-                    borderColor="whiteAlpha.100"
-                    color="white"
+                    borderColor="var(--border-light)"
+                    color="var(--text-primary)"
                     rounded="xl"
                     h={12}
-                    _placeholder={{ color: 'gray.600' }}
-                    _hover={{ borderColor: 'whiteAlpha.200' }}
-                    _focus={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px #00C9A7' }}
+                    _placeholder={{ color: 'var(--text-dim)' }}
+                    _hover={{ borderColor: 'var(--border-hover)' }}
+                    _focus={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px var(--accent)' }}
                   />
                 </MotionBox>
 
                 <MotionBox variants={fadeUp} custom={3}>
-                  <Text mb={1.5} fontSize="sm" color="gray.400">
+                  <Text mb={1.5} fontSize="sm" color="var(--text-secondary)">
                     Password
                   </Text>
                   <Input
@@ -219,15 +219,15 @@ export const Signin = () => {
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    bg="rgba(255,255,255,0.04)"
+                    bg="var(--bg-input)"
                     border="1px solid"
-                    borderColor="whiteAlpha.100"
-                    color="white"
+                    borderColor="var(--border-light)"
+                    color="var(--text-primary)"
                     rounded="xl"
                     h={12}
-                    _placeholder={{ color: 'gray.600' }}
-                    _hover={{ borderColor: 'whiteAlpha.200' }}
-                    _focus={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px #00C9A7' }}
+                    _placeholder={{ color: 'var(--text-dim)' }}
+                    _hover={{ borderColor: 'var(--border-hover)' }}
+                    _focus={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px var(--accent)' }}
                   />
                 </MotionBox>
 
@@ -242,13 +242,13 @@ export const Signin = () => {
                     type="submit"
                     w="full"
                     h={12}
-                    bg="linear-gradient(135deg, #00C9A7 0%, #3B82F6 100%)"
-                    color="white"
+                    bg="linear-gradient(135deg, var(--accent) 0%, var(--blue) 100%)"
+                    color="var(--text-primary)"
                     fontWeight="semibold"
                     rounded="xl"
                     _hover={{
                       transform: 'translateY(-1px)',
-                      boxShadow: '0 8px 25px rgba(0,201,167,0.25)',
+                      boxShadow: '0 8px 25px rgba(var(--accent-rgb),0.25)',
                     }}
                     transition="all 0.2s ease"
                   >
@@ -261,11 +261,11 @@ export const Signin = () => {
             {/* Divider */}
             <MotionBox variants={fadeUp} custom={5}>
               <Flex align="center">
-                <Box flex="1" h="1px" bg="whiteAlpha.100" />
-                <Text px={3} color="gray.600" fontSize="xs">
+                <Box flex="1" h="1px" bg="var(--border-light)" />
+                <Text px={3} color="var(--text-dim)" fontSize="xs">
                   or continue with
                 </Text>
-                <Box flex="1" h="1px" bg="whiteAlpha.100" />
+                <Box flex="1" h="1px" bg="var(--border-light)" />
               </Flex>
             </MotionBox>
 
@@ -275,15 +275,15 @@ export const Signin = () => {
                 onClick={handleGoogleLogin}
                 w="full"
                 h={12}
-                bg="rgba(255,255,255,0.04)"
+                bg="var(--bg-input)"
                 border="1px solid"
-                borderColor="whiteAlpha.100"
-                color="gray.300"
+                borderColor="var(--border-light)"
+                color="var(--text-body)"
                 rounded="xl"
                 fontWeight="medium"
                 _hover={{
-                  bg: 'rgba(255,255,255,0.08)',
-                  borderColor: 'whiteAlpha.200',
+                  bg: 'var(--bg-hover)',
+                  borderColor: 'var(--border-hover)',
                   transform: 'translateY(-1px)',
                 }}
                 transition="all 0.2s ease"
@@ -317,7 +317,7 @@ export const Signin = () => {
           <Box
             position="absolute"
             inset={0}
-            bg="linear-gradient(135deg, rgba(6,8,15,0.6), rgba(0,201,167,0.1))"
+            bg="linear-gradient(135deg, rgba(6,8,15,0.6), rgba(var(--accent-rgb),0.1))"
           />
           <Box
             position="absolute"
@@ -328,13 +328,13 @@ export const Signin = () => {
             <Text
               fontSize="lg"
               fontWeight="medium"
-              color="white"
+              color="var(--text-primary)"
               fontStyle="italic"
               lineHeight="1.6"
             >
               "With great power comes great responsibility"
             </Text>
-            <Text fontSize="sm" color="gray.400" mt={2}>
+            <Text fontSize="sm" color="var(--text-secondary)" mt={2}>
               Learn smart. Build fast. Ship today.
             </Text>
           </Box>

@@ -38,8 +38,8 @@ export default function FolderItem({
         py={1}
         pl={`${8 + depth * 16}px`}
         borderRadius="md"
-        bg={isSelected ? 'blue.800' : 'transparent'}
-        _hover={{ bg: isSelected ? 'blue.800' : 'gray.700' }}
+        bg={isSelected ? 'rgba(var(--accent-rgb),0.12)' : 'transparent'}
+        _hover={{ bg: isSelected ? 'rgba(var(--accent-rgb),0.12)' : 'var(--bg-hover)' }}
         cursor="pointer"
         onClick={() => onSelectFolder(folder.id)}
         role="group"
@@ -75,8 +75,8 @@ export default function FolderItem({
                 if (e.key === 'Escape') setRenaming(false);
               }}
               autoFocus
-              bg="gray.600"
-              color="white"
+              bg="var(--bg-hover)"
+              color="var(--text-primary)"
               border="none"
               px={1}
             />
@@ -88,7 +88,7 @@ export default function FolderItem({
             </IconButton>
           </Flex>
         ) : (
-          <Text fontSize="sm" color="gray.200" flex={1} isTruncated>
+          <Text fontSize="sm" color="var(--text-primary)" flex={1} isTruncated>
             {folder.name}
           </Text>
         )}

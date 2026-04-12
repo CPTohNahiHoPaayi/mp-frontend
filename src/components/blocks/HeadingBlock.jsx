@@ -2,12 +2,12 @@ import { Heading, Box, Flex, Text } from "@chakra-ui/react";
 
 // Rotating color palette — each heading gets a unique accent
 const ACCENT_PALETTE = [
-  { bar: "#00C9A7", bg: "rgba(0,201,167,0.06)", text: "#00C9A7" },   // teal
-  { bar: "#7C3AED", bg: "rgba(124,58,237,0.06)", text: "#A78BFA" },   // purple
-  { bar: "#3B82F6", bg: "rgba(59,130,246,0.06)", text: "#60A5FA" },   // blue
-  { bar: "#F59E0B", bg: "rgba(245,158,11,0.06)", text: "#FBBF24" },   // amber
-  { bar: "#EC4899", bg: "rgba(236,72,153,0.06)", text: "#F472B6" },   // pink
-  { bar: "#10B981", bg: "rgba(16,185,129,0.06)", text: "#34D399" },   // emerald
+  { bar: "var(--accent)", bg: "rgba(var(--accent-rgb),0.06)", text: "var(--accent)" },   // teal
+  { bar: "#7C3AED", bg: "rgba(var(--purple-rgb),0.06)", text: "#A78BFA" },   // purple
+  { bar: "#3B82F6", bg: "rgba(var(--blue-rgb),0.06)", text: "#60A5FA" },   // blue
+  { bar: "#F59E0B", bg: "rgba(var(--warning-rgb),0.06)", text: "#FBBF24" },   // amber
+  { bar: "#EC4899", bg: "rgba(var(--pink-rgb),0.06)", text: "#F472B6" },   // pink
+  { bar: "#10B981", bg: "rgba(var(--accent-light-rgb),0.06)", text: "#818CF8" },   // emerald
 ];
 
 const HeadingBlock = ({
@@ -22,7 +22,7 @@ const HeadingBlock = ({
   if (level <= 2) {
     return (
       <Box w="full" mb={margin} mt={10}>
-        <Box h="1px" bg="#1C2030" mb={6} />
+        <Box h="1px" bg="var(--border-base)" mb={6} />
         <Box
           bg={accent.bg}
           borderLeft="4px solid"
@@ -35,7 +35,7 @@ const HeadingBlock = ({
           <Heading
             as={`h${level}`}
             fontSize={level === 1 ? { base: "2xl", md: "3xl" } : { base: "xl", md: "2xl" }}
-            color="#E2E8F0"
+            color="var(--text-primary)"
             fontWeight={level === 1 ? "800" : "700"}
             lineHeight="1.35"
             letterSpacing="-0.02em"

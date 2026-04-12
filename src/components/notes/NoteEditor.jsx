@@ -32,9 +32,9 @@ const ToolbarButton = ({ onClick, isActive, children, label }) => (
     onClick={onClick}
     minW="28px"
     h="28px"
-    color={isActive ? '#00C9A7' : '#4A5568'}
-    bg={isActive ? 'rgba(0,201,167,0.08)' : 'transparent'}
-    _hover={{ color: isActive ? '#00C9A7' : '#A0AEC0', bg: 'rgba(255,255,255,0.04)' }}
+    color={isActive ? 'var(--accent)' : 'var(--text-dim)'}
+    bg={isActive ? 'rgba(var(--accent-rgb),0.08)' : 'transparent'}
+    _hover={{ color: isActive ? 'var(--accent)' : 'var(--text-secondary)', bg: 'var(--bg-input)' }}
     rounded="md"
     transition="all 0.15s"
   >
@@ -109,7 +109,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
 
   if (!editor) return null;
 
-  const Divider = () => <Box w="1px" h="16px" bg="#1C2030" mx={1} />;
+  const Divider = () => <Box w="1px" h="16px" bg="var(--border-base)" mx={1} />;
 
   return (
     <Box display="flex" flexDirection="column" w="100%">
@@ -122,10 +122,10 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
         position="sticky"
         top="56px"
         zIndex={10}
-        bg="rgba(6,8,15,0.95)"
+        bg="var(--bg-nav)"
         backdropFilter="blur(8px)"
         borderBottom="1px solid"
-        borderColor="#1C2030"
+        borderColor="var(--border-base)"
         mb={4}
         rounded="lg"
       >

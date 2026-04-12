@@ -43,45 +43,45 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
       if (i === correctAnswer) {
         return {
           ...base,
-          bg: 'rgba(0,201,167,0.12)',
-          borderColor: 'rgba(0,201,167,0.4)',
-          color: '#00C9A7',
+          bg: 'rgba(var(--accent-rgb),0.12)',
+          borderColor: 'rgba(var(--accent-rgb),0.4)',
+          color: 'var(--accent)',
         };
       }
       if (i === selected && selected !== correctAnswer) {
         return {
           ...base,
-          bg: 'rgba(239,68,68,0.1)',
-          borderColor: 'rgba(239,68,68,0.4)',
-          color: '#ef4444',
+          bg: 'rgba(var(--error-rgb),0.1)',
+          borderColor: 'rgba(var(--error-rgb),0.4)',
+          color: 'var(--error)',
         };
       }
       return {
         ...base,
         bg: 'transparent',
-        borderColor: 'whiteAlpha.50',
-        color: 'gray.600',
+        borderColor: 'var(--border-subtle)',
+        color: 'var(--text-dim)',
       };
     }
 
     if (i === selected) {
       return {
         ...base,
-        bg: 'rgba(59,130,246,0.12)',
-        borderColor: 'rgba(59,130,246,0.4)',
-        color: 'white',
+        bg: 'rgba(var(--blue-rgb),0.12)',
+        borderColor: 'rgba(var(--blue-rgb),0.4)',
+        color: 'var(--text-primary)',
       };
     }
 
     return {
       ...base,
-      bg: 'rgba(255,255,255,0.02)',
-      borderColor: 'whiteAlpha.50',
-      color: 'gray.300',
+      bg: 'var(--bg-elevated)',
+      borderColor: 'var(--border-subtle)',
+      color: 'var(--text-body)',
       _hover: {
-        bg: 'rgba(255,255,255,0.04)',
-        borderColor: 'whiteAlpha.200',
-        color: 'white',
+        bg: 'var(--bg-input)',
+        borderColor: 'var(--border-hover)',
+        color: 'var(--text-primary)',
       },
     };
   };
@@ -91,13 +91,13 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
       rounded="2xl"
       p={6}
       my={6}
-      bg="rgba(255,255,255,0.02)"
+      bg="var(--bg-elevated)"
       border="1px solid"
-      borderColor="whiteAlpha.100"
+      borderColor="var(--border-light)"
       w="full"
-      color="white"
+      color="var(--text-primary)"
     >
-      <MathText fontWeight="semibold" fontSize="lg" mb={5} color="gray.200" lineHeight="1.6">
+      <MathText fontWeight="semibold" fontSize="lg" mb={5} color="var(--text-primary)" lineHeight="1.6">
         {question}
       </MathText>
 
@@ -118,9 +118,9 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
               rounded="full"
               border="2px solid"
               borderColor={
-                showAnswer && i === correctAnswer ? '#00C9A7' :
-                showAnswer && i === selected && selected !== correctAnswer ? '#ef4444' :
-                i === selected ? '#3B82F6' : 'whiteAlpha.200'
+                showAnswer && i === correctAnswer ? 'var(--accent)' :
+                showAnswer && i === selected && selected !== correctAnswer ? 'var(--error)' :
+                i === selected ? 'var(--blue)' : 'var(--border-hover)'
               }
               display="flex"
               alignItems="center"
@@ -129,8 +129,8 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
               fontSize="xs"
               fontWeight="bold"
               color={
-                showAnswer && i === correctAnswer ? '#00C9A7' :
-                i === selected ? '#3B82F6' : 'gray.500'
+                showAnswer && i === correctAnswer ? 'var(--accent)' :
+                i === selected ? 'var(--blue)' : 'gray.500'
               }
             >
               {showAnswer && i === correctAnswer ? <CheckCircle size={14} /> :
@@ -146,8 +146,8 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
         <Button
           onClick={handleCheck}
           disabled={showAnswer || selected === null}
-          bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
-          color="white"
+          bg="linear-gradient(135deg, var(--accent), var(--blue))"
+          color="var(--text-primary)"
           _hover={{ opacity: 0.9, transform: 'translateY(-1px)' }}
           _disabled={{ opacity: 0.3, cursor: 'not-allowed', transform: 'none' }}
           rounded="xl"
@@ -161,14 +161,14 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
 
         {showAnswer && (
           <>
-            <Text fontSize="sm" fontWeight="500" color={selected === correctAnswer ? '#00C9A7' : '#EF4444'}>
+            <Text fontSize="sm" fontWeight="500" color={selected === correctAnswer ? 'var(--accent)' : 'var(--error)'}>
               {selected === correctAnswer ? '🎉 Correct!' : '😔 Not quite'}
             </Text>
             <Button
               onClick={resetQuiz}
               variant="ghost"
-              color="#4A5568"
-              _hover={{ color: '#A0AEC0' }}
+              color="var(--text-dim)"
+              _hover={{ color: 'var(--text-secondary)' }}
               rounded="xl"
               size="sm"
               h={9}
@@ -184,18 +184,18 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
         <Box
           mt={5}
           p={4}
-          bg="rgba(0,201,167,0.05)"
+          bg="rgba(var(--accent-rgb),0.05)"
           border="1px solid"
-          borderColor="rgba(0,201,167,0.15)"
+          borderColor="rgba(var(--accent-rgb),0.15)"
           rounded="xl"
         >
           <HStack mb={2} gap={2}>
-            <Lightbulb size={16} color="#00C9A7" />
-            <Text fontWeight="semibold" fontSize="sm" color="#00C9A7">
+            <Lightbulb size={16} color="var(--accent)" />
+            <Text fontWeight="semibold" fontSize="sm" color="var(--accent)">
               Explanation
             </Text>
           </HStack>
-          <MathText color="gray.400" fontSize="sm" lineHeight="1.7">{explanation}</MathText>
+          <MathText color="var(--text-secondary)" fontSize="sm" lineHeight="1.7">{explanation}</MathText>
         </Box>
       )}
     </Box>

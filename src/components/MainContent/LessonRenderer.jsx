@@ -26,7 +26,7 @@ const COMPONENT_MAP = {
 
 function LessonRenderer({ lesson }) {
   if (!lesson?.content || !Array.isArray(lesson.content)) {
-    return <Text color="#718096" px={4}>No content available.</Text>;
+    return <Text color="var(--text-muted)" px={4}>No content available.</Text>;
   }
 
   let headingIndex = 0;

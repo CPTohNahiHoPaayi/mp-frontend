@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom';
 import { createListCollection } from "@chakra-ui/react";
 import NoteCard from '../components/notes/NoteCard';
 
-const GRADIENT_PALETTES = [
+import { useTheme } from '@/theme/ThemeContext';
+
+const DARK_GRADIENTS = [
     ['#0F2027', '#203A43', '#2C5364'],
     ['#141E30', '#243B55', '#2A5298'],
     ['#0D1117', '#1A1A2E', '#16213E'],
@@ -18,7 +20,17 @@ const GRADIENT_PALETTES = [
     ['#0C0C1D', '#1B1B3A', '#2D2D5E'],
 ];
 
+const LIGHT_GRADIENTS = [
+    ['#E0E7FF', '#C7D2FE', '#A5B4FC'],
+    ['#DBEAFE', '#BFDBFE', '#93C5FD'],
+    ['#E0F2FE', '#BAE6FD', '#7DD3FC'],
+    ['#F0FDFA', '#CCFBF1', '#99F6E4'],
+    ['#F5F3FF', '#EDE9FE', '#DDD6FE'],
+];
+
 function Social() {
+    const { mode: themeMode } = useTheme();
+    const GRADIENT_PALETTES = themeMode === 'dark' ? DARK_GRADIENTS : LIGHT_GRADIENTS;
     const { isAuthenticated, token, user } = useAuth();
     const [courses, setCourses] = useState([]);
     const [notes, setNotes] = useState([]);
@@ -189,12 +201,12 @@ function Social() {
 
         return (
             <Box
-                bg="rgba(255,255,255,0.02)"
+                bg="var(--bg-elevated)"
                 border="1px solid"
-                borderColor="whiteAlpha.50"
+                borderColor="var(--border-subtle)"
                 rounded="2xl"
                 overflow="hidden"
-                _hover={{ borderColor: 'whiteAlpha.200', transform: 'translateY(-4px)', boxShadow: '0 12px 40px rgba(0,0,0,0.3)' }}
+                _hover={{ borderColor: 'var(--border-hover)', transform: 'translateY(-4px)', boxShadow: '0 12px 40px rgba(0,0,0,0.3)' }}
                 transition="all 0.3s ease"
                 cursor="pointer"
                 onClick={() => navigate(`/courses/${course.id}/module/0/lesson/0`)}
@@ -215,7 +227,7 @@ function Social() {
                         position="absolute"
                         top={3}
                         right={3}
-                        bg="rgba(0,0,0,0.4)"
+                        bg={themeMode === 'dark' ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.7)'}
                         backdropFilter="blur(8px)"
                         rounded="full"
                         px={2.5}
@@ -224,13 +236,13 @@ function Social() {
                         alignItems="center"
                         gap={1.5}
                     >
-                        <Heart size={12} fill={isLiked ? '#EF4444' : 'none'} stroke={isLiked ? '#EF4444' : 'white'} />
-                        <Text fontSize="xs" fontWeight="600" color="white">{course.likesCount || 0}</Text>
+                        <Heart size={12} fill={isLiked ? 'var(--error)' : 'none'} stroke={isLiked ? 'var(--error)' : 'var(--text-muted)'} />
+                        <Text fontSize="xs" fontWeight="600" color="var(--text-primary)">{course.likesCount || 0}</Text>
                     </Box>
                     <Text
                         fontSize="lg"
                         fontWeight="700"
-                        color="white"
+                        color={themeMode === 'dark' ? 'white' : '#1E293B'}
                         lineHeight="1.3"
                         noOfLines={2}
                         textShadow="0 2px 8px rgba(0,0,0,0.5)"
@@ -242,8 +254,8 @@ function Social() {
                 {/* Body */}
                 <Box p={4} flex={1} display="flex" flexDirection="column">
                     <Flex align="center" justify="space-between" mb={3}>
-                        <Text fontSize="xs" color="#718096">
-                            by <Text as="span" color="#A0AEC0" fontWeight="500">{course.creator || 'Anonymous'}</Text>
+                        <Text fontSize="xs" color="var(--text-muted)">
+                            by <Text as="span" color="var(--text-secondary)" fontWeight="500">{course.creator || 'Anonymous'}</Text>
                         </Text>
                     </Flex>
 
@@ -255,11 +267,11 @@ function Social() {
                                     px={2}
                                     py={0.5}
                                     rounded="md"
-                                    bg="rgba(59,130,246,0.08)"
+                                    bg="rgba(var(--blue-rgb),0.08)"
                                     border="1px solid"
-                                    borderColor="rgba(59,130,246,0.15)"
+                                    borderColor="rgba(var(--blue-rgb),0.15)"
                                 >
-                                    <Text fontSize="2xs" color="#60A5FA" fontWeight="500">{tag.trim()}</Text>
+                                    <Text fontSize="2xs" color="var(--blue-light)" fontWeight="500">{tag.trim()}</Text>
                                 </Box>
                             ))}
                         </Flex>
@@ -269,8 +281,8 @@ function Social() {
                         <Button
                             size="xs"
                             variant="ghost"
-                            color={isLiked ? '#EF4444' : '#4A5568'}
-                            _hover={{ color: isLiked ? '#F87171' : '#A0AEC0', bg: 'rgba(255,255,255,0.04)' }}
+                            color={isLiked ? 'var(--error)' : 'var(--text-dim)'}
+                            _hover={{ color: isLiked ? 'var(--error)' : 'var(--text-secondary)', bg: 'var(--bg-input)' }}
                             rounded="lg"
                             h={7}
                             px={2}
@@ -282,11 +294,11 @@ function Social() {
 
                         <Button
                             size="xs"
-                            bg="rgba(0,201,167,0.08)"
-                            color="#00C9A7"
+                            bg="rgba(var(--accent-rgb),0.08)"
+                            color="var(--accent)"
                             border="1px solid"
-                            borderColor="rgba(0,201,167,0.15)"
-                            _hover={{ bg: 'rgba(0,201,167,0.15)' }}
+                            borderColor="rgba(var(--accent-rgb),0.15)"
+                            _hover={{ bg: 'rgba(var(--accent-rgb),0.15)' }}
                             rounded="lg"
                             h={7}
                             px={3}
@@ -309,27 +321,27 @@ function Social() {
         width: '100%',
         padding: '8px 12px',
         borderRadius: '10px',
-        backgroundColor: 'rgba(255,255,255,0.04)',
-        color: '#A0AEC0',
-        border: '1px solid rgba(255,255,255,0.06)',
+        backgroundColor: 'var(--bg-input)',
+        color: 'var(--text-secondary)',
+        border: '1px solid var(--border-subtle)',
         fontSize: '13px',
         outline: 'none',
     };
 
     return (
-        <Box minH="full" bg="#06080F" py={8} px={4} color="white">
+        <Box minH="full" bg="var(--bg-base)" py={8} px={4} color="var(--text-primary)">
             <Box maxW="5xl" mx="auto">
                 {/* Header */}
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                     <Flex align="center" gap={3} mb={8}>
-                        <Box w={10} h={10} rounded="xl" bg="rgba(0,201,167,0.08)" display="flex" alignItems="center" justifyContent="center">
-                            <Globe size={20} color="#00C9A7" />
+                        <Box w={10} h={10} rounded="xl" bg="rgba(var(--accent-rgb),0.08)" display="flex" alignItems="center" justifyContent="center">
+                            <Globe size={20} color="var(--accent)" />
                         </Box>
                         <Box flex={1}>
-                            <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="#E2E8F0" letterSpacing="-0.01em">
+                            <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="var(--text-primary)" letterSpacing="-0.01em">
                                 Discover
                             </Heading>
-                            <Text fontSize="sm" color="#718096">
+                            <Text fontSize="sm" color="var(--text-muted)">
                                 Explore what the community is building
                             </Text>
                         </Box>
@@ -341,15 +353,15 @@ function Social() {
                 <Box
                     p={3}
                     mb={6}
-                    bg="rgba(255,255,255,0.02)"
+                    bg="var(--bg-elevated)"
                     border="1px solid"
-                    borderColor="whiteAlpha.50"
+                    borderColor="var(--border-subtle)"
                     rounded="2xl"
                 >
                     <Flex gap={2} align="center" wrap="wrap">
                         {/* Content type toggle */}
                         <Flex
-                            bg="rgba(255,255,255,0.04)"
+                            bg="var(--bg-input)"
                             rounded="xl"
                             p={0.5}
                             gap={0.5}
@@ -362,9 +374,9 @@ function Social() {
                                     key={key}
                                     size="xs"
                                     onClick={() => setContentType(key)}
-                                    bg={contentType === key ? 'rgba(0,201,167,0.12)' : 'transparent'}
-                                    color={contentType === key ? '#00C9A7' : '#4A5568'}
-                                    _hover={{ color: contentType === key ? '#00C9A7' : '#A0AEC0' }}
+                                    bg={contentType === key ? 'rgba(var(--accent-rgb),0.12)' : 'transparent'}
+                                    color={contentType === key ? 'var(--accent)' : 'var(--text-dim)'}
+                                    _hover={{ color: contentType === key ? 'var(--accent)' : 'var(--text-secondary)' }}
                                     rounded="lg"
                                     h={8}
                                     px={3}
@@ -376,7 +388,7 @@ function Social() {
                             ))}
                         </Flex>
 
-                        <Box w="1px" h={6} bg="whiteAlpha.100" />
+                        <Box w="1px" h={6} bg="var(--border-light)" />
 
                         {/* Mode pills */}
                         <Flex gap={1}>
@@ -388,11 +400,11 @@ function Social() {
                                     key={key}
                                     size="xs"
                                     onClick={() => fetchContent(key)}
-                                    bg={mode === key ? 'rgba(59,130,246,0.1)' : 'transparent'}
-                                    color={mode === key ? '#60A5FA' : '#4A5568'}
+                                    bg={mode === key ? 'rgba(var(--blue-rgb),0.1)' : 'transparent'}
+                                    color={mode === key ? 'var(--blue-light)' : 'var(--text-dim)'}
                                     border="1px solid"
-                                    borderColor={mode === key ? 'rgba(59,130,246,0.2)' : 'transparent'}
-                                    _hover={{ color: '#A0AEC0', bg: 'rgba(255,255,255,0.03)' }}
+                                    borderColor={mode === key ? 'rgba(var(--blue-rgb),0.2)' : 'transparent'}
+                                    _hover={{ color: 'var(--text-secondary)', bg: 'var(--bg-elevated)' }}
                                     rounded="lg"
                                     h={8}
                                     px={3}
@@ -403,20 +415,20 @@ function Social() {
                             ))}
                         </Flex>
 
-                        <Box w="1px" h={6} bg="whiteAlpha.100" />
+                        <Box w="1px" h={6} bg="var(--border-light)" />
 
                         {/* Search */}
                         <Flex
                             flex={1}
                             align="center"
-                            bg="rgba(255,255,255,0.04)"
+                            bg="var(--bg-input)"
                             rounded="xl"
                             px={3}
                             minW="180px"
-                            _focusWithin={{ bg: 'rgba(255,255,255,0.06)', boxShadow: '0 0 0 1px rgba(0,201,167,0.15)' }}
+                            _focusWithin={{ bg: 'var(--bg-hover)', boxShadow: '0 0 0 1px rgba(var(--accent-rgb),0.15)' }}
                             transition="all 0.2s"
                         >
-                            <Search size={13} color="#4A5568" />
+                            <Search size={13} color="var(--text-dim)" />
                             <input
                                 placeholder={`Search ${contentLabel.toLowerCase()}...`}
                                 value={searchQuery}
@@ -426,20 +438,20 @@ function Social() {
                                     background: 'transparent',
                                     border: 'none',
                                     outline: 'none',
-                                    color: 'white',
+                                    color: 'var(--text-primary)',
                                     fontSize: '13px',
                                     height: '32px',
                                     width: '100%',
                                     marginLeft: '8px',
-                                    caretColor: '#00C9A7',
+                                    caretColor: 'var(--accent)',
                                 }}
                             />
                             {searchQuery && (
                                 <Button
                                     size="xs"
                                     onClick={handleSearch}
-                                    bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
-                                    color="white"
+                                    bg="linear-gradient(135deg, var(--accent), var(--blue))"
+                                    color="var(--text-primary)"
                                     rounded="lg"
                                     h={6}
                                     px={2.5}
@@ -456,8 +468,8 @@ function Social() {
                             aria-label="Filters"
                             size="sm"
                             variant="ghost"
-                            color={showFilters ? '#00C9A7' : '#4A5568'}
-                            _hover={{ color: '#A0AEC0', bg: 'rgba(255,255,255,0.04)' }}
+                            color={showFilters ? 'var(--accent)' : 'var(--text-dim)'}
+                            _hover={{ color: 'var(--text-secondary)', bg: 'var(--bg-input)' }}
                             rounded="xl"
                             h={8}
                             w={8}
@@ -481,36 +493,36 @@ function Social() {
                                 mt={3}
                                 pt={3}
                                 borderTop="1px solid"
-                                borderColor="whiteAlpha.50"
+                                borderColor="var(--border-subtle)"
                             >
                                 <Grid templateColumns={{ base: '1fr', sm: '1fr 1fr', md: '1fr 1fr 1fr 1fr' }} gap={3}>
                                     <Box>
-                                        <Text fontSize="2xs" color="#4A5568" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Search Type</Text>
+                                        <Text fontSize="2xs" color="var(--text-dim)" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Search Type</Text>
                                         <select value={searchType} onChange={(e) => setSearchType(e.target.value)} style={selectStyle}>
                                             {searchTypes.items.map((item) => (
-                                                <option key={item.value} value={item.value} style={{ background: '#1A1A2E' }}>{item.label}</option>
+                                                <option key={item.value} value={item.value} style={{ background: 'var(--bg-surface)' }}>{item.label}</option>
                                             ))}
                                         </select>
                                     </Box>
                                     <Box>
-                                        <Text fontSize="2xs" color="#4A5568" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Sort By</Text>
+                                        <Text fontSize="2xs" color="var(--text-dim)" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Sort By</Text>
                                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} style={selectStyle}>
                                             {sortOptions.items.map((item) => (
-                                                <option key={item.value} value={item.value} style={{ background: '#1A1A2E' }}>{item.label}</option>
+                                                <option key={item.value} value={item.value} style={{ background: 'var(--bg-surface)' }}>{item.label}</option>
                                             ))}
                                         </select>
                                     </Box>
                                     <Box>
-                                        <Text fontSize="2xs" color="#4A5568" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Tags</Text>
+                                        <Text fontSize="2xs" color="var(--text-dim)" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Tags</Text>
                                         <input
                                             value={tags}
                                             onChange={(e) => setTags(e.target.value)}
                                             placeholder="java, web..."
-                                            style={{ ...selectStyle, caretColor: '#00C9A7' }}
+                                            style={{ ...selectStyle, caretColor: 'var(--accent)' }}
                                         />
                                     </Box>
                                     <Box>
-                                        <Text fontSize="2xs" color="#4A5568" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Likes</Text>
+                                        <Text fontSize="2xs" color="var(--text-dim)" fontWeight="600" mb={1} textTransform="uppercase" letterSpacing="wider">Likes</Text>
                                         <Flex gap={2}>
                                             <input type="number" placeholder="Min" value={minLikes} onChange={(e) => setMinLikes(e.target.value)} style={{ ...selectStyle, width: '50%' }} />
                                             <input type="number" placeholder="Max" value={maxLikes} onChange={(e) => setMaxLikes(e.target.value)} style={{ ...selectStyle, width: '50%' }} />
@@ -521,11 +533,11 @@ function Social() {
                                     <Button
                                         size="xs"
                                         onClick={handleSearch}
-                                        bg="rgba(0,201,167,0.1)"
-                                        color="#00C9A7"
+                                        bg="rgba(var(--accent-rgb),0.1)"
+                                        color="var(--accent)"
                                         border="1px solid"
-                                        borderColor="rgba(0,201,167,0.2)"
-                                        _hover={{ bg: 'rgba(0,201,167,0.18)' }}
+                                        borderColor="rgba(var(--accent-rgb),0.2)"
+                                        _hover={{ bg: 'rgba(var(--accent-rgb),0.18)' }}
                                         rounded="lg"
                                         h={8}
                                         px={4}
@@ -543,29 +555,29 @@ function Social() {
 
                 {/* Section header */}
                 <Flex align="center" gap={2} mb={5}>
-                    {mode === 'TRENDING' && <TrendingUp size={16} color="#F59E0B" />}
-                    {mode === 'RECENT' && <Clock size={16} color="#60A5FA" />}
-                    {mode === 'SEARCH' && <Search size={16} color="#00C9A7" />}
-                    <Text fontSize="sm" fontWeight="600" color="#A0AEC0">
+                    {mode === 'TRENDING' && <TrendingUp size={16} color="var(--warning)" />}
+                    {mode === 'RECENT' && <Clock size={16} color="var(--blue-light)" />}
+                    {mode === 'SEARCH' && <Search size={16} color="var(--accent)" />}
+                    <Text fontSize="sm" fontWeight="600" color="var(--text-secondary)">
                         {mode === 'TRENDING' && `Trending ${contentLabel}`}
                         {mode === 'RECENT' && `Recently Added`}
                         {mode === 'SEARCH' && `Search Results (${items.length})`}
                     </Text>
-                    <Box flex={1} h="1px" bg="whiteAlpha.50" ml={2} />
+                    <Box flex={1} h="1px" bg="var(--bg-hover)" ml={2} />
                 </Flex>
 
                 {/* Content */}
                 {loading ? (
                     <Center py={16}>
-                        <Spinner size="lg" color="#00C9A7" />
-                        <Text ml={4} color="#718096">Loading {contentLabel.toLowerCase()}...</Text>
+                        <Spinner size="lg" color="var(--accent)" />
+                        <Text ml={4} color="var(--text-muted)">Loading {contentLabel.toLowerCase()}...</Text>
                     </Center>
                 ) : items.length === 0 ? (
                     <Center py={16} flexDirection="column" gap={3}>
-                        <Box w={12} h={12} rounded="full" bg="rgba(255,255,255,0.03)" display="flex" alignItems="center" justifyContent="center">
-                            {contentType === 'COURSES' ? <BookOpen size={20} color="#4A5568" /> : <FileText size={20} color="#4A5568" />}
+                        <Box w={12} h={12} rounded="full" bg="var(--bg-elevated)" display="flex" alignItems="center" justifyContent="center">
+                            {contentType === 'COURSES' ? <BookOpen size={20} color="var(--text-dim)" /> : <FileText size={20} color="var(--text-dim)" />}
                         </Box>
-                        <Text color="#4A5568">No {contentLabel.toLowerCase()} found</Text>
+                        <Text color="var(--text-dim)">No {contentLabel.toLowerCase()} found</Text>
                     </Center>
                 ) : (
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>

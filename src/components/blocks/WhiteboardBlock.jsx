@@ -7,9 +7,9 @@ const WhiteboardBlock = ({ title, body = '' }) => {
     <Box
       my={6}
       p={6}
-      bg="#1a1f2e"
+      bg="var(--bg-surface)"
       border="2px solid"
-      borderColor="#2a3244"
+      borderColor="var(--border-base)"
       rounded="xl"
       position="relative"
       overflow="hidden"
@@ -21,7 +21,7 @@ const WhiteboardBlock = ({ title, body = '' }) => {
         right: 0,
         bottom: 0,
         backgroundImage:
-          'radial-gradient(circle, rgba(255,255,255,0.015) 1px, transparent 1px)',
+          'radial-gradient(circle, var(--border-subtle) 1px, transparent 1px)',
         backgroundSize: '24px 24px',
         pointerEvents: 'none',
       }}
@@ -34,7 +34,7 @@ const WhiteboardBlock = ({ title, body = '' }) => {
         mb={4}
         pb={3}
         borderBottom="1px dashed"
-        borderColor="rgba(255,255,255,0.08)"
+        borderColor="var(--border-light)"
       >
         <Box w={3} h={3} rounded="full" bg="#FF6B6B" />
         <Box w={3} h={3} rounded="full" bg="#FFD93D" />
@@ -44,7 +44,7 @@ const WhiteboardBlock = ({ title, body = '' }) => {
             ml={2}
             fontSize="sm"
             fontWeight="600"
-            color="rgba(255,255,255,0.5)"
+            color="var(--text-muted)"
             fontFamily="'Caveat', 'Segoe Print', 'Comic Sans MS', cursive"
             letterSpacing="0.02em"
           >
@@ -76,16 +76,16 @@ const WhiteboardBlock = ({ title, body = '' }) => {
                 mx={4}
                 px={4}
                 py={2}
-                bg="rgba(0,201,167,0.06)"
+                bg="rgba(var(--accent-rgb),0.06)"
                 border="1px solid"
-                borderColor="rgba(0,201,167,0.12)"
+                borderColor="rgba(var(--accent-rgb),0.12)"
                 rounded="md"
                 display="inline-block"
               >
                 <Text
                   fontFamily="'Caveat', 'Segoe Print', 'Comic Sans MS', cursive"
                   fontSize="xl"
-                  color="#00C9A7"
+                  color="var(--accent)"
                   fontWeight="700"
                   dangerouslySetInnerHTML={{ __html: rendered }}
                 />
@@ -98,7 +98,7 @@ const WhiteboardBlock = ({ title, body = '' }) => {
               key={i}
               fontFamily="'Caveat', 'Segoe Print', 'Comic Sans MS', cursive"
               fontSize={isStep ? 'xl' : 'lg'}
-              color={isStep ? '#E2E8F0' : isSubItem ? '#A0AEC0' : '#CBD5E0'}
+              color={isStep ? 'var(--text-primary)' : isSubItem ? 'var(--text-secondary)' : 'var(--text-muted)'}
               fontWeight={isStep ? '700' : '400'}
               lineHeight="2"
               pl={isSubItem ? 6 : 0}
@@ -116,7 +116,7 @@ const WhiteboardBlock = ({ title, body = '' }) => {
         left={0}
         right={0}
         h="1px"
-        bg="linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)"
+        bg="linear-gradient(90deg, transparent, var(--border-subtle), transparent)"
       />
     </Box>
   );

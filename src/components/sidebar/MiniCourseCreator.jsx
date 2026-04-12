@@ -77,7 +77,7 @@ function MiniCourseCreator({ onCourseGenerated }) {
       borderRadius="lg"
       boxShadow="sm"
       // borderWidth="1px"
-      borderColor="gray.700"     // fixed border color
+      borderColor="var(--border-base)"     // fixed border color
     >
       <Stack spacing={3}>
         <Heading
@@ -92,7 +92,7 @@ function MiniCourseCreator({ onCourseGenerated }) {
           Create Course
         </Heading>
 
-        <Text fontSize="xs" color="gray.400">
+        <Text fontSize="xs" color="var(--text-secondary)">
           Generate a course by entering a topic
         </Text>
 
@@ -103,9 +103,9 @@ function MiniCourseCreator({ onCourseGenerated }) {
           value={topic}
           onChange={(e) => setTopic(e.target.value)}
           bg="ghost"
-          color="white"
-          borderColor="gray.600"
-          _placeholder={{ color: 'gray.400' }}
+          color="var(--text-primary)"
+          borderColor="var(--border-base)"
+          _placeholder={{ color: 'var(--text-secondary)' }}
         />
 
         <Button

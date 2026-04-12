@@ -22,7 +22,7 @@ const FillBlankBlock = ({ sentence, answer, options, explanation }) => {
   const renderSentence = () => {
     const parts = sentence.split('_____');
     return (
-      <Text color="#E2E8F0" fontSize="md" lineHeight="1.8">
+      <Text color="var(--text-primary)" fontSize="md" lineHeight="1.8">
         {parts[0]}
         <Text
           as="span"
@@ -32,17 +32,17 @@ const FillBlankBlock = ({ sentence, answer, options, explanation }) => {
           rounded="md"
           fontWeight="700"
           bg={
-            !revealed ? 'rgba(124,58,237,0.12)' :
-            isCorrect ? 'rgba(0,201,167,0.12)' : 'rgba(239,68,68,0.12)'
+            !revealed ? 'rgba(var(--purple-rgb),0.12)' :
+            isCorrect ? 'rgba(var(--accent-rgb),0.12)' : 'rgba(var(--error-rgb),0.12)'
           }
           color={
-            !revealed ? '#A78BFA' :
-            isCorrect ? '#00C9A7' : '#EF4444'
+            !revealed ? 'var(--purple-light)' :
+            isCorrect ? 'var(--accent)' : 'var(--error)'
           }
           borderBottom="2px dashed"
           borderColor={
-            !revealed ? '#7C3AED' :
-            isCorrect ? '#00C9A7' : '#EF4444'
+            !revealed ? 'var(--purple)' :
+            isCorrect ? 'var(--accent)' : 'var(--error)'
           }
           transition="all 0.3s"
         >
@@ -57,14 +57,14 @@ const FillBlankBlock = ({ sentence, answer, options, explanation }) => {
     <Box
       my={6}
       p={5}
-      bg="rgba(255,255,255,0.02)"
+      bg="var(--bg-elevated)"
       border="1px solid"
-      borderColor="#1E2536"
+      borderColor="var(--border-base)"
       rounded="xl"
     >
       <Flex align="center" gap={2} mb={4}>
         <Box w="6px" h="6px" rounded="full" bg="#7C3AED" />
-        <Text fontSize="xs" fontWeight="600" color="#A78BFA" textTransform="uppercase" letterSpacing="0.06em">
+        <Text fontSize="xs" fontWeight="600" color="var(--purple-light)" textTransform="uppercase" letterSpacing="0.06em">
           Fill in the Blank
         </Text>
       </Flex>
@@ -86,20 +86,20 @@ const FillBlankBlock = ({ sentence, answer, options, explanation }) => {
               rounded="full"
               border="1px solid"
               borderColor={
-                showCorrect ? '#00C9A7' :
-                showWrong ? '#EF4444' :
-                isThis ? '#7C3AED' : '#1E2536'
+                showCorrect ? 'var(--accent)' :
+                showWrong ? 'var(--error)' :
+                isThis ? 'var(--purple)' : 'var(--border-base)'
               }
               bg={
-                showCorrect ? 'rgba(0,201,167,0.08)' :
-                showWrong ? 'rgba(239,68,68,0.08)' :
-                isThis ? 'rgba(124,58,237,0.08)' : 'transparent'
+                showCorrect ? 'rgba(var(--accent-rgb),0.08)' :
+                showWrong ? 'rgba(var(--error-rgb),0.08)' :
+                isThis ? 'rgba(var(--purple-rgb),0.08)' : 'transparent'
               }
               color={
-                showCorrect ? '#00C9A7' :
-                showWrong ? '#EF4444' : '#A0AEC0'
+                showCorrect ? 'var(--accent)' :
+                showWrong ? 'var(--error)' : 'var(--text-secondary)'
               }
-              _hover={!revealed ? { borderColor: '#7C3AED', bg: 'rgba(124,58,237,0.05)' } : {}}
+              _hover={!revealed ? { borderColor: 'var(--purple)', bg: 'rgba(var(--purple-rgb),0.05)' } : {}}
               px={4}
               h={8}
               fontWeight="500"
@@ -124,22 +124,22 @@ const FillBlankBlock = ({ sentence, answer, options, explanation }) => {
 
       {revealed && (
         <Flex align="center" gap={2}>
-          <Text fontSize="sm" color={isCorrect ? '#00C9A7' : '#EF4444'} fontWeight="500">
+          <Text fontSize="sm" color={isCorrect ? 'var(--accent)' : 'var(--error)'} fontWeight="500">
             {isCorrect ? 'Correct!' : 'Not quite.'}
           </Text>
-          <Button size="xs" variant="ghost" color="#4A5568" onClick={() => { setSelected(null); setRevealed(false); }} rounded="lg">
+          <Button size="xs" variant="ghost" color="var(--text-dim)" onClick={() => { setSelected(null); setRevealed(false); }} rounded="lg">
             <RotateCcw size={12} />
           </Button>
         </Flex>
       )}
 
       {revealed && explanation && (
-        <Box mt={3} p={3} bg="rgba(124,58,237,0.05)" border="1px solid" borderColor="rgba(124,58,237,0.12)" rounded="lg">
+        <Box mt={3} p={3} bg="rgba(var(--purple-rgb),0.05)" border="1px solid" borderColor="rgba(var(--purple-rgb),0.12)" rounded="lg">
           <Flex align="center" gap={1.5} mb={1}>
-            <Lightbulb size={13} color="#A78BFA" />
-            <Text fontSize="xs" fontWeight="600" color="#A78BFA">Explanation</Text>
+            <Lightbulb size={13} color="var(--purple-light)" />
+            <Text fontSize="xs" fontWeight="600" color="var(--purple-light)">Explanation</Text>
           </Flex>
-          <Text fontSize="sm" color="#A0AEC0" lineHeight="1.7">{explanation}</Text>
+          <Text fontSize="sm" color="var(--text-secondary)" lineHeight="1.7">{explanation}</Text>
         </Box>
       )}
     </Box>

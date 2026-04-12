@@ -56,7 +56,7 @@ const VideoBlock = ({ query }) => {
 
   if (!videos.length) {
     return (
-      <Box w="full" py={8} textAlign="center" color="gray.400">
+      <Box w="full" py={8} textAlign="center" color="var(--text-secondary)">
         <Text>No relevant videos found for: "{query}"</Text>
       </Box>
     );
@@ -64,12 +64,12 @@ const VideoBlock = ({ query }) => {
 
   return (
     <VStack spacing={6} align="stretch" w="100%" mt={6}>
-      {/* <Heading size="md" color="gray.100" mb={2}>
+      {/* <Heading size="md" color="var(--text-primary)" mb={2}>
         Related Videos: {query}
       </Heading> */}
       {videos.map((video) => (
         <Box key={video.videoId}>
-          <Text mt={2} fontWeight="semibold" fontSize="xl" color="gray.200">
+          <Text mt={2} fontWeight="semibold" fontSize="xl" color="var(--text-primary)">
             {video.title}
           </Text>
           <AspectRatio ratio={16 / 9} w="100%">
