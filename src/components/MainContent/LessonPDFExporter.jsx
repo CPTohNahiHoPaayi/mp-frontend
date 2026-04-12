@@ -1,4 +1,6 @@
 import React, { useRef, useEffect } from 'react';
+import { Button, Text } from '@chakra-ui/react';
+import { Download } from 'lucide-react';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
@@ -182,30 +184,6 @@ const LessonPDFExporter = ({ contentData, fileName = 'lesson.pdf' }) => {
         color: #ccc;
       }
 
-      .download-button {
-        background: linear-gradient(135deg, #7e57c2, #673ab7);
-        color: #ffffff;
-        border: none;
-        padding: 14px 28px;
-        font-size: 16px;
-        font-family: 'Fira Code', monospace;
-        border-radius: 8px;
-        cursor: pointer;
-        
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
-      }
-
-      .download-button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(103, 58, 183, 0.3);
-        background: linear-gradient(135deg, #9575cd, #5e35b1);
-      }
-
-      .download-button:focus {
-        outline: 2px solid #c5a5ff;
-        outline-offset: 4px;
-      }
     `;
     document.head.appendChild(style);
     return () => {
@@ -215,9 +193,19 @@ const LessonPDFExporter = ({ contentData, fileName = 'lesson.pdf' }) => {
 
   return (
     <>
-      <button className="download-button" onClick={handleDownloadPdf}>
-        Download as PDF
-      </button>
+      <Button
+        variant="ghost"
+        size="sm"
+        color="gray.400"
+        _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+        rounded="lg"
+        h={9}
+        px={3}
+        onClick={handleDownloadPdf}
+      >
+        <Download size={16} />
+        <Text ml={1.5} fontSize="xs" display={{ base: 'none', sm: 'block' }}>PDF</Text>
+      </Button>
 
       <div ref={contentRef} className="pdf-content">
         {contentData.map((item, index) => (
