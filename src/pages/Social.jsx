@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
     Box, Button, Center, Flex, Grid, Heading, IconButton, Input, Select, Spinner, Tag, Text,
 } from '@chakra-ui/react';
-import { Search, Heart, Eye, Filter, X, TrendingUp, Clock, FileText, BookOpen } from 'lucide-react';
+import { Search, Heart, Eye, Filter, X, TrendingUp, Clock, FileText, BookOpen, Globe } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import LandingPage from './LandingPage';
 import { useNavigate } from 'react-router-dom';
@@ -293,31 +294,25 @@ function Social() {
 
     return (
         <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
-            <Center mb={10} flexDirection="column" textAlign="center" px={4}>
-                <Heading
-                    fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
-                    mb={4}
-                    lineHeight="shorter"
-                    letterSpacing="-0.5px"
-                    fontWeight="800"
-                    letterSpacing="-0.02em"
-                    color="white"
-                >
-                    Discover <Box as="span" color="#00C9A7">{contentLabel}</Box>
-                </Heading>
-                <Text
-                    color="gray.400"
-                    fontSize={{ base: "md", md: "lg", lg: "xl" }}
-                    maxW="2xl"
-                    lineHeight="tall"
-                    fontWeight="medium"
-                >
-                    {contentType === 'COURSES'
-                        ? <>Find the perfect course to <Text as="span" color="blue.300" fontWeight="semibold">enhance your skills</Text> and expand your knowledge.</>
-                        : <>Explore community <Text as="span" color="blue.300" fontWeight="semibold">notes and ideas</Text> shared by others.</>
-                    }
-                </Text>
-            </Center>
+            <Box mb={8} maxW="4xl" mx="auto">
+                <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+                    <Flex align="center" gap={3} mb={2}>
+                        <Box w={10} h={10} rounded="xl" bg="rgba(0,201,167,0.08)" display="flex" alignItems="center" justifyContent="center">
+                            <Globe size={20} color="#00C9A7" />
+                        </Box>
+                        <Box>
+                            <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="#E2E8F0" letterSpacing="-0.01em">
+                                Discover {contentLabel}
+                            </Heading>
+                            <Text fontSize="sm" color="#718096">
+                                {contentType === 'COURSES'
+                                    ? 'Explore public courses from the community'
+                                    : 'Browse notes and ideas shared by others'}
+                            </Text>
+                        </Box>
+                    </Flex>
+                </motion.div>
+            </Box>
 
             {/* Content Type Toggle */}
             <Flex justify="center" gap={2} mb={6}>

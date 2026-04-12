@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import {
   Box, Button, Center, Flex, Grid, Heading, Input, Spinner, Text, Dialog,
 } from '@chakra-ui/react';
-import { Plus, Search, FileText, Upload, CheckSquare, Square, Brain } from 'lucide-react';
+import { Plus, Search, FileText, Upload, CheckSquare, Square, Brain, StickyNote } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import NoteCard from '../components/notes/NoteCard';
@@ -225,20 +226,23 @@ export default function Notes() {
 
   return (
     <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
-      <Center mb={8} flexDirection="column" textAlign="center">
-        <Heading
-          fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
-          mb={4}
-          fontWeight="800"
-          letterSpacing="-0.02em"
-          color="white"
-        >
-          My <Box as="span" color="#00C9A7">Notes</Box>
-        </Heading>
-        <Text color="gray.400" fontSize={{ base: 'md', md: 'lg' }} maxW="2xl">
-          Create, edit, and organize your notes with a rich block editor.
-        </Text>
-      </Center>
+      <Box mb={10} maxW="6xl" mx="auto">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <Flex align="center" gap={3} mb={2}>
+            <Box w={10} h={10} rounded="xl" bg="rgba(0,201,167,0.08)" display="flex" alignItems="center" justifyContent="center">
+              <StickyNote size={20} color="#00C9A7" />
+            </Box>
+            <Box>
+              <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="#E2E8F0" letterSpacing="-0.01em">
+                My Notes
+              </Heading>
+              <Text fontSize="sm" color="#718096">
+                {notes.length} notes · {folders.length} folders
+              </Text>
+            </Box>
+          </Flex>
+        </motion.div>
+      </Box>
 
       <Box maxW="6xl" mx="auto">
         {/* Search + Actions bar */}

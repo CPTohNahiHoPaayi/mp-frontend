@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {
   Box, Button, Center, Flex, Heading, Input, Text, Spinner,
 } from '@chakra-ui/react';
-import { Brain, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react';
+import { Brain, ArrowLeft, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import MarkdownRenderer from '@/components/ui/MarkdownRenderer';
@@ -50,27 +51,28 @@ export default function NotesRAG() {
 
   return (
     <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
-      <Center mb={8} flexDirection="column" textAlign="center">
-        <Heading
-          fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
-          mb={4}
-          fontWeight="800"
-          letterSpacing="-0.02em"
-          color="white"
-        >
-          Ask Your <Box as="span" color="#00C9A7">Notes</Box>
-        </Heading>
-        <Text color="gray.400" fontSize={{ base: 'md', md: 'lg' }} maxW="2xl">
-          Ask questions about your ingested notes using AI-powered retrieval.
-        </Text>
-      </Center>
-
       <Box maxW="3xl" mx="auto">
-        {/* Back button */}
-        <Button variant="ghost" size="sm" mb={6} onClick={() => navigate('/notes')} color="gray.400">
-          <ArrowLeft size={16} />
-          <Text ml={2}>Back to Notes</Text>
-        </Button>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+          <Flex align="center" justify="space-between" mb={8}>
+            <Flex align="center" gap={3}>
+              <Box w={10} h={10} rounded="xl" bg="rgba(0,201,167,0.08)" display="flex" alignItems="center" justifyContent="center">
+                <Sparkles size={20} color="#00C9A7" />
+              </Box>
+              <Box>
+                <Heading fontSize={{ base: 'xl', md: '2xl' }} fontWeight="700" color="#E2E8F0" letterSpacing="-0.01em">
+                  Ask Your Notes
+                </Heading>
+                <Text fontSize="sm" color="#718096">
+                  AI-powered retrieval from your ingested notes
+                </Text>
+              </Box>
+            </Flex>
+            <Button variant="ghost" size="sm" onClick={() => navigate('/notes')} color="#718096" _hover={{ color: '#E2E8F0' }} rounded="lg">
+              <ArrowLeft size={14} />
+              <Text ml={1.5} fontSize="xs">Notes</Text>
+            </Button>
+          </Flex>
+        </motion.div>
 
         {/* Question input */}
         <Flex
