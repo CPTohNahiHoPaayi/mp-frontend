@@ -224,16 +224,16 @@ export default function Notes() {
   const allSelected = filteredNotes.length > 0 && selectedNoteIds.size === filteredNotes.length;
 
   return (
-    <Box minH="100vh" bg="gray.900" py={10} px={4} color="white">
+    <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
       <Center mb={8} flexDirection="column" textAlign="center">
         <Heading
           fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
           mb={4}
-          bg="linear-gradient(135deg, #1e3a5f 0%, #2563EB 50%, #7c3aed 100%)"
-          bgClip="text"
-          fontWeight="extrabold"
+          fontWeight="800"
+          letterSpacing="-0.02em"
+          color="white"
         >
-          My Notes
+          My <Box as="span" color="#00C9A7">Notes</Box>
         </Heading>
         <Text color="gray.400" fontSize={{ base: 'md', md: 'lg' }} maxW="2xl">
           Create, edit, and organize your notes with a rich block editor.
@@ -245,9 +245,9 @@ export default function Notes() {
         <Flex gap={4} align="center" mb={6} wrap="wrap">
           <Flex
             flex={1}
-            bg="gray.800"
+            bg="rgba(255,255,255,0.02)"
             border="1px solid"
-            borderColor="gray.700"
+            borderColor="whiteAlpha.100"
             borderRadius="xl"
             align="center"
             px={4}
@@ -331,10 +331,10 @@ export default function Notes() {
             <Box
               w="220px"
               flexShrink={0}
-              bg="gray.800"
+              bg="rgba(255,255,255,0.02)"
               borderRadius="xl"
               border="1px solid"
-              borderColor="gray.700"
+              borderColor="whiteAlpha.100"
               p={3}
             >
               <Text fontSize="xs" fontWeight="semibold" color="gray.500" mb={2} textTransform="uppercase" letterSpacing="wider">
@@ -399,7 +399,7 @@ export default function Notes() {
       <Dialog.Root open={isFolderModalOpen} onOpenChange={(e) => !e.open && closeFolderModal()} placement="center">
         <Dialog.Backdrop />
         <Dialog.Positioner>
-          <Dialog.Content bg="gray.800" color="white">
+          <Dialog.Content bg="rgba(255,255,255,0.02)" color="white">
             <Dialog.Header>
               <Dialog.Title>New Folder</Dialog.Title>
             </Dialog.Header>
@@ -410,7 +410,7 @@ export default function Notes() {
                 onChange={(e) => setNewFolderName(e.target.value)}
                 onKeyDown={(e) => { if (e.key === 'Enter') handleCreateFolderSubmit(); }}
                 autoFocus
-                bg="gray.700"
+                bg="rgba(255,255,255,0.04)"
                 border="none"
                 color="white"
                 _placeholder={{ color: 'gray.400' }}

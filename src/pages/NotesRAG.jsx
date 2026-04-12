@@ -49,16 +49,16 @@ export default function NotesRAG() {
   };
 
   return (
-    <Box minH="100vh" bg="gray.900" py={10} px={4} color="white">
+    <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
       <Center mb={8} flexDirection="column" textAlign="center">
         <Heading
           fontSize={{ base: '3xl', md: '4xl', lg: '5xl' }}
           mb={4}
-          bg="linear-gradient(135deg, #1e3a5f 0%, #2563EB 50%, #7c3aed 100%)"
-          bgClip="text"
-          fontWeight="extrabold"
+          fontWeight="800"
+          letterSpacing="-0.02em"
+          color="white"
         >
-          Ask Your Notes
+          Ask Your <Box as="span" color="#00C9A7">Notes</Box>
         </Heading>
         <Text color="gray.400" fontSize={{ base: 'md', md: 'lg' }} maxW="2xl">
           Ask questions about your ingested notes using AI-powered retrieval.
@@ -73,13 +73,13 @@ export default function NotesRAG() {
         </Button>
 
         {/* Question input */}
-        <Box bg="gray.800" rounded="xl" border="1px solid" borderColor="gray.700" p={6} mb={6}>
+        <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="whiteAlpha.100" p={6} mb={6}>
           <Textarea
             placeholder="Ask a question about your notes..."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAsk(); } }}
-            bg="gray.700"
+            bg="rgba(255,255,255,0.04)"
             border="none"
             color="white"
             _placeholder={{ color: 'gray.500' }}
@@ -118,7 +118,7 @@ export default function NotesRAG() {
 
         {/* Answer */}
         {answer && !loading && (
-          <Box bg="gray.800" rounded="xl" border="1px solid" borderColor="gray.700" p={6} mb={6}>
+          <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="whiteAlpha.100" p={6} mb={6}>
             <Text fontSize="sm" fontWeight="semibold" color="blue.300" mb={3}>Answer</Text>
             <MarkdownRenderer content={answer} />
           </Box>
@@ -126,7 +126,7 @@ export default function NotesRAG() {
 
         {/* Sources */}
         {context.length > 0 && !loading && (
-          <Box bg="gray.800" rounded="xl" border="1px solid" borderColor="gray.700" p={6}>
+          <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="whiteAlpha.100" p={6}>
             <Button
               variant="ghost"
               size="sm"
@@ -143,7 +143,7 @@ export default function NotesRAG() {
             {showSources && (
               <Flex direction="column" gap={2}>
                 {context.map((chunk, i) => (
-                  <Box key={i} bg="gray.700" rounded="lg" overflow="hidden">
+                  <Box key={i} bg="rgba(255,255,255,0.04)" rounded="lg" overflow="hidden">
                     <Button
                       variant="ghost"
                       size="sm"
@@ -154,7 +154,7 @@ export default function NotesRAG() {
                       py={3}
                       h="auto"
                       color="gray.300"
-                      _hover={{ bg: 'gray.600' }}
+                      _hover={{ bg: 'whiteAlpha.100' }}
                     >
                       <Flex gap={2} align="center">
                         <Text fontSize="xs" color="blue.300" fontWeight="semibold">

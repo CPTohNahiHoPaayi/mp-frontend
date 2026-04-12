@@ -34,20 +34,21 @@ export default function NoteCard({
   return (
     <Box
       p={5}
-      bg="gray.800"
+      bg="rgba(255,255,255,0.02)"
       rounded="xl"
-      shadow="md"
-      _hover={{ shadow: 'xl', transform: 'translateY(-4px)' }}
+      border="1px solid"
+      borderColor="whiteAlpha.50"
+      _hover={{ borderColor: 'whiteAlpha.200', bg: 'rgba(255,255,255,0.04)', transform: 'translateY(-3px)', boxShadow: '0 8px 30px rgba(0,0,0,0.3)' }}
       transition="all 0.2s"
       cursor="pointer"
       onClick={() => navigate(`/notes/${note.id}/edit`)}
       position="relative"
-      border={selected ? '2px solid' : '2px solid transparent'}
-      borderColor={selected ? 'blue.400' : 'transparent'}
+      outline={selected ? '2px solid' : 'none'}
+      outlineColor={selected ? '#00C9A7' : 'transparent'}
     >
       <Box
         h="100px"
-        bg="linear-gradient(135deg, #1e3a5f 0%, #2563eb 50%, #7c3aed 100%)"
+        bg="linear-gradient(135deg, rgba(0,201,167,0.15), rgba(59,130,246,0.15))"
         rounded="lg"
         position="relative"
         display="flex"

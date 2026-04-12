@@ -248,7 +248,7 @@ function Social() {
         const tagsArray = (course.tags || '').split(',').filter(Boolean).slice(0, 2);
         const likedBy = (course.likedBy || '').split(',');
         return (
-            <Box p={4} bg="gray.800" rounded="xl" shadow="md" _hover={{ shadow: 'xl', transform: 'translateY(-4px)' }} transition="all 0.2s">
+            <Box p={4} bg="rgba(255,255,255,0.02)" rounded="xl" shadow="md" _hover={{ shadow: 'xl', transform: 'translateY(-4px)' }} transition="all 0.2s">
                 <Box h="150px" bgGradient="linear(to-br, blue.500, pink.500)" rounded="lg" position="relative">
                     <Center position="absolute" inset={0} bg="blackAlpha.300">
                         <Heading size="md" color="white" textAlign="center">{course.title}</Heading>
@@ -292,18 +292,18 @@ function Social() {
     const contentLabel = contentType === 'COURSES' ? 'Courses' : 'Notes';
 
     return (
-        <Box minH="100vh" bg="gray.900" py={10} px={4} color="white">
+        <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
             <Center mb={10} flexDirection="column" textAlign="center" px={4}>
                 <Heading
                     fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
                     mb={4}
                     lineHeight="shorter"
                     letterSpacing="-0.5px"
-                    bg="linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #3B82F6 100%)"
-                    bgClip="text"
-                    fontWeight="extrabold"
+                    fontWeight="800"
+                    letterSpacing="-0.02em"
+                    color="white"
                 >
-                    Discover {contentLabel}
+                    Discover <Box as="span" color="#00C9A7">{contentLabel}</Box>
                 </Heading>
                 <Text
                     color="gray.400"
@@ -344,9 +344,9 @@ function Social() {
             <Box maxW="4xl" mx="auto" mb={6}>
                 {/* Search bar */}
                 <Flex
-                    bg="gray.800"
+                    bg="rgba(255,255,255,0.02)"
                     border="1px solid"
-                    borderColor="gray.700"
+                    borderColor="whiteAlpha.100"
                     borderRadius="2xl"
                     align="center"
                     px={4}
@@ -403,7 +403,7 @@ function Social() {
 
                 {/* Filters */}
                 {showFilters && (
-                    <Box mt={6} p={6} bg="gray.800" rounded="2xl" shadow="md" border="1px solid" borderColor="gray.700">
+                    <Box mt={6} p={6} bg="rgba(255,255,255,0.02)" rounded="2xl" shadow="md" border="1px solid" borderColor="whiteAlpha.100">
                         <Flex justify="space-between" align="center" mb={4}>
                             <Text fontSize="lg" fontWeight="bold">Filters</Text>
                             <IconButton
@@ -426,9 +426,9 @@ function Social() {
                                         width: '100%',
                                         padding: '10px',
                                         borderRadius: '8px',
-                                        backgroundColor: '#2D3748',
+                                        backgroundColor: 'rgba(255,255,255,0.04)',
                                         color: 'white',
-                                        border: '1px solid #4A5568',
+                                        border: '1px solid rgba(255,255,255,0.1)',
                                         fontSize: '14px',
                                     }}
                                 >
@@ -448,9 +448,9 @@ function Social() {
                                         width: '100%',
                                         padding: '10px',
                                         borderRadius: '8px',
-                                        backgroundColor: '#2D3748',
+                                        backgroundColor: 'rgba(255,255,255,0.04)',
                                         color: 'white',
-                                        border: '1px solid #4A5568',
+                                        border: '1px solid rgba(255,255,255,0.1)',
                                         fontSize: '14px',
                                     }}
                                 >
@@ -467,7 +467,7 @@ function Social() {
                                     value={tags}
                                     onChange={(e) => setTags(e.target.value)}
                                     placeholder="e.g. java,web"
-                                    bg="gray.700"
+                                    bg="rgba(255,255,255,0.04)"
                                     color="white"
                                 />
                             </Box>
@@ -481,7 +481,7 @@ function Social() {
                                         placeholder="Min"
                                         value={minLikes}
                                         onChange={(e) => setMinLikes(e.target.value)}
-                                        bg="gray.700"
+                                        bg="rgba(255,255,255,0.04)"
                                         color="white"
                                     />
                                     <Input
@@ -489,7 +489,7 @@ function Social() {
                                         placeholder="Max"
                                         value={maxLikes}
                                         onChange={(e) => setMaxLikes(e.target.value)}
-                                        bg="gray.700"
+                                        bg="rgba(255,255,255,0.04)"
                                         color="white"
                                     />
                                 </Flex>
