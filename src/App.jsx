@@ -24,18 +24,30 @@ function NavLink({ icon: Icon, label, path, active, onClick }) {
     <Button
       variant="ghost"
       size="sm"
-      color={active ? "white" : "gray.500"}
-      bg={active ? "whiteAlpha.100" : "transparent"}
-      _hover={{ color: "white", bg: "whiteAlpha.50" }}
+      color={active ? "whiteAlpha.900" : "whiteAlpha.400"}
+      bg="transparent"
+      _hover={{ color: "whiteAlpha.800" }}
       onClick={onClick}
       rounded="lg"
       px={3}
       h={9}
-      fontWeight={active ? "semibold" : "medium"}
+      fontWeight={active ? "500" : "400"}
       fontSize="sm"
       transition="all 0.15s ease"
+      position="relative"
+      _after={active ? {
+        content: '""',
+        position: 'absolute',
+        bottom: '0',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '16px',
+        height: '2px',
+        bg: '#00C9A7',
+        borderRadius: 'full',
+      } : {}}
     >
-      <Icon size={16} />
+      <Icon size={15} />
       <Text ml={2} display={{ base: "none", md: "block" }}>{label}</Text>
     </Button>
   );

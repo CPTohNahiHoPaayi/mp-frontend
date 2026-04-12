@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import {
-  Box,
-  Text,
-  VStack,
-  Spinner,
-  HStack,
-  Flex,
-} from '@chakra-ui/react';
-import { BookOpen, StickyNote, ChevronRight } from 'lucide-react';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Box, Text, VStack, Spinner, HStack, Flex } from '@chakra-ui/react';
+import { BookOpen, StickyNote } from 'lucide-react';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
 function SidebarSection({ title, icon: Icon, children, count }) {
   return (
-    <Box mb={4}>
-      <Flex align="center" gap={2} px={3} py={2}>
-        <Icon size={13} color="#00C9A7" />
-        <Text fontSize="xs" fontWeight="semibold" color="gray.500" textTransform="uppercase" letterSpacing="wider">
+    <Box mb={3}>
+      <Flex align="center" gap={2} px={4} py={1.5} mb={1}>
+        <Icon size={12} color="rgba(0,201,167,0.5)" />
+        <Text fontSize="10px" fontWeight="600" color="whiteAlpha.400" textTransform="uppercase" letterSpacing="0.08em">
           {title}
         </Text>
         {count > 0 && (
-          <Text fontSize="xs" color="gray.700" ml="auto">{count}</Text>
+          <Text fontSize="10px" color="whiteAlpha.200" ml="auto">{count}</Text>
         )}
       </Flex>
       {children}
@@ -29,34 +22,30 @@ function SidebarSection({ title, icon: Icon, children, count }) {
   );
 }
 
-function SidebarItem({ to, label, active }) {
+function SidebarItem({ to, label }) {
+  const location = useLocation();
+  const isActive = location.pathname.startsWith(to);
+
   return (
-    <RouterLink to={to} style={{ textDecoration: 'none' }}>
-      <Flex
-        align="center"
-        px={3}
+    <RouterLink to={to} style={{ textDecoration: 'none', display: 'block' }}>
+      <Text
+        px={4}
         py={1.5}
-        mx={1}
-        rounded="lg"
-        color={active ? 'white' : 'gray.400'}
-        bg={active ? 'whiteAlpha.100' : 'transparent'}
-        _hover={{ bg: 'whiteAlpha.50', color: 'white' }}
-        transition="all 0.15s ease"
+        fontSize="13px"
+        fontWeight={isActive ? '500' : '400'}
+        color={isActive ? 'whiteAlpha.900' : 'whiteAlpha.500'}
+        bg={isActive ? 'whiteAlpha.50' : 'transparent'}
+        _hover={{ color: 'whiteAlpha.800', bg: 'whiteAlpha.50' }}
+        transition="all 0.15s"
         cursor="pointer"
-        gap={2}
+        overflow="hidden"
+        textOverflow="ellipsis"
+        whiteSpace="nowrap"
+        borderLeft="2px solid"
+        borderColor={isActive ? 'rgba(0,201,167,0.5)' : 'transparent'}
       >
-        <Text
-          flex={1}
-          fontSize="sm"
-          fontWeight="medium"
-          overflow="hidden"
-          textOverflow="ellipsis"
-          whiteSpace="nowrap"
-        >
-          {label}
-        </Text>
-        <ChevronRight size={12} style={{ opacity: 0.3, flexShrink: 0 }} />
-      </Flex>
+        {label}
+      </Text>
     </RouterLink>
   );
 }
@@ -67,7 +56,6 @@ function MyCourseList({ refreshTrigger }) {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(true);
   const baseURL = import.meta.env.VITE_API_URL;
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,29 +76,25 @@ function MyCourseList({ refreshTrigger }) {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [refreshTrigger, token]);
 
   if (loading) {
     return (
       <HStack justify="center" py={8}>
-        <Spinner size="sm" color="#00C9A7" />
-        <Text fontSize="xs" color="gray.600">Loading...</Text>
+        <Spinner size="sm" color="rgba(0,201,167,0.5)" />
+        <Text fontSize="xs" color="whiteAlpha.300">Loading...</Text>
       </HStack>
     );
   }
 
   return (
     <Box py={2}>
-      {/* Courses */}
       <SidebarSection title="Courses" icon={BookOpen} count={courses.length}>
         {courses.length === 0 ? (
-          <Text fontSize="xs" color="gray.700" px={3} py={2}>
-            No courses yet
-          </Text>
+          <Text fontSize="xs" color="whiteAlpha.200" px={4} py={2}>No courses yet</Text>
         ) : (
-          <VStack align="stretch" gap={0.5}>
+          <VStack align="stretch" gap={0}>
             {courses.map((course) => (
               <SidebarItem
                 key={course.id}
@@ -122,17 +106,13 @@ function MyCourseList({ refreshTrigger }) {
         )}
       </SidebarSection>
 
-      {/* Divider */}
-      <Box h="1px" bg="whiteAlpha.50" mx={3} my={2} />
+      <Box h="1px" bg="whiteAlpha.50" mx={4} my={3} />
 
-      {/* Recent Notes */}
       <SidebarSection title="Recent Notes" icon={StickyNote} count={notes.length}>
         {notes.length === 0 ? (
-          <Text fontSize="xs" color="gray.700" px={3} py={2}>
-            No notes yet
-          </Text>
+          <Text fontSize="xs" color="whiteAlpha.200" px={4} py={2}>No notes yet</Text>
         ) : (
-          <VStack align="stretch" gap={0.5}>
+          <VStack align="stretch" gap={0}>
             {notes.map((note) => (
               <SidebarItem
                 key={note.id}

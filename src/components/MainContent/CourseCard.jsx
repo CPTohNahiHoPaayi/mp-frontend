@@ -1,6 +1,6 @@
-import { Box, Button, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, HStack, Text } from '@chakra-ui/react';
 import { FiLock, FiUnlock } from 'react-icons/fi';
-import { BookOpen, Heart, ArrowRight, Download } from 'lucide-react';
+import { Heart, ArrowRight } from 'lucide-react';
 import { CoursePDFButton } from './LessonPDFExporter';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -26,104 +26,105 @@ function CourseCard({ course }) {
     }
   };
 
-  const truncate = (str, max = 60) =>
-    str.length > max ? str.slice(0, max - 1) + '…' : str;
-
   const createdDate = new Date(...course.createdAt);
 
   return (
     <Box
       w="100%"
+      h="full"
       bg="rgba(255,255,255,0.02)"
       border="1px solid"
       borderColor="whiteAlpha.50"
       borderRadius="xl"
       p={5}
-      transition="all 0.2s ease"
+      transition="all 0.25s ease"
       _hover={{
-        borderColor: 'whiteAlpha.200',
-        bg: 'rgba(255,255,255,0.04)',
-        transform: 'translateY(-3px)',
-        boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
+        borderColor: 'rgba(0,201,167,0.25)',
+        bg: 'rgba(255,255,255,0.035)',
+        transform: 'translateY(-2px)',
       }}
       cursor="pointer"
       onClick={() => navigate(`/courses/${course.id}/module/0/lesson/0`)}
       display="flex"
       flexDirection="column"
     >
-      {/* Header */}
-      <Flex align="start" justify="space-between" mb={3}>
-        <Box
-          w={10}
-          h={10}
-          rounded="lg"
-          bg="linear-gradient(135deg, rgba(0,201,167,0.15), rgba(59,130,246,0.15))"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flexShrink={0}
-        >
-          <BookOpen size={18} color="#00C9A7" />
-        </Box>
+      {/* Top row: visibility badge */}
+      <Flex justify="flex-end" mb={3}>
         <Button
           size="xs"
           variant="ghost"
-          color={isPublic ? '#00C9A7' : 'gray.600'}
+          color={isPublic ? 'rgba(0,201,167,0.6)' : 'whiteAlpha.300'}
           _hover={{ bg: 'whiteAlpha.50' }}
           onClick={(e) => { e.stopPropagation(); toggleVisibility(); }}
-          rounded="lg"
-          h={7}
+          rounded="full"
+          h={6}
           px={2}
+          fontSize="xs"
         >
-          {isPublic ? <FiUnlock size={12} /> : <FiLock size={12} />}
-          <Text ml={1} fontSize="xs">{isPublic ? 'Public' : 'Private'}</Text>
+          {isPublic ? <FiUnlock size={10} /> : <FiLock size={10} />}
+          <Text ml={1}>{isPublic ? 'Public' : 'Private'}</Text>
         </Button>
       </Flex>
 
       {/* Title */}
-      <Heading fontSize="md" fontWeight="semibold" color="white" mb={1.5} lineHeight="1.4">
-        {truncate(course.title)}
+      <Heading
+        fontSize="md"
+        fontWeight="600"
+        color="whiteAlpha.900"
+        mb={2}
+        lineHeight="1.5"
+        noOfLines={2}
+        minH="3em"
+      >
+        {course.title}
       </Heading>
 
       {/* Meta */}
-      <Text fontSize="xs" color="gray.600" mb={3}>
-        {course.creator.split('@')[0]} · {format(createdDate, 'dd MMM yyyy')}
+      <Text fontSize="xs" color="whiteAlpha.400" mb={3}>
+        {course.creator.split('@')[0]} · {format(createdDate, 'MMM yyyy')}
       </Text>
 
-      {/* Tags */}
-      {course.tags?.length > 0 && (
-        <HStack gap={1.5} mb={4} flexWrap="wrap">
-          {course.tags.slice(0, 3).map((tag, i) => (
-            <Text
-              key={i}
-              fontSize="xs"
-              color="gray.500"
-              bg="whiteAlpha.50"
-              px={2}
-              py={0.5}
-              rounded="md"
-            >
-              {tag}
-            </Text>
-          ))}
-          {course.tags.length > 3 && (
-            <Text fontSize="xs" color="gray.600">+{course.tags.length - 3}</Text>
-          )}
-        </HStack>
-      )}
+      {/* Tags — fixed height area */}
+      <Box minH="28px" mb={3}>
+        {course.tags?.length > 0 && (
+          <HStack gap={1.5} flexWrap="wrap">
+            {course.tags.slice(0, 3).map((tag, i) => (
+              <Text
+                key={i}
+                fontSize="10px"
+                color="rgba(0,201,167,0.7)"
+                bg="rgba(0,201,167,0.06)"
+                border="1px solid"
+                borderColor="rgba(0,201,167,0.1)"
+                px={2}
+                py={0.5}
+                rounded="full"
+                lineHeight="1.4"
+              >
+                {tag}
+              </Text>
+            ))}
+            {course.tags.length > 3 && (
+              <Text fontSize="10px" color="whiteAlpha.300">+{course.tags.length - 3}</Text>
+            )}
+          </HStack>
+        )}
+      </Box>
 
-      {/* Footer */}
-      <Flex align="center" justify="space-between" mt="auto" pt={2}>
-        <HStack gap={2} color="gray.600">
+      {/* Footer — pinned to bottom */}
+      <Flex align="center" justify="space-between" mt="auto" pt={3} borderTop="1px solid" borderColor="whiteAlpha.50">
+        <HStack gap={3} color="whiteAlpha.300">
           <HStack gap={1}>
-            <Heart size={13} />
+            <Heart size={12} />
             <Text fontSize="xs">{course.likesCount}</Text>
           </HStack>
           <CoursePDFButton courseId={course.id} courseTitle={course.title} />
         </HStack>
-        <HStack gap={1} color="#00C9A7" fontSize="xs" fontWeight="medium">
+        <HStack gap={1} color="rgba(0,201,167,0.6)" fontSize="xs" fontWeight="medium"
+          _groupHover={{ color: '#00C9A7' }}
+        >
           <Text>Start</Text>
-          <ArrowRight size={13} />
+          <ArrowRight size={12} />
         </HStack>
       </Flex>
     </Box>
