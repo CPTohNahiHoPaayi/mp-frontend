@@ -1,11 +1,24 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import { Box, Text, Link, Flex } from '@chakra-ui/react';
 import CodeBlock from '../blocks/CodeBlock';
 
+function preprocessMath(text) {
+  if (!text) return text;
+  // Convert \(...\) to $...$  and  \[...\] to $$...$$
+  return text
+    .replace(/\\\((.+?)\\\)/g, (_, m) => `$${m}$`)
+    .replace(/\\\[(.+?)\\\]/gs, (_, m) => `$$${m}$$`)
+    // Also handle (expression) patterns that look like display math
+    .replace(/\(\\displaystyle\s+(.+?)\)/g, (_, m) => `$$${m}$$`);
+}
+
 const MarkdownRenderer = ({ content }) => {
   if (!content) return null;
+  const processed = preprocessMath(content);
 
   return (
     <Box
@@ -16,7 +29,8 @@ const MarkdownRenderer = ({ content }) => {
       }}
     >
       <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeKatex]}
         components={{
           h1: ({ children }) => (
             <Text as="h1" fontSize="2xl" fontWeight="700" color="#E2E8F0" mt={8} mb={3}
@@ -183,7 +197,7 @@ const MarkdownRenderer = ({ content }) => {
           ),
         }}
       >
-        {content}
+        {processed}
       </ReactMarkdown>
     </Box>
   );

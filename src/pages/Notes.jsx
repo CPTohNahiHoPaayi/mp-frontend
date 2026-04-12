@@ -225,7 +225,7 @@ export default function Notes() {
   const allSelected = filteredNotes.length > 0 && selectedNoteIds.size === filteredNotes.length;
 
   return (
-    <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
+    <Box minH="full" bg="#06080F" py={10} px={4} color="white">
       <Box mb={10} maxW="6xl" mx="auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <Flex align="center" gap={3} mb={2}>
@@ -247,21 +247,30 @@ export default function Notes() {
       <Box maxW="6xl" mx="auto">
         {/* Search + Actions bar */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.4 }}>
-        <Flex gap={4} align="center" mb={6} wrap="wrap">
+        <Flex
+          gap={3}
+          align="center"
+          mb={6}
+          p={3}
+          bg="rgba(255,255,255,0.02)"
+          border="1px solid"
+          borderColor="whiteAlpha.50"
+          rounded="2xl"
+          wrap="wrap"
+        >
+          {/* Search */}
           <Flex
             flex={1}
             align="center"
-            bg="rgba(255,255,255,0.03)"
-            border="1px solid"
-            borderColor="whiteAlpha.50"
-            rounded="full"
-            px={4}
+            bg="rgba(255,255,255,0.04)"
+            rounded="xl"
+            px={3}
             py={1}
             minW="200px"
-            _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
+            _focusWithin={{ bg: 'rgba(255,255,255,0.06)', boxShadow: '0 0 0 1px rgba(0,201,167,0.15)' }}
             transition="all 0.2s"
           >
-            <Search size={14} color="rgba(255,255,255,0.2)" />
+            <Search size={14} color="#4A5568" />
             <input
               placeholder="Search notes..."
               value={searchQuery}
@@ -271,7 +280,7 @@ export default function Notes() {
                 border: 'none',
                 outline: 'none',
                 color: 'white',
-                fontSize: '14px',
+                fontSize: '13px',
                 height: '32px',
                 width: '100%',
                 marginLeft: '8px',
@@ -280,58 +289,98 @@ export default function Notes() {
             />
           </Flex>
 
-          {/* Select All toggle */}
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={toggleSelectAll}
-            color={allSelected ? 'blue.300' : 'gray.400'}
-          >
-            {allSelected ? <CheckSquare size={16} /> : <Square size={16} />}
-            <Text ml={2} fontSize="sm">Select All</Text>
-          </Button>
+          {/* Divider */}
+          <Box w="1px" h={6} bg="whiteAlpha.100" display={{ base: 'none', md: 'block' }} />
 
-          {/* Ingest Selected */}
-          {selectedNoteIds.size > 0 && (
+          {/* Selection & Ingest group */}
+          <Flex align="center" gap={1.5}>
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={toggleSelectAll}
+              color={allSelected ? '#00C9A7' : '#4A5568'}
+              _hover={{ color: '#A0AEC0', bg: 'rgba(255,255,255,0.04)' }}
+              rounded="lg"
+              h={8}
+              px={2.5}
+            >
+              {allSelected ? <CheckSquare size={14} /> : <Square size={14} />}
+              <Text ml={1.5} fontSize="xs">{allSelected ? 'Deselect' : 'Select All'}</Text>
+            </Button>
+
+            {selectedNoteIds.size > 0 ? (
+              <Button
+                size="xs"
+                onClick={() => handleBulkIngest([...selectedNoteIds])}
+                loading={bulkIngesting}
+                bg="rgba(124,58,237,0.1)"
+                color="#A78BFA"
+                border="1px solid"
+                borderColor="rgba(124,58,237,0.2)"
+                _hover={{ bg: 'rgba(124,58,237,0.18)' }}
+                rounded="lg"
+                h={8}
+                px={3}
+              >
+                <Upload size={12} />
+                <Text ml={1.5} fontSize="xs">Ingest {selectedNoteIds.size}</Text>
+              </Button>
+            ) : (
+              <Button
+                size="xs"
+                onClick={() => handleBulkIngest(filteredNotes.map((n) => n.id))}
+                loading={bulkIngesting}
+                variant="ghost"
+                color="#4A5568"
+                _hover={{ color: '#A78BFA', bg: 'rgba(124,58,237,0.06)' }}
+                rounded="lg"
+                h={8}
+                px={2.5}
+              >
+                <Upload size={12} />
+                <Text ml={1.5} fontSize="xs">Ingest All</Text>
+              </Button>
+            )}
+          </Flex>
+
+          {/* Divider */}
+          <Box w="1px" h={6} bg="whiteAlpha.100" display={{ base: 'none', md: 'block' }} />
+
+          {/* Actions group */}
+          <Flex align="center" gap={2}>
             <Button
               size="sm"
-              colorScheme="purple"
-              variant="outline"
-              onClick={() => handleBulkIngest([...selectedNoteIds])}
-              loading={bulkIngesting}
+              onClick={() => navigate('/notes/rag')}
+              bg="rgba(59,130,246,0.1)"
+              color="#60A5FA"
+              border="1px solid"
+              borderColor="rgba(59,130,246,0.2)"
+              _hover={{ bg: 'rgba(59,130,246,0.18)', borderColor: 'rgba(59,130,246,0.35)' }}
+              rounded="xl"
+              h={9}
+              px={4}
+              transition="all 0.2s"
             >
-              <Upload size={14} />
-              <Text ml={2}>Ingest Selected ({selectedNoteIds.size})</Text>
+              <Brain size={14} />
+              <Text ml={2} fontSize="xs" fontWeight="600">Ask Notes</Text>
             </Button>
-          )}
 
-          {/* Ingest All */}
-          <Button
-            size="sm"
-            colorScheme="purple"
-            variant="outline"
-            onClick={() => handleBulkIngest(filteredNotes.map((n) => n.id))}
-            loading={bulkIngesting}
-          >
-            <Upload size={14} />
-            <Text ml={2}>Ingest All</Text>
-          </Button>
-
-          {/* Ask Notes (RAG) */}
-          <Button
-            size="sm"
-            colorScheme="blue"
-            variant="solid"
-            onClick={() => navigate('/notes/rag')}
-          >
-            <Brain size={14} />
-            <Text ml={2}>Ask Notes</Text>
-          </Button>
-
-          <Button colorScheme="blue" onClick={handleCreateNote} loading={creating} size="lg">
-            <Plus size={18} />
-            <Text ml={2}>New Note</Text>
-          </Button>
+            <Button
+              onClick={handleCreateNote}
+              loading={creating}
+              bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+              color="white"
+              _hover={{ opacity: 0.9, transform: 'translateY(-1px)', boxShadow: '0 4px 12px rgba(0,201,167,0.25)' }}
+              rounded="xl"
+              size="sm"
+              h={9}
+              px={5}
+              transition="all 0.2s"
+            >
+              <Plus size={15} />
+              <Text ml={1.5} fontSize="xs" fontWeight="700">New Note</Text>
+            </Button>
+          </Flex>
         </Flex>
         </motion.div>
 
@@ -394,6 +443,7 @@ export default function Notes() {
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.05, duration: 0.35 }}
+                      style={{ height: '100%' }}
                     >
                       <NoteCard
                         note={note}

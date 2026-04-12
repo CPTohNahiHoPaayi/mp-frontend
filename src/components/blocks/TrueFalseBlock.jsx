@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Text, Flex, Button, HStack } from '@chakra-ui/react';
+import MathText from '../ui/MathText';
 import { CheckCircle, XCircle, RotateCcw, Lightbulb } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -34,9 +35,9 @@ const TrueFalseBlock = ({ statement, answer, explanation }) => {
         </Text>
       </Flex>
 
-      <Text color="#E2E8F0" fontSize="md" lineHeight="1.8" mb={5}>
+      <MathText color="#E2E8F0" fontSize="md" lineHeight="1.8" mb={5}>
         {statement}
-      </Text>
+      </MathText>
 
       <HStack gap={3} mb={4}>
         {[true, false].map((val) => {
@@ -109,7 +110,7 @@ const TrueFalseBlock = ({ statement, answer, explanation }) => {
             <Lightbulb size={13} color="#F59E0B" />
             <Text fontSize="xs" fontWeight="600" color="#F59E0B">Explanation</Text>
           </Flex>
-          <Text fontSize="sm" color="#A0AEC0" lineHeight="1.7">{explanation}</Text>
+          <MathText fontSize="sm" color="#A0AEC0" lineHeight="1.7">{explanation}</MathText>
         </Box>
       )}
     </Box>

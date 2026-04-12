@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Text, Flex } from '@chakra-ui/react';
+import MathText from '../ui/MathText';
 import { RotateCcw, Eye } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -48,9 +49,9 @@ const FlashcardBlock = ({ front, back }) => {
             gap={3}
           >
             <Eye size={18} color="#60A5FA" />
-            <Text color="#E2E8F0" fontSize="lg" fontWeight="600" textAlign="center" lineHeight="1.6">
+            <MathText color="#E2E8F0" fontSize="lg" fontWeight="600" textAlign="center" lineHeight="1.6">
               {front}
-            </Text>
+            </MathText>
             <Text fontSize="xs" color="#4A5568" mt={2}>Click to reveal</Text>
           </Flex>
 
@@ -69,9 +70,9 @@ const FlashcardBlock = ({ front, back }) => {
             direction="column"
             gap={3}
           >
-            <Text color="#00C9A7" fontSize="md" fontWeight="600" textAlign="center" lineHeight="1.7">
+            <MathText color="#00C9A7" fontSize="md" fontWeight="600" textAlign="center" lineHeight="1.7">
               {back}
-            </Text>
+            </MathText>
             <Text fontSize="xs" color="#4A5568" mt={2}>Click to flip back</Text>
           </Flex>
         </motion.div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Text, VStack, Button, Flex, HStack } from '@chakra-ui/react';
+import MathText from '../ui/MathText';
 import { CheckCircle, XCircle, RotateCcw, Lightbulb } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
@@ -96,9 +97,9 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
       w="full"
       color="white"
     >
-      <Text fontWeight="semibold" fontSize="lg" mb={5} color="gray.200" lineHeight="1.6">
+      <MathText fontWeight="semibold" fontSize="lg" mb={5} color="gray.200" lineHeight="1.6">
         {question}
-      </Text>
+      </MathText>
 
       <VStack gap={2} mb={5} w="full">
         {options.map((option, i) => (
@@ -136,7 +137,7 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
                showAnswer && i === selected && selected !== correctAnswer ? <XCircle size={14} /> :
                String.fromCharCode(65 + i)}
             </Box>
-            <Text flex={1}>{option}</Text>
+            <MathText flex={1}>{option}</MathText>
           </Box>
         ))}
       </VStack>
@@ -194,7 +195,7 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
               Explanation
             </Text>
           </HStack>
-          <Text color="gray.400" fontSize="sm" lineHeight="1.7">{explanation}</Text>
+          <MathText color="gray.400" fontSize="sm" lineHeight="1.7">{explanation}</MathText>
         </Box>
       )}
     </Box>

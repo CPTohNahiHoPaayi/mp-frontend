@@ -1,5 +1,6 @@
 import React from 'react';
 import { Box, Text, Flex } from '@chakra-ui/react';
+import MathText from '../ui/MathText';
 import { Lightbulb, AlertTriangle, Bookmark, Zap, Info } from 'lucide-react';
 
 const VARIANTS = {
@@ -62,9 +63,9 @@ const CalloutBlock = ({ variant = 'tip', text }) => {
           {v.label}
         </Text>
       </Flex>
-      <Text color="#C4CDD8" fontSize="md" lineHeight="1.8">
+      <MathText color="#C4CDD8" fontSize="md" lineHeight="1.8">
         {text}
-      </Text>
+      </MathText>
     </Box>
   );
 };

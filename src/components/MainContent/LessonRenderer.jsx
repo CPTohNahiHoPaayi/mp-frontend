@@ -9,6 +9,7 @@ import TrueFalseBlock from '../blocks/TrueFalseBlock';
 import FillBlankBlock from '../blocks/FillBlankBlock';
 import FlashcardBlock from '../blocks/FlashcardBlock';
 import CalloutBlock from '../blocks/CalloutBlock';
+import WhiteboardBlock from '../blocks/WhiteboardBlock';
 
 const COMPONENT_MAP = {
   heading: HeadingBlock,
@@ -20,6 +21,7 @@ const COMPONENT_MAP = {
   fill_blank: FillBlankBlock,
   flashcard: FlashcardBlock,
   callout: CalloutBlock,
+  whiteboard: WhiteboardBlock,
 };
 
 function LessonRenderer({ lesson }) {

@@ -50,7 +50,7 @@ export default function NotesRAG() {
   };
 
   return (
-    <Box minH="100vh" bg="#06080F" py={10} px={4} color="white">
+    <Box minH="full" bg="#06080F" py={10} px={4} color="white">
       <Box maxW="3xl" mx="auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
           <Flex align="center" justify="space-between" mb={8}>

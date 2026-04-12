@@ -18,16 +18,11 @@ const LessonSpeaker = ({ lesson }) => {
 
     if (!lesson || !lesson.content) return;
 
-    const combinedText = lesson.content
-      .filter(block => block.type === 'heading' || block.type === 'paragraph')
-      .map(block => block.text)
-      .join('\n');
-
     try {
       setLoading(true);
       const res = await axios.post(
         `${baseURL}/node/tts/tts`,
-        { text: combinedText },
+        { lessonTitle: lesson.title, content: lesson.content },
         {
           headers: {
             'Content-Type': 'application/json',
