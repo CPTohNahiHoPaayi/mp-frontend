@@ -9,12 +9,12 @@ function SidebarSection({ title, icon: Icon, children, count }) {
   return (
     <Box mb={3}>
       <Flex align="center" gap={2} px={4} py={1.5} mb={1}>
-        <Icon size={12} color="rgba(0,201,167,0.5)" />
-        <Text fontSize="10px" fontWeight="600" color="whiteAlpha.400" textTransform="uppercase" letterSpacing="0.08em">
+        <Icon size={12} color="#00C9A7" />
+        <Text fontSize="10px" fontWeight="600" color="#718096" textTransform="uppercase" letterSpacing="0.08em">
           {title}
         </Text>
         {count > 0 && (
-          <Text fontSize="10px" color="whiteAlpha.200" ml="auto">{count}</Text>
+          <Text fontSize="10px" color="#4A5568" ml="auto">{count}</Text>
         )}
       </Flex>
       {children}
@@ -33,16 +33,16 @@ function SidebarItem({ to, label }) {
         py={1.5}
         fontSize="13px"
         fontWeight={isActive ? '500' : '400'}
-        color={isActive ? 'whiteAlpha.900' : 'whiteAlpha.500'}
-        bg={isActive ? 'whiteAlpha.50' : 'transparent'}
-        _hover={{ color: 'whiteAlpha.800', bg: 'whiteAlpha.50' }}
+        color={isActive ? '#E2E8F0' : '#A0AEC0'}
+        bg={isActive ? 'rgba(0,201,167,0.06)' : 'transparent'}
+        _hover={{ color: '#E2E8F0', bg: 'rgba(255,255,255,0.03)' }}
         transition="all 0.15s"
         cursor="pointer"
         overflow="hidden"
         textOverflow="ellipsis"
         whiteSpace="nowrap"
         borderLeft="2px solid"
-        borderColor={isActive ? 'rgba(0,201,167,0.5)' : 'transparent'}
+        borderColor={isActive ? '#00C9A7' : 'transparent'}
       >
         {label}
       </Text>
@@ -82,8 +82,8 @@ function MyCourseList({ refreshTrigger }) {
   if (loading) {
     return (
       <HStack justify="center" py={8}>
-        <Spinner size="sm" color="rgba(0,201,167,0.5)" />
-        <Text fontSize="xs" color="whiteAlpha.300">Loading...</Text>
+        <Spinner size="sm" color="#00C9A7" />
+        <Text fontSize="xs" color="#718096">Loading...</Text>
       </HStack>
     );
   }
@@ -92,7 +92,7 @@ function MyCourseList({ refreshTrigger }) {
     <Box py={2}>
       <SidebarSection title="Courses" icon={BookOpen} count={courses.length}>
         {courses.length === 0 ? (
-          <Text fontSize="xs" color="whiteAlpha.200" px={4} py={2}>No courses yet</Text>
+          <Text fontSize="xs" color="#4A5568" px={4} py={2}>No courses yet</Text>
         ) : (
           <VStack align="stretch" gap={0}>
             {courses.map((course) => (
@@ -106,11 +106,11 @@ function MyCourseList({ refreshTrigger }) {
         )}
       </SidebarSection>
 
-      <Box h="1px" bg="whiteAlpha.50" mx={4} my={3} />
+      <Box h="1px" bg="#1C2030" mx={4} my={3} />
 
       <SidebarSection title="Recent Notes" icon={StickyNote} count={notes.length}>
         {notes.length === 0 ? (
-          <Text fontSize="xs" color="whiteAlpha.200" px={4} py={2}>No notes yet</Text>
+          <Text fontSize="xs" color="#4A5568" px={4} py={2}>No notes yet</Text>
         ) : (
           <VStack align="stretch" gap={0}>
             {notes.map((note) => (

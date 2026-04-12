@@ -24,9 +24,9 @@ function NavLink({ icon: Icon, label, path, active, onClick }) {
     <Button
       variant="ghost"
       size="sm"
-      color={active ? "whiteAlpha.900" : "whiteAlpha.400"}
+      color={active ? "#E2E8F0" : "#718096"}
       bg="transparent"
-      _hover={{ color: "whiteAlpha.800" }}
+      _hover={{ color: "#CBD5E0" }}
       onClick={onClick}
       rounded="lg"
       px={3}
@@ -67,7 +67,7 @@ function App() {
   if (isLoading) {
     return (
       <Flex align="center" justify="center" h="100vh" bg="#06080F" color="white">
-        <Text color="gray.500">Restoring session...</Text>
+        <Text color="#718096">Restoring session...</Text>
       </Flex>
     );
   }
@@ -93,7 +93,7 @@ function App() {
           display="flex"
           flexDirection="column"
           borderRight="1px solid"
-          borderColor="whiteAlpha.50"
+          borderColor="#1C2030"
         >
           <Flex align="center" justify="space-between" px={4} py={3}>
             <HStack gap={2}>
@@ -117,8 +117,8 @@ function App() {
                 aria-label="Close sidebar"
                 size="sm"
                 variant="ghost"
-                color="gray.500"
-                _hover={{ color: "white", bg: "whiteAlpha.50" }}
+                color="#718096"
+                _hover={{ color: "white", bg: "rgba(255,255,255,0.03)" }}
                 onClick={() => setSidebarOpen(false)}
               >
                 <GoSidebarExpand />
@@ -129,12 +129,12 @@ function App() {
             <MyCourseList email={user?.email} refreshTrigger={refreshCourses} />
           </Box>
           {/* Quick links */}
-          <Box px={3} pb={3} borderTop="1px solid" borderColor="whiteAlpha.50" pt={3}>
+          <Box px={3} pb={3} borderTop="1px solid" borderColor="#1C2030" pt={3}>
             <Button
               w="full"
               size="sm"
               variant="ghost"
-              color="gray.500"
+              color="#718096"
               _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
               rounded="lg"
               justifyContent="flex-start"
@@ -156,7 +156,7 @@ function App() {
           bg="rgba(6,8,15,0.8)"
           backdropFilter="blur(12px)"
           borderBottom="1px solid"
-          borderColor="whiteAlpha.50"
+          borderColor="#1C2030"
           display="flex"
           alignItems="center"
           justifyContent="space-between"
@@ -172,8 +172,8 @@ function App() {
                   aria-label="Open sidebar"
                   size="sm"
                   variant="ghost"
-                  color="gray.500"
-                  _hover={{ color: "white", bg: "whiteAlpha.50" }}
+                  color="#718096"
+                  _hover={{ color: "white", bg: "rgba(255,255,255,0.03)" }}
                   onClick={() => setSidebarOpen(true)}
                 >
                   <GoSidebarCollapse />
@@ -234,8 +234,8 @@ function App() {
               onClick={logout}
               size="sm"
               variant="ghost"
-              color="gray.500"
-              _hover={{ color: "red.400", bg: "whiteAlpha.50" }}
+              color="#718096"
+              _hover={{ color: "red.400", bg: "rgba(255,255,255,0.03)" }}
               rounded="lg"
               h={8}
               px={2}

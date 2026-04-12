@@ -181,7 +181,7 @@ function EmptyElement() {
           mb={10}
         >
           <MotionBox variants={fadeUp} custom={0}>
-            <Text fontSize="sm" color="gray.600" mb={2}>
+            <Text fontSize="sm" color="#718096" mb={2}>
               {new Date().getHours() < 12 ? 'Good morning' : new Date().getHours() < 17 ? 'Good afternoon' : 'Good evening'}
             </Text>
           </MotionBox>
@@ -201,7 +201,7 @@ function EmptyElement() {
           </MotionBox>
 
           <MotionBox variants={fadeUp} custom={2}>
-            <Text fontSize="md" color="gray.500" mt={3} maxW="500px" mx="auto">
+            <Text fontSize="md" color="#A0AEC0" mt={3} maxW="500px" mx="auto">
               Create AI-powered courses in seconds. Just type a topic below.
             </Text>
           </MotionBox>
@@ -229,7 +229,7 @@ function EmptyElement() {
               <Text fontSize="lg" fontWeight="semibold" color="white">
                 Your Courses
               </Text>
-              <Text fontSize="sm" color="gray.600">
+              <Text fontSize="sm" color="#718096">
                 ({courses.length})
               </Text>
             </Flex>
@@ -238,7 +238,7 @@ function EmptyElement() {
           {loading ? (
             <VStack py={12}>
               <Spinner size="md" color="#00C9A7" />
-              <Text fontSize="sm" color="gray.600">Loading courses...</Text>
+              <Text fontSize="sm" color="#718096">Loading courses...</Text>
             </VStack>
           ) : courses.length === 0 ? (
             <VStack py={16} gap={4}>
@@ -253,7 +253,7 @@ function EmptyElement() {
               >
                 <Zap size={28} color="#00C9A7" />
               </Box>
-              <Text fontSize="md" color="gray.500" textAlign="center">
+              <Text fontSize="md" color="#A0AEC0" textAlign="center">
                 No courses yet. Create your first one above!
               </Text>
             </VStack>

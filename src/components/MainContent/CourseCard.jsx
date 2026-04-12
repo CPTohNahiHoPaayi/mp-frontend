@@ -32,15 +32,15 @@ function CourseCard({ course }) {
     <Box
       w="100%"
       h="full"
-      bg="rgba(255,255,255,0.02)"
+      bg="#0E1117"
       border="1px solid"
-      borderColor="whiteAlpha.50"
+      borderColor="#1C2030"
       borderRadius="xl"
       p={5}
       transition="all 0.25s ease"
       _hover={{
-        borderColor: 'rgba(0,201,167,0.25)',
-        bg: 'rgba(255,255,255,0.035)',
+        borderColor: '#2A3A50',
+        bg: '#111620',
         transform: 'translateY(-2px)',
       }}
       cursor="pointer"
@@ -48,13 +48,13 @@ function CourseCard({ course }) {
       display="flex"
       flexDirection="column"
     >
-      {/* Top row: visibility badge */}
+      {/* Top row */}
       <Flex justify="flex-end" mb={3}>
         <Button
           size="xs"
           variant="ghost"
-          color={isPublic ? 'rgba(0,201,167,0.6)' : 'whiteAlpha.300'}
-          _hover={{ bg: 'whiteAlpha.50' }}
+          color={isPublic ? '#00C9A7' : '#4A5568'}
+          _hover={{ bg: 'rgba(255,255,255,0.04)' }}
           onClick={(e) => { e.stopPropagation(); toggleVisibility(); }}
           rounded="full"
           h={6}
@@ -70,7 +70,7 @@ function CourseCard({ course }) {
       <Heading
         fontSize="md"
         fontWeight="600"
-        color="whiteAlpha.900"
+        color="#E2E8F0"
         mb={2}
         lineHeight="1.5"
         noOfLines={2}
@@ -80,11 +80,11 @@ function CourseCard({ course }) {
       </Heading>
 
       {/* Meta */}
-      <Text fontSize="xs" color="whiteAlpha.400" mb={3}>
+      <Text fontSize="xs" color="#718096" mb={3}>
         {course.creator.split('@')[0]} · {format(createdDate, 'MMM yyyy')}
       </Text>
 
-      {/* Tags — fixed height area */}
+      {/* Tags */}
       <Box minH="28px" mb={3}>
         {course.tags?.length > 0 && (
           <HStack gap={1.5} flexWrap="wrap">
@@ -92,10 +92,10 @@ function CourseCard({ course }) {
               <Text
                 key={i}
                 fontSize="10px"
-                color="rgba(0,201,167,0.7)"
-                bg="rgba(0,201,167,0.06)"
+                color="#8BB8A8"
+                bg="rgba(0,201,167,0.08)"
                 border="1px solid"
-                borderColor="rgba(0,201,167,0.1)"
+                borderColor="rgba(0,201,167,0.15)"
                 px={2}
                 py={0.5}
                 rounded="full"
@@ -105,24 +105,22 @@ function CourseCard({ course }) {
               </Text>
             ))}
             {course.tags.length > 3 && (
-              <Text fontSize="10px" color="whiteAlpha.300">+{course.tags.length - 3}</Text>
+              <Text fontSize="10px" color="#4A5568">+{course.tags.length - 3}</Text>
             )}
           </HStack>
         )}
       </Box>
 
-      {/* Footer — pinned to bottom */}
-      <Flex align="center" justify="space-between" mt="auto" pt={3} borderTop="1px solid" borderColor="whiteAlpha.50">
-        <HStack gap={3} color="whiteAlpha.300">
+      {/* Footer */}
+      <Flex align="center" justify="space-between" mt="auto" pt={3} borderTop="1px solid" borderColor="#1C2030">
+        <HStack gap={3} color="#4A5568">
           <HStack gap={1}>
             <Heart size={12} />
             <Text fontSize="xs">{course.likesCount}</Text>
           </HStack>
           <CoursePDFButton courseId={course.id} courseTitle={course.title} />
         </HStack>
-        <HStack gap={1} color="rgba(0,201,167,0.6)" fontSize="xs" fontWeight="medium"
-          _groupHover={{ color: '#00C9A7' }}
-        >
+        <HStack gap={1} color="#00C9A7" fontSize="xs" fontWeight="medium">
           <Text>Start</Text>
           <ArrowRight size={12} />
         </HStack>
