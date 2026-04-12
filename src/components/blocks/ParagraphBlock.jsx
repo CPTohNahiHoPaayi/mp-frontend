@@ -4,7 +4,7 @@ import MarkdownRenderer from '@/components/ui/MarkdownRenderer';
 
 const ParagraphBlock = ({ text }) => {
   return (
-    <Box mt={4}>
+    <Box my={2}>
       <MarkdownRenderer content={text} />
     </Box>
   );

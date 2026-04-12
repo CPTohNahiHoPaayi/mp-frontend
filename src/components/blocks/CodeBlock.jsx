@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Flex, Text, Button, useClipboard } from "@chakra-ui/react";
 import { codeToHtml } from "shiki";
-import { Copy, Check } from "lucide-react";
+import { Copy, Check, Terminal } from "lucide-react";
 
 const CodeBlock = ({ code = "", language = "javascript" }) => {
   const [html, setHtml] = useState("");
@@ -26,44 +26,50 @@ const CodeBlock = ({ code = "", language = "javascript" }) => {
 
   return (
     <Box
-      my={5}
+      my={6}
       rounded="xl"
       overflow="hidden"
       border="1px solid"
-      borderColor="whiteAlpha.100"
+      borderColor="#1E2536"
       fontFamily="'Fira Code', 'JetBrains Mono', monospace"
+      bg="#0C0F1A"
     >
+      {/* Header bar with colored accent */}
       <Flex
         justify="space-between"
         align="center"
         px={4}
         py={2}
-        bg="rgba(255,255,255,0.03)"
+        bg="linear-gradient(90deg, rgba(59,130,246,0.08), rgba(124,58,237,0.05))"
         borderBottom="1px solid"
-        borderColor="whiteAlpha.50"
+        borderColor="#1E2536"
       >
-        <Text fontSize="xs" fontWeight="medium" color="gray.600" textTransform="uppercase" letterSpacing="wider">
-          {language}
-        </Text>
+        <Flex align="center" gap={2}>
+          <Terminal size={13} color="#60A5FA" />
+          <Text fontSize="xs" fontWeight="600" color="#60A5FA" textTransform="uppercase" letterSpacing="0.06em">
+            {language}
+          </Text>
+        </Flex>
         <Button
           onClick={onCopy}
           size="xs"
           variant="ghost"
-          color={hasCopied ? "#00C9A7" : "gray.500"}
-          _hover={{ color: "white", bg: "whiteAlpha.50" }}
+          color={hasCopied ? "#00C9A7" : "#4A5568"}
+          _hover={{ color: "#A0AEC0", bg: "rgba(255,255,255,0.04)" }}
           rounded="lg"
-          h={7}
+          h={6}
           px={2}
         >
-          {hasCopied ? <Check size={13} /> : <Copy size={13} />}
-          <Text ml={1.5} fontSize="xs">{hasCopied ? "Copied" : "Copy"}</Text>
+          {hasCopied ? <Check size={12} /> : <Copy size={12} />}
+          <Text ml={1} fontSize="xs">{hasCopied ? "Copied" : "Copy"}</Text>
         </Button>
       </Flex>
 
+      {/* Code content */}
       <Box
-        p={4}
+        px={4}
+        py={4}
         overflowX="auto"
-        bg="#0D0F17"
         className="shiki"
         sx={{
           "& pre": {
@@ -73,11 +79,18 @@ const CodeBlock = ({ code = "", language = "javascript" }) => {
           },
           "& code": {
             fontSize: "0.85rem",
-            lineHeight: "1.7",
+            lineHeight: "1.75",
           },
         }}
         dangerouslySetInnerHTML={{ __html: html }}
       />
+
+      {/* Bottom line count */}
+      <Flex px={4} py={1.5} borderTop="1px solid" borderColor="#1E2536" justify="flex-end">
+        <Text fontSize="xs" color="#2D3748">
+          {code.split('\n').length} lines
+        </Text>
+      </Flex>
     </Box>
   );
 };

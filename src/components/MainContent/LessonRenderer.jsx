@@ -16,8 +16,11 @@ const COMPONENT_MAP = {
 
 function LessonRenderer({ lesson }) {
   if (!lesson?.content || !Array.isArray(lesson.content)) {
-    return <Text color="gray.500" px={4}>No content available.</Text>;
+    return <Text color="#718096" px={4}>No content available.</Text>;
   }
+
+  // Track heading index for color rotation
+  let headingIndex = 0;
 
   return (
     <Box p={4}>
@@ -25,9 +28,15 @@ function LessonRenderer({ lesson }) {
         const Component = COMPONENT_MAP[item.type];
         if (!Component) return null;
 
+        const extraProps = {};
+        if (item.type === 'heading') {
+          extraProps.index = headingIndex;
+          headingIndex++;
+        }
+
         return (
-          <Box key={idx} my={4}>
-            <Component {...item} />
+          <Box key={idx} my={3}>
+            <Component {...item} {...extraProps} />
           </Box>
         );
       })}
