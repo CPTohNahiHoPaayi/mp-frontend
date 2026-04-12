@@ -173,6 +173,7 @@ function LessonPage() {
                   <LessonPDFExporter
                     contentData={lesson?.content || []}
                     fileName={`${lesson?.title || 'lesson'}.pdf`}
+                    lessonTitle={lesson?.title || 'Lesson'}
                   />
                 </HStack>
 

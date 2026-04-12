@@ -1,218 +1,356 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { Button, Text } from '@chakra-ui/react';
 import { Download } from 'lucide-react';
 import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 
-const ContentItem = ({ item }) => {
-  switch (item.type) {
-    case 'heading':
-      return <h2 className="heading">✧ {item.text}</h2>;
-    case 'paragraph':
-      const formatParagraph = (text) => {
-        return text
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-          .replace(/`(.*?)`/g, '<code class="inline-code">$1</code>')
-          .replace(/\n/g, '<br />');
-      };
-      return (
-        <p
-          className="paragraph"
-          dangerouslySetInnerHTML={{ __html: formatParagraph(item.text) }}
-        />
-      );
-    case 'code':
-      return (
-        <div className="code-block" aria-label={`Code snippet in ${item.language}`}>
-          <pre><code>{item.code}</code></pre>
-        </div>
-      );
-    case 'video':
-      return <p className="video-placeholder">▶️ Video suggestion: "{item.query}"</p>;
-    case 'mcq':
-      return (
-        <div className="mcq">
-          <p className="mcq-question">{item.question}</p>
-          <ul className="mcq-options">
-            {item.options.map((option, index) => (
-              <li key={index} className={index === item.correctAnswer ? 'correct' : ''}>
-                {option}
-              </li>
-            ))}
-          </ul>
-          <p className="mcq-explanation"><strong>Explanation:</strong> {item.explanation}</p>
-        </div>
-      );
-    default:
-      return null;
-  }
+// Book-style PDF configuration
+const PAGE = {
+  w: 210, // A4 width mm
+  h: 297, // A4 height mm
+  marginTop: 32,
+  marginBottom: 28,
+  marginLeft: 28,
+  marginRight: 28,
+  headerY: 18,
+  footerY: 288,
+};
+const CONTENT_W = PAGE.w - PAGE.marginLeft - PAGE.marginRight;
+
+// Colors
+const C = {
+  bg: '#FAFAF8',
+  text: '#1A1A1A',
+  textLight: '#555555',
+  textMuted: '#888888',
+  accent: '#0D7C66',
+  accentLight: '#E8F5F0',
+  codeBg: '#F4F4F0',
+  codeBorder: '#E0E0DC',
+  codeText: '#2D2D2D',
+  rule: '#D4D4D0',
+  correct: '#0D7C66',
+  wrong: '#C44536',
+  quizBg: '#F0F4F8',
+  quizBorder: '#D0D8E0',
 };
 
-const LessonPDFExporter = ({ contentData, fileName = 'lesson.pdf' }) => {
-  const contentRef = useRef(null);
+// Font sizes (pt)
+const F = {
+  title: 24,
+  h2: 15,
+  body: 10.5,
+  code: 9,
+  small: 8.5,
+  tiny: 7.5,
+};
 
-  const handleDownloadPdf = () => {
-    const content = contentRef.current;
-    if (!content) return;
+function addPageBackground(doc) {
+  doc.setFillColor(C.bg);
+  doc.rect(0, 0, PAGE.w, PAGE.h, 'F');
+}
 
-    // Show by setting height to auto
-    content.style.height = 'auto';
-    content.style.padding="2em";
-    // Wait for DOM to paint
-    requestAnimationFrame(() => {
-      html2canvas(content, {
-        scale: 2,
-        backgroundColor: '#212121',
-        useCORS: true,
-      }).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'px',
-          format: [canvas.width, canvas.height],
-        });
+function addHeader(doc, title, pageNum) {
+  if (pageNum <= 1) return; // skip on title page
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(F.tiny);
+  doc.setTextColor(C.textMuted);
+  const truncTitle = title.length > 60 ? title.slice(0, 57) + '...' : title;
+  doc.text(truncTitle, PAGE.marginLeft, PAGE.headerY);
+  doc.text(`${pageNum}`, PAGE.w - PAGE.marginRight, PAGE.headerY, { align: 'right' });
+  // thin rule below header
+  doc.setDrawColor(C.rule);
+  doc.setLineWidth(0.2);
+  doc.line(PAGE.marginLeft, PAGE.headerY + 3, PAGE.w - PAGE.marginRight, PAGE.headerY + 3);
+}
 
-        pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
-        pdf.save(fileName);
+function addFooter(doc) {
+  doc.setDrawColor(C.rule);
+  doc.setLineWidth(0.2);
+  doc.line(PAGE.marginLeft, PAGE.footerY - 4, PAGE.w - PAGE.marginRight, PAGE.footerY - 4);
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(F.tiny);
+  doc.setTextColor(C.textMuted);
+  doc.text('TextToLearn', PAGE.marginLeft, PAGE.footerY);
+}
 
-        // Shrink back to height 0 after export
-        content.style.height = '0';
-        content.style.padding="0em";
+function newPage(doc, lessonTitle, pageCount) {
+  doc.addPage();
+  const pNum = pageCount + 1;
+  addPageBackground(doc);
+  addHeader(doc, lessonTitle, pNum);
+  addFooter(doc);
+  return pNum;
+}
+
+function ensureSpace(doc, y, needed, lessonTitle, pageCountRef) {
+  if (y + needed > PAGE.footerY - 10) {
+    pageCountRef.value = newPage(doc, lessonTitle, pageCountRef.value);
+    return PAGE.marginTop;
+  }
+  return y;
+}
+
+function wrapText(doc, text, maxWidth) {
+  return doc.splitTextToSize(text, maxWidth);
+}
+
+function renderTitlePage(doc, lessonTitle) {
+  addPageBackground(doc);
+
+  // Decorative top accent line
+  doc.setFillColor(C.accent);
+  doc.rect(PAGE.marginLeft, 60, 40, 2, 'F');
+
+  // Title
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(F.title);
+  doc.setTextColor(C.text);
+  const titleLines = wrapText(doc, lessonTitle, CONTENT_W);
+  let y = 72;
+  titleLines.forEach((line) => {
+    doc.text(line, PAGE.marginLeft, y);
+    y += 10;
+  });
+
+  // Subtitle line
+  y += 6;
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(F.body);
+  doc.setTextColor(C.textLight);
+  doc.text('Generated by TextToLearn', PAGE.marginLeft, y);
+  y += 6;
+  const dateStr = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+  doc.text(dateStr, PAGE.marginLeft, y);
+
+  // Bottom decorative line
+  doc.setFillColor(C.accent);
+  doc.rect(PAGE.marginLeft, PAGE.footerY - 20, 20, 1.5, 'F');
+
+  addFooter(doc);
+}
+
+function renderHeading(doc, text, y, lessonTitle, pageCountRef) {
+  y = ensureSpace(doc, y, 18, lessonTitle, pageCountRef);
+  y += 8;
+
+  // Accent bar
+  doc.setFillColor(C.accent);
+  doc.rect(PAGE.marginLeft, y - 4, 3, 12, 'F');
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(F.h2);
+  doc.setTextColor(C.text);
+  const lines = wrapText(doc, text, CONTENT_W - 8);
+  lines.forEach((line) => {
+    doc.text(line, PAGE.marginLeft + 8, y + 4);
+    y += 7;
+  });
+  y += 4;
+  return y;
+}
+
+function renderParagraph(doc, text, y, lessonTitle, pageCountRef) {
+  if (!text) return y;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(F.body);
+  doc.setTextColor(C.text);
+
+  // Handle bold markers: strip ** for PDF (jsPDF doesn't do inline bold easily)
+  const cleanText = text.replace(/\*\*(.*?)\*\*/g, '$1');
+  const lines = wrapText(doc, cleanText, CONTENT_W);
+
+  for (const line of lines) {
+    y = ensureSpace(doc, y, 6, lessonTitle, pageCountRef);
+    doc.text(line, PAGE.marginLeft, y);
+    y += 5.2;
+  }
+  y += 3;
+  return y;
+}
+
+function renderCode(doc, code, language, y, lessonTitle, pageCountRef) {
+  if (!code) return y;
+
+  const codeLines = code.split('\n');
+  const blockHeight = codeLines.length * 4.5 + 16;
+
+  y = ensureSpace(doc, y, Math.min(blockHeight, 80), lessonTitle, pageCountRef);
+  y += 2;
+
+  // Language label
+  doc.setFont('courier', 'normal');
+  doc.setFontSize(F.tiny);
+  doc.setTextColor(C.textMuted);
+  doc.text((language || 'code').toUpperCase(), PAGE.marginLeft + 4, y + 3);
+  y += 6;
+
+  // Code background with border
+  const startY = y;
+  const codeH = codeLines.length * 4.5 + 8;
+  doc.setFillColor(C.codeBg);
+  doc.setDrawColor(C.codeBorder);
+  doc.setLineWidth(0.3);
+  doc.roundedRect(PAGE.marginLeft, y - 2, CONTENT_W, codeH, 2, 2, 'FD');
+
+  // Code text
+  doc.setFont('courier', 'normal');
+  doc.setFontSize(F.code);
+  doc.setTextColor(C.codeText);
+  y += 4;
+
+  for (const line of codeLines) {
+    y = ensureSpace(doc, y, 5, lessonTitle, pageCountRef);
+    const truncated = line.length > 90 ? line.slice(0, 87) + '...' : line;
+    doc.text(truncated, PAGE.marginLeft + 4, y);
+    y += 4.5;
+  }
+  y += 6;
+  return y;
+}
+
+function renderMCQ(doc, item, y, lessonTitle, pageCountRef, qIndex) {
+  const blockHeight = 40 + (item.options?.length || 0) * 8;
+  y = ensureSpace(doc, y, Math.min(blockHeight, 60), lessonTitle, pageCountRef);
+  y += 4;
+
+  // Quiz card background
+  const cardX = PAGE.marginLeft;
+  const cardW = CONTENT_W;
+
+  // Question
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(F.body);
+  doc.setTextColor(C.accent);
+  doc.text(`Q${qIndex}`, cardX, y + 1);
+
+  doc.setTextColor(C.text);
+  const qLines = wrapText(doc, item.question, cardW - 12);
+  qLines.forEach((line) => {
+    doc.text(line, cardX + 10, y + 1);
+    y += 5;
+  });
+  y += 3;
+
+  // Options
+  if (item.options) {
+    const letters = ['A', 'B', 'C', 'D', 'E', 'F'];
+    item.options.forEach((opt, i) => {
+      y = ensureSpace(doc, y, 7, lessonTitle, pageCountRef);
+      const isCorrect = i === item.correctAnswer;
+
+      // Letter circle
+      if (isCorrect) {
+        doc.setFillColor(C.accentLight);
+        doc.setDrawColor(C.correct);
+      } else {
+        doc.setFillColor('#FFFFFF');
+        doc.setDrawColor(C.rule);
+      }
+      doc.setLineWidth(0.3);
+      doc.circle(cardX + 4, y - 1, 2.5, 'FD');
+
+      doc.setFont('helvetica', isCorrect ? 'bold' : 'normal');
+      doc.setFontSize(F.small);
+      doc.setTextColor(isCorrect ? C.correct : C.text);
+      doc.text(letters[i], cardX + 2.8, y + 0.3);
+
+      // Option text
+      const optLines = wrapText(doc, opt, cardW - 16);
+      optLines.forEach((line, li) => {
+        doc.text(line, cardX + 12, y + (li * 4.5));
       });
+      y += optLines.length * 4.5 + 2;
     });
-  };
+  }
 
-  useEffect(() => {
-    const style = document.createElement('style');
-    style.innerHTML = `
-      @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+  // Explanation
+  if (item.explanation) {
+    y += 2;
+    y = ensureSpace(doc, y, 12, lessonTitle, pageCountRef);
 
-      .pdf-content {
-        background-color: #212121;
-        color: #dcdcdc;
-        font-family: 'Fira Code', monospace;
-        width: 800px;
-        height: 0;
-        overflow: hidden;
-      }
+    doc.setDrawColor(C.accent);
+    doc.setLineWidth(0.4);
+    doc.line(cardX, y, cardX + 15, y);
+    y += 4;
 
-      .heading {
-        color: #c5a5ff;
-        font-size: 1.8em;
-        border-bottom: 1px solid #444;
-        padding-bottom: 0.5rem;
-        margin-top: 2rem;
-        margin-bottom: 1.5rem;
-      }
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(F.small);
+    doc.setTextColor(C.textLight);
+    const expLines = wrapText(doc, item.explanation, cardW - 4);
+    expLines.forEach((line) => {
+      y = ensureSpace(doc, y, 5, lessonTitle, pageCountRef);
+      doc.text(line, cardX + 2, y);
+      y += 4.2;
+    });
+  }
 
-      .paragraph {
-        font-size: 1em;
-        line-height: 1.8;
-      }
+  y += 6;
+  return y;
+}
 
-      .paragraph strong {
-        color: #e0e0e0;
-      }
+function generateBookPDF(contentData, fileName, lessonTitle) {
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  const pageCountRef = { value: 1 };
+  let mcqCounter = 1;
 
-      .inline-code {
-        background-color: #333;
-        padding: 0.2em 0.4em;
-        border-radius: 3px;
-        font-size: 0.9em;
-        color: #89b3f7;
-      }
+  // Page 1: Title page
+  renderTitlePage(doc, lessonTitle);
 
-      .code-block {
-        background-color: #282c34;
-        border-radius: 5px;
-        padding: 1rem;
-        margin: 1.5rem 0;
-        overflow-x: auto;
-        border: 1px solid #444;
-      }
+  // Page 2+: Content
+  pageCountRef.value = newPage(doc, lessonTitle, pageCountRef.value);
+  let y = PAGE.marginTop;
 
-      .code-block pre, .code-block code {
-        font-family: 'Fira Code', monospace;
-      }
+  for (const item of contentData) {
+    switch (item.type) {
+      case 'heading':
+        y = renderHeading(doc, item.text, y, lessonTitle, pageCountRef);
+        break;
+      case 'paragraph':
+        y = renderParagraph(doc, item.text, y, lessonTitle, pageCountRef);
+        break;
+      case 'code':
+        y = renderCode(doc, item.code, item.language, y, lessonTitle, pageCountRef);
+        break;
+      case 'mcq':
+        y = renderMCQ(doc, item, y, lessonTitle, pageCountRef, mcqCounter);
+        mcqCounter++;
+        break;
+      case 'video':
+        y = ensureSpace(doc, y, 10, lessonTitle, pageCountRef);
+        doc.setFont('helvetica', 'italic');
+        doc.setFontSize(F.small);
+        doc.setTextColor(C.textMuted);
+        doc.text(`Video: ${item.query}`, PAGE.marginLeft, y);
+        y += 8;
+        break;
+      default:
+        break;
+    }
+  }
 
-      .video-placeholder {
-        background-color: #2a2a2a;
-        border-left: 4px solid #c5a5ff;
-        padding: 1rem;
-        margin: 1.5rem 0;
-      }
+  doc.save(fileName);
+}
 
-      .mcq {
-        background-color: #282c34;
-        border: 1px solid #444;
-        border-radius: 5px;
-        padding: 1.5rem;
-        margin: 2rem 0;
-      }
-
-      .mcq-question {
-        font-weight: bold;
-        color: #e0e0e0;
-      }
-
-      .mcq-options {
-        list-style-type: none;
-        padding: 0;
-      }
-
-      .mcq-options li {
-        padding: 0.5rem;
-        margin: 0.5rem 0;
-        border: 1px solid #555;
-        border-radius: 4px;
-      }
-
-      .mcq-options li.correct {
-        border-color: #4caf50;
-        background-color: rgba(76, 175, 80, 0.1);
-      }
-
-      .mcq-explanation {
-        margin-top: 1rem;
-        padding-top: 1rem;
-        border-top: 1px solid #444;
-        color: #aaa;
-        font-size: 0.9em;
-      }
-
-      .mcq-explanation strong {
-        color: #ccc;
-      }
-
-    `;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
-
+const LessonPDFExporter = ({ contentData, fileName = 'lesson.pdf', lessonTitle = 'Lesson' }) => {
   return (
-    <>
-      <Button
-        variant="ghost"
-        size="sm"
-        color="gray.400"
-        _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
-        rounded="lg"
-        h={9}
-        px={3}
-        onClick={handleDownloadPdf}
-      >
-        <Download size={16} />
-        <Text ml={1.5} fontSize="xs" display={{ base: 'none', sm: 'block' }}>PDF</Text>
-      </Button>
-
-      <div ref={contentRef} className="pdf-content">
-        {contentData.map((item, index) => (
-          <ContentItem key={index} item={item} />
-        ))}
-      </div>
-    </>
+    <Button
+      variant="ghost"
+      size="sm"
+      color="gray.400"
+      _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+      rounded="lg"
+      h={9}
+      px={3}
+      onClick={() => generateBookPDF(contentData, fileName, lessonTitle)}
+    >
+      <Download size={16} />
+      <Text ml={1.5} fontSize="xs" display={{ base: 'none', sm: 'block' }}>PDF</Text>
+    </Button>
   );
 };
 
