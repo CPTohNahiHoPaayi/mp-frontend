@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { FiLock, FiUnlock } from 'react-icons/fi';
-import { BookOpen, Heart, ArrowRight } from 'lucide-react';
+import { BookOpen, Heart, ArrowRight, Download } from 'lucide-react';
+import { CoursePDFButton } from './LessonPDFExporter';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useState } from 'react';
@@ -113,9 +114,12 @@ function CourseCard({ course }) {
 
       {/* Footer */}
       <Flex align="center" justify="space-between" mt="auto" pt={2}>
-        <HStack gap={1} color="gray.600">
-          <Heart size={13} />
-          <Text fontSize="xs">{course.likesCount}</Text>
+        <HStack gap={2} color="gray.600">
+          <HStack gap={1}>
+            <Heart size={13} />
+            <Text fontSize="xs">{course.likesCount}</Text>
+          </HStack>
+          <CoursePDFButton courseId={course.id} courseTitle={course.title} />
         </HStack>
         <HStack gap={1} color="#00C9A7" fontSize="xs" fontWeight="medium">
           <Text>Start</Text>
