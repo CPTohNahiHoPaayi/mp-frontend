@@ -87,7 +87,7 @@ export default function NotesRAG() {
           transition="all 0.2s"
           gap={3}
         >
-          <Brain size={16} color="#555" style={{ flexShrink: 0 }} />
+          <Brain size={16} color="rgba(255,255,255,0.2)" style={{ flexShrink: 0 }} />
           <Input
             variant="unstyled"
             placeholder="Ask a question about your notes..."
@@ -97,7 +97,7 @@ export default function NotesRAG() {
             color="white"
             fontSize="sm"
             h={9}
-            _placeholder={{ color: '#555' }}
+            _placeholder={{ color: 'whiteAlpha.300' }}
           />
           <Button
             onClick={handleAsk}

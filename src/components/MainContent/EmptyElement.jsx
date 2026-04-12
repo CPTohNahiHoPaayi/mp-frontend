@@ -92,7 +92,7 @@ function MiniCourseCreator({ onCourseGenerated }) {
       _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
       transition="all 0.2s ease"
     >
-      <Sparkles size={16} color="#555" style={{ flexShrink: 0 }} />
+      <Sparkles size={16} color="rgba(255,255,255,0.2)" style={{ flexShrink: 0 }} />
       <Input
         variant="unstyled"
         placeholder="What do you want to learn?"
@@ -100,7 +100,7 @@ function MiniCourseCreator({ onCourseGenerated }) {
         onChange={(e) => setTopic(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
         color="white"
-        _placeholder={{ color: '#555' }}
+        _placeholder={{ color: 'whiteAlpha.300' }}
         h={9}
         fontSize="sm"
       />

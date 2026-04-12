@@ -256,7 +256,7 @@ export default function Notes() {
             _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
             transition="all 0.2s"
           >
-            <Search size={14} color="#555" />
+            <Search size={14} color="rgba(255,255,255,0.2)" />
             <Input
               variant="unstyled"
               placeholder="Search notes..."
@@ -266,7 +266,7 @@ export default function Notes() {
               color="white"
               fontSize="sm"
               h={8}
-              _placeholder={{ color: '#555' }}
+              _placeholder={{ color: 'whiteAlpha.300' }}
             />
           </Flex>
 
