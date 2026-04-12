@@ -344,35 +344,35 @@ function Social() {
             <Box maxW="4xl" mx="auto" mb={6}>
                 {/* Search bar */}
                 <Flex
-                    bg="rgba(255,255,255,0.02)"
-                    border="1px solid"
-                    borderColor="whiteAlpha.100"
-                    borderRadius="2xl"
                     align="center"
-                    px={4}
-                    py={3}
+                    borderBottom="1px solid"
+                    borderColor="whiteAlpha.100"
+                    pb={2}
+                    _focusWithin={{ borderColor: 'whiteAlpha.300' }}
+                    transition="border-color 0.2s"
                 >
-                    <Search size={20} color="gray" />
+                    <Search size={15} color="#555" />
                     <Input
                         variant="unstyled"
-                        placeholder={`Search for ${contentLabel.toLowerCase()}...`}
+                        placeholder={`Search ${contentLabel.toLowerCase()}...`}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                        ml={3}
+                        ml={2}
                         flex={1}
                         color="white"
-                        _placeholder={{ color: 'gray.500' }}
+                        fontSize="sm"
+                        _placeholder={{ color: 'gray.600' }}
                     />
                     <IconButton
                         aria-label="Filter"
                         onClick={() => setShowFilters(!showFilters)}
-                        variant={showFilters ? 'solid' : 'ghost'}
-                        colorScheme="blue"
-                        size="sm"
-                        
+                        variant="ghost"
+                        size="xs"
+                        color={showFilters ? '#00C9A7' : 'gray.600'}
+                        _hover={{ color: 'white' }}
                     >
-                    <Filter size={20} />
+                    <Filter size={15} />
                     </IconButton>
                 </Flex>
 

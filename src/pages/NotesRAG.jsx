@@ -73,30 +73,45 @@ export default function NotesRAG() {
         </Button>
 
         {/* Question input */}
-        <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="whiteAlpha.100" p={6} mb={6}>
+        <Box mb={6}>
           <Textarea
             placeholder="Ask a question about your notes..."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAsk(); } }}
-            bg="rgba(255,255,255,0.04)"
+            bg="transparent"
             border="none"
+            borderBottom="1px solid"
+            borderColor="whiteAlpha.100"
+            rounded="none"
             color="white"
-            _placeholder={{ color: 'gray.500' }}
-            minH="100px"
-            resize="vertical"
-            mb={4}
+            fontSize="md"
+            _placeholder={{ color: 'gray.600' }}
+            _focus={{ borderColor: 'whiteAlpha.300', boxShadow: 'none' }}
+            minH="80px"
+            resize="none"
+            px={0}
+            py={3}
+            mb={3}
+            transition="border-color 0.2s"
           />
           <Flex justify="flex-end">
             <Button
-              colorScheme="blue"
               onClick={handleAsk}
               loading={loading}
               disabled={!question.trim()}
-              size="lg"
+              size="sm"
+              bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+              color="white"
+              rounded="lg"
+              h={9}
+              px={5}
+              _hover={{ opacity: 0.9, transform: 'translateY(-1px)' }}
+              _disabled={{ opacity: 0.3, cursor: 'not-allowed', transform: 'none' }}
+              transition="all 0.15s"
             >
-              <Brain size={18} />
-              <Text ml={2}>Ask</Text>
+              <Brain size={15} />
+              <Text ml={2} fontSize="sm">Ask</Text>
             </Button>
           </Flex>
         </Box>

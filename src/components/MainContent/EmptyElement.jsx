@@ -77,20 +77,17 @@ function MiniCourseCreator({ onCourseGenerated }) {
   };
 
   return (
-    <Box
-      maxW="640px"
-      mx="auto"
-      bg="rgba(255,255,255,0.02)"
-      border="1px solid"
-      borderColor="whiteAlpha.100"
-      rounded="2xl"
-      p={1.5}
-      _hover={{ borderColor: 'whiteAlpha.200' }}
-      transition="all 0.2s ease"
-    >
-      <HStack gap={2}>
-        <Box pl={3} color="gray.500">
-          <Sparkles size={18} />
+    <Box maxW="640px" mx="auto">
+      <HStack
+        gap={2}
+        borderBottom="1px solid"
+        borderColor="whiteAlpha.100"
+        pb={2}
+        _focusWithin={{ borderColor: 'whiteAlpha.300' }}
+        transition="border-color 0.2s"
+      >
+        <Box color="gray.600">
+          <Sparkles size={16} />
         </Box>
         <Input
           variant="unstyled"
@@ -100,21 +97,21 @@ function MiniCourseCreator({ onCourseGenerated }) {
           onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
           color="white"
           _placeholder={{ color: 'gray.600' }}
-          h={12}
-          fontSize="md"
+          h={10}
+          fontSize="sm"
         />
         <IconButton
           onClick={handleClick}
           aria-label="Create course"
           disabled={loading}
-          size="md"
-          rounded="xl"
-          bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
-          color="white"
-          _hover={{ opacity: 0.9, transform: 'scale(1.05)' }}
+          size="sm"
+          rounded="lg"
+          variant="ghost"
+          color="gray.500"
+          _hover={{ color: '#00C9A7' }}
           transition="all 0.15s ease"
         >
-          {loading ? <Spinner size="sm" /> : <Send size={18} />}
+          {loading ? <Spinner size="xs" /> : <Send size={16} />}
         </IconButton>
       </HStack>
     </Box>

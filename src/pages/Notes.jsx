@@ -245,24 +245,24 @@ export default function Notes() {
         <Flex gap={4} align="center" mb={6} wrap="wrap">
           <Flex
             flex={1}
-            bg="rgba(255,255,255,0.02)"
-            border="1px solid"
-            borderColor="whiteAlpha.100"
-            borderRadius="xl"
             align="center"
-            px={4}
-            py={2}
+            borderBottom="1px solid"
+            borderColor="whiteAlpha.100"
+            pb={2}
             minW="200px"
+            _focusWithin={{ borderColor: 'whiteAlpha.300' }}
+            transition="border-color 0.2s"
           >
-            <Search size={18} color="gray" />
+            <Search size={15} color="#555" />
             <Input
               variant="unstyled"
-              placeholder="Search your notes..."
+              placeholder="Search notes..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              ml={3}
+              ml={2}
               color="white"
-              _placeholder={{ color: 'gray.500' }}
+              fontSize="sm"
+              _placeholder={{ color: 'gray.600' }}
             />
           </Flex>
 
