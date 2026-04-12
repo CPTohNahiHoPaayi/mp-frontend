@@ -28,11 +28,15 @@ const ToolbarButton = ({ onClick, isActive, children, label }) => (
   <IconButton
     aria-label={label}
     size="xs"
-    variant={isActive ? 'solid' : 'ghost'}
-    colorScheme={isActive ? 'blue' : 'gray'}
+    variant="ghost"
     onClick={onClick}
     minW="28px"
     h="28px"
+    color={isActive ? '#00C9A7' : '#4A5568'}
+    bg={isActive ? 'rgba(0,201,167,0.08)' : 'transparent'}
+    _hover={{ color: isActive ? '#00C9A7' : '#A0AEC0', bg: 'rgba(255,255,255,0.04)' }}
+    rounded="md"
+    transition="all 0.15s"
   >
     {children}
   </IconButton>
@@ -105,23 +109,25 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
 
   if (!editor) return null;
 
+  const Divider = () => <Box w="1px" h="16px" bg="#1C2030" mx={1} />;
+
   return (
     <Box display="flex" flexDirection="column" w="100%">
-      {/* Sticky toolbar — docks below the 56px App nav when scrolling */}
+      {/* Toolbar */}
       <Flex
         wrap="wrap"
-        gap="2px"
-        p={2}
+        gap="1px"
+        p={1.5}
         align="center"
         position="sticky"
         top="56px"
         zIndex={10}
-        bg="gray.900"
+        bg="rgba(6,8,15,0.95)"
+        backdropFilter="blur(8px)"
         borderBottom="1px solid"
-        borderColor="gray.700"
-        borderTop="1px solid"
-        borderTopColor="gray.800"
-        mb={2}
+        borderColor="#1C2030"
+        mb={4}
+        rounded="lg"
       >
         <ToolbarButton label="Bold" isActive={editor.isActive('bold')} onClick={() => editor.chain().focus().toggleBold().run()}>
           <Bold size={14} />
@@ -139,7 +145,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <Highlighter size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.700" mx={1} />
+        <Divider />
 
         <ToolbarButton label="Heading 1" isActive={editor.isActive('heading', { level: 1 })} onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}>
           <Heading1 size={14} />
@@ -151,7 +157,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <Heading3 size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.700" mx={1} />
+        <Divider />
 
         <ToolbarButton label="Bullet List" isActive={editor.isActive('bulletList')} onClick={() => editor.chain().focus().toggleBulletList().run()}>
           <List size={14} />
@@ -163,7 +169,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <CheckSquare size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.700" mx={1} />
+        <Divider />
 
         <ToolbarButton label="Blockquote" isActive={editor.isActive('blockquote')} onClick={() => editor.chain().focus().toggleBlockquote().run()}>
           <Quote size={14} />
@@ -175,7 +181,7 @@ export default function NoteEditor({ content, onUpdate, editorRef }) {
           <TableIcon size={14} />
         </ToolbarButton>
 
-        <Box w="1px" h="20px" bg="gray.700" mx={1} />
+        <Divider />
 
         <ToolbarButton label="Undo" onClick={() => editor.chain().focus().undo().run()}>
           <Undo size={14} />

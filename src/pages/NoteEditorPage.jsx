@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Box, Flex, Input, Button, Text, Spinner, Center, IconButton, Tag, Textarea } from '@chakra-ui/react';
+import { Box, Flex, Button, Text, Spinner, Center, IconButton } from '@chakra-ui/react';
 import { ArrowLeft, Sparkles, Eye, EyeOff, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -232,26 +232,30 @@ export default function NoteEditorPage() {
         <Box maxW="4xl" mx="auto" px={{ base: 4, md: 12 }} pt={10} pb={4}>
 
           {/* Document title */}
-          <Textarea
+          <textarea
             ref={titleRef}
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             onBlur={handleTitleBlur}
             onKeyDown={handleTitleKeyDown}
             onInput={handleTitleInput}
-            variant="unstyled"
-            fontSize={{ base: '2xl', md: '4xl' }}
-            fontWeight="bold"
-            color="white"
             placeholder="Untitled"
-            _placeholder={{ color: 'gray.600' }}
-            resize="none"
-            overflow="hidden"
-            lineHeight="1.25"
             rows={1}
-            mb={3}
-            display="block"
-            w="100%"
+            style={{
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              color: '#E2E8F0',
+              fontSize: 'clamp(1.5rem, 4vw, 2.5rem)',
+              fontWeight: 700,
+              lineHeight: 1.25,
+              resize: 'none',
+              overflow: 'hidden',
+              width: '100%',
+              marginBottom: '12px',
+              caretColor: '#00C9A7',
+              fontFamily: 'inherit',
+            }}
           />
 
           {/* Tags metadata row */}
@@ -265,28 +269,40 @@ export default function NoteEditorPage() {
             borderColor="#1C2030"
           >
             {tags.map((tag, i) => (
-              <Tag.Root
+              <Text
                 key={i}
-                colorPalette="blue"
-                size="sm"
-                variant="subtle"
+                as="span"
+                fontSize="xs"
+                color="#8BB8A8"
+                bg="rgba(0,201,167,0.08)"
+                border="1px solid"
+                borderColor="rgba(0,201,167,0.15)"
+                px={2}
+                py={0.5}
+                rounded="full"
                 cursor="pointer"
                 onClick={() => handleRemoveTag(tag)}
                 title="Click to remove"
+                _hover={{ borderColor: 'rgba(0,201,167,0.4)' }}
+                transition="all 0.15s"
               >
-                <Tag.Label>{tag} ×</Tag.Label>
-              </Tag.Root>
+                {tag} ×
+              </Text>
             ))}
-            <Input
+            <input
               value={tagInput}
               onChange={(e) => setTagInput(e.target.value)}
               onKeyDown={handleAddTag}
               placeholder="Add tag..."
-              variant="unstyled"
-              fontSize="sm"
-              color="gray.400"
-              _placeholder={{ color: 'gray.600' }}
-              w="100px"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                outline: 'none',
+                color: '#A0AEC0',
+                fontSize: '13px',
+                width: '100px',
+                caretColor: '#00C9A7',
+              }}
             />
           </Flex>
 
