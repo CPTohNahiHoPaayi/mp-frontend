@@ -77,44 +77,50 @@ function MiniCourseCreator({ onCourseGenerated }) {
   };
 
   return (
-    <Box maxW="640px" mx="auto">
-      <HStack
-        gap={2}
-        borderBottom="1px solid"
-        borderColor="whiteAlpha.100"
-        pb={2}
-        _focusWithin={{ borderColor: 'whiteAlpha.300' }}
-        transition="border-color 0.2s"
+    <Flex
+      maxW="560px"
+      mx="auto"
+      align="center"
+      gap={3}
+      bg="rgba(255,255,255,0.03)"
+      border="1px solid"
+      borderColor="whiteAlpha.50"
+      rounded="full"
+      pl={5}
+      pr={1.5}
+      py={1.5}
+      _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
+      transition="all 0.2s ease"
+    >
+      <Sparkles size={16} color="#555" style={{ flexShrink: 0 }} />
+      <Input
+        variant="unstyled"
+        placeholder="What do you want to learn?"
+        value={topic}
+        onChange={(e) => setTopic(e.target.value)}
+        onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
+        color="white"
+        _placeholder={{ color: '#555' }}
+        h={9}
+        fontSize="sm"
+      />
+      <IconButton
+        onClick={handleClick}
+        aria-label="Create course"
+        disabled={loading}
+        size="sm"
+        rounded="full"
+        bg={topic.trim() ? 'linear-gradient(135deg, #00C9A7, #3B82F6)' : 'whiteAlpha.50'}
+        color={topic.trim() ? 'white' : 'gray.600'}
+        _hover={{ opacity: 0.85 }}
+        transition="all 0.15s ease"
+        w={8}
+        h={8}
+        minW={8}
       >
-        <Box color="gray.600">
-          <Sparkles size={16} />
-        </Box>
-        <Input
-          variant="unstyled"
-          placeholder="What do you want to learn today?"
-          value={topic}
-          onChange={(e) => setTopic(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
-          color="white"
-          _placeholder={{ color: 'gray.600' }}
-          h={10}
-          fontSize="sm"
-        />
-        <IconButton
-          onClick={handleClick}
-          aria-label="Create course"
-          disabled={loading}
-          size="sm"
-          rounded="lg"
-          variant="ghost"
-          color="gray.500"
-          _hover={{ color: '#00C9A7' }}
-          transition="all 0.15s ease"
-        >
-          {loading ? <Spinner size="xs" /> : <Send size={16} />}
-        </IconButton>
-      </HStack>
-    </Box>
+        {loading ? <Spinner size="xs" /> : <Send size={14} />}
+      </IconButton>
+    </Flex>
   );
 }
 

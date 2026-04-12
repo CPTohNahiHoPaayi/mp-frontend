@@ -345,13 +345,16 @@ function Social() {
                 {/* Search bar */}
                 <Flex
                     align="center"
-                    borderBottom="1px solid"
-                    borderColor="whiteAlpha.100"
-                    pb={2}
-                    _focusWithin={{ borderColor: 'whiteAlpha.300' }}
-                    transition="border-color 0.2s"
+                    bg="rgba(255,255,255,0.03)"
+                    border="1px solid"
+                    borderColor="whiteAlpha.50"
+                    rounded="full"
+                    px={4}
+                    py={1}
+                    _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
+                    transition="all 0.2s"
                 >
-                    <Search size={15} color="#555" />
+                    <Search size={14} color="#555" />
                     <Input
                         variant="unstyled"
                         placeholder={`Search ${contentLabel.toLowerCase()}...`}
@@ -362,17 +365,19 @@ function Social() {
                         flex={1}
                         color="white"
                         fontSize="sm"
-                        _placeholder={{ color: 'gray.600' }}
+                        h={8}
+                        _placeholder={{ color: '#555' }}
                     />
                     <IconButton
                         aria-label="Filter"
                         onClick={() => setShowFilters(!showFilters)}
                         variant="ghost"
                         size="xs"
-                        color={showFilters ? '#00C9A7' : 'gray.600'}
+                        rounded="full"
+                        color={showFilters ? '#00C9A7' : '#555'}
                         _hover={{ color: 'white' }}
                     >
-                    <Filter size={15} />
+                    <Filter size={14} />
                     </IconButton>
                 </Flex>
 

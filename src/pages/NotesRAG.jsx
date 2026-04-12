@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  Box, Button, Center, Flex, Heading, Text, Textarea, Spinner,
+  Box, Button, Center, Flex, Heading, Input, Text, Spinner,
 } from '@chakra-ui/react';
 import { Brain, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -73,48 +73,50 @@ export default function NotesRAG() {
         </Button>
 
         {/* Question input */}
-        <Box mb={6}>
-          <Textarea
+        <Flex
+          align="center"
+          bg="rgba(255,255,255,0.03)"
+          border="1px solid"
+          borderColor="whiteAlpha.50"
+          rounded="full"
+          pl={5}
+          pr={1.5}
+          py={1.5}
+          mb={6}
+          _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
+          transition="all 0.2s"
+          gap={3}
+        >
+          <Brain size={16} color="#555" style={{ flexShrink: 0 }} />
+          <Input
+            variant="unstyled"
             placeholder="Ask a question about your notes..."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAsk(); } }}
-            bg="transparent"
-            border="none"
-            borderBottom="1px solid"
-            borderColor="whiteAlpha.100"
-            rounded="none"
             color="white"
-            fontSize="md"
-            _placeholder={{ color: 'gray.600' }}
-            _focus={{ borderColor: 'whiteAlpha.300', boxShadow: 'none' }}
-            minH="80px"
-            resize="none"
-            px={0}
-            py={3}
-            mb={3}
-            transition="border-color 0.2s"
+            fontSize="sm"
+            h={9}
+            _placeholder={{ color: '#555' }}
           />
-          <Flex justify="flex-end">
-            <Button
-              onClick={handleAsk}
-              loading={loading}
-              disabled={!question.trim()}
-              size="sm"
-              bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
-              color="white"
-              rounded="lg"
-              h={9}
-              px={5}
-              _hover={{ opacity: 0.9, transform: 'translateY(-1px)' }}
-              _disabled={{ opacity: 0.3, cursor: 'not-allowed', transform: 'none' }}
-              transition="all 0.15s"
-            >
-              <Brain size={15} />
-              <Text ml={2} fontSize="sm">Ask</Text>
-            </Button>
-          </Flex>
-        </Box>
+          <Button
+            onClick={handleAsk}
+            loading={loading}
+            disabled={!question.trim()}
+            size="sm"
+            rounded="full"
+            bg={question.trim() ? 'linear-gradient(135deg, #00C9A7, #3B82F6)' : 'whiteAlpha.50'}
+            color={question.trim() ? 'white' : 'gray.600'}
+            _hover={{ opacity: 0.85 }}
+            _disabled={{ opacity: 0.3, cursor: 'not-allowed' }}
+            transition="all 0.15s"
+            h={8}
+            minW={8}
+            px={4}
+          >
+            Ask
+          </Button>
+        </Flex>
 
         {/* Error */}
         {error && (

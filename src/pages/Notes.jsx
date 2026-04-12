@@ -246,14 +246,17 @@ export default function Notes() {
           <Flex
             flex={1}
             align="center"
-            borderBottom="1px solid"
-            borderColor="whiteAlpha.100"
-            pb={2}
+            bg="rgba(255,255,255,0.03)"
+            border="1px solid"
+            borderColor="whiteAlpha.50"
+            rounded="full"
+            px={4}
+            py={1}
             minW="200px"
-            _focusWithin={{ borderColor: 'whiteAlpha.300' }}
-            transition="border-color 0.2s"
+            _focusWithin={{ borderColor: '#00C9A7', boxShadow: '0 0 0 1px rgba(0,201,167,0.2)' }}
+            transition="all 0.2s"
           >
-            <Search size={15} color="#555" />
+            <Search size={14} color="#555" />
             <Input
               variant="unstyled"
               placeholder="Search notes..."
@@ -262,7 +265,8 @@ export default function Notes() {
               ml={2}
               color="white"
               fontSize="sm"
-              _placeholder={{ color: 'gray.600' }}
+              h={8}
+              _placeholder={{ color: '#555' }}
             />
           </Flex>
 
