@@ -88,16 +88,21 @@ export default function NotesRAG() {
           gap={3}
         >
           <Brain size={16} color="rgba(255,255,255,0.2)" style={{ flexShrink: 0 }} />
-          <Input
-            variant="unstyled"
+          <input
             placeholder="Ask a question about your notes..."
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleAsk(); } }}
-            color="white"
-            fontSize="sm"
-            h={9}
-            _placeholder={{ color: 'whiteAlpha.300' }}
+            style={{
+              background: 'transparent',
+              border: 'none',
+              outline: 'none',
+              color: 'white',
+              fontSize: '14px',
+              height: '36px',
+              width: '100%',
+              caretColor: '#00C9A7',
+            }}
           />
           <Button
             onClick={handleAsk}

@@ -93,16 +93,21 @@ function MiniCourseCreator({ onCourseGenerated }) {
       transition="all 0.2s ease"
     >
       <Sparkles size={16} color="rgba(255,255,255,0.2)" style={{ flexShrink: 0 }} />
-      <Input
-        variant="unstyled"
+      <input
         placeholder="What do you want to learn?"
         value={topic}
         onChange={(e) => setTopic(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
-        color="white"
-        _placeholder={{ color: 'whiteAlpha.300' }}
-        h={9}
-        fontSize="sm"
+        style={{
+          background: 'transparent',
+          border: 'none',
+          outline: 'none',
+          color: 'white',
+          fontSize: '14px',
+          height: '36px',
+          width: '100%',
+          caretColor: '#00C9A7',
+        }}
       />
       <IconButton
         onClick={handleClick}

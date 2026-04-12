@@ -355,18 +355,22 @@ function Social() {
                     transition="all 0.2s"
                 >
                     <Search size={14} color="rgba(255,255,255,0.2)" />
-                    <Input
-                        variant="unstyled"
+                    <input
                         placeholder={`Search ${contentLabel.toLowerCase()}...`}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                        ml={2}
-                        flex={1}
-                        color="white"
-                        fontSize="sm"
-                        h={8}
-                        _placeholder={{ color: 'whiteAlpha.300' }}
+                        style={{
+                          background: 'transparent',
+                          border: 'none',
+                          outline: 'none',
+                          color: 'white',
+                          fontSize: '14px',
+                          height: '32px',
+                          flex: 1,
+                          marginLeft: '8px',
+                          caretColor: '#00C9A7',
+                        }}
                     />
                     <IconButton
                         aria-label="Filter"
