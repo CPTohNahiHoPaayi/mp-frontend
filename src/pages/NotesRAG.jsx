@@ -127,30 +127,37 @@ export default function NotesRAG() {
 
         {/* Error */}
         {error && (
-          <Box bg="red.900" border="1px solid" borderColor="red.600" rounded="xl" p={4} mb={6}>
-            <Text color="red.200">{error}</Text>
-          </Box>
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+            <Box bg="rgba(239,68,68,0.08)" border="1px solid" borderColor="rgba(239,68,68,0.2)" rounded="xl" p={4} mb={6}>
+              <Text color="#FC8181">{error}</Text>
+            </Box>
+          </motion.div>
         )}
 
         {/* Loading */}
         {loading && (
-          <Center py={8}>
-            <Spinner size="lg" color="blue.300" />
-            <Text ml={4} color="gray.400">Searching your notes...</Text>
-          </Center>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+            <Center py={8}>
+              <Spinner size="md" color="#00C9A7" />
+              <Text ml={4} color="#718096">Searching your notes...</Text>
+            </Center>
+          </motion.div>
         )}
 
         {/* Answer */}
         {answer && !loading && (
-          <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="whiteAlpha.100" p={6} mb={6}>
-            <Text fontSize="sm" fontWeight="semibold" color="blue.300" mb={3}>Answer</Text>
-            <MarkdownRenderer content={answer} />
-          </Box>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="#1C2030" p={6} mb={6}>
+              <Text fontSize="xs" fontWeight="600" color="#00C9A7" mb={3} textTransform="uppercase" letterSpacing="0.05em">Answer</Text>
+              <MarkdownRenderer content={answer} />
+            </Box>
+          </motion.div>
         )}
 
         {/* Sources */}
         {context.length > 0 && !loading && (
-          <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="whiteAlpha.100" p={6}>
+          <motion.div initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2, duration: 0.5 }}>
+          <Box bg="rgba(255,255,255,0.02)" rounded="xl" border="1px solid" borderColor="#1C2030" p={6}>
             <Button
               variant="ghost"
               size="sm"
@@ -200,6 +207,7 @@ export default function NotesRAG() {
               </Flex>
             )}
           </Box>
+          </motion.div>
         )}
       </Box>
     </Box>

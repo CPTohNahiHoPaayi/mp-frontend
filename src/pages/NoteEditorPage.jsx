@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Box, Flex, Input, Button, Text, Spinner, Center, IconButton, Tag, Textarea } from '@chakra-ui/react';
 import { ArrowLeft, Sparkles, Eye, EyeOff, Check } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import NoteEditor from '../components/notes/NoteEditor';
@@ -168,14 +169,15 @@ export default function NoteEditorPage() {
   }
 
   return (
-    <Box minH="calc(100dvh - 56px)" display="flex" flexDirection="column" bg="gray.900" color="white">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }} style={{ minHeight: 'calc(100dvh - 56px)', display: 'flex', flexDirection: 'column' }}>
+    <Box flex="1" display="flex" flexDirection="column" bg="#06080F" color="white">
       {/* Top bar — navigation + actions only, sticky below App nav */}
       <Flex
         px={4}
         py={3}
-        bg="gray.900"
+        bg="#06080F"
         borderBottom="1px solid"
-        borderColor="gray.700"
+        borderColor="#1C2030"
         align="center"
         justify="space-between"
         flexShrink={0}
@@ -226,7 +228,7 @@ export default function NoteEditorPage() {
       </Flex>
 
       {/* Document content area */}
-      <Box flex={1} bg="gray.900">
+      <Box flex={1} bg="#06080F">
         <Box maxW="4xl" mx="auto" px={{ base: 4, md: 12 }} pt={10} pb={4}>
 
           {/* Document title */}
@@ -260,7 +262,7 @@ export default function NoteEditorPage() {
             pb={4}
             mb={6}
             borderBottom="1px solid"
-            borderColor="gray.800"
+            borderColor="#1C2030"
           >
             {tags.map((tag, i) => (
               <Tag.Root
@@ -294,5 +296,6 @@ export default function NoteEditorPage() {
         </Box>
       </Box>
     </Box>
+    </motion.div>
   );
 }

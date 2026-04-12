@@ -514,6 +514,7 @@ function Social() {
                     <Text ml={4}>Loading...</Text>
                 </Center>
             ) : (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}>
                 <Box mb={12}>
                     <Heading size="lg" mb={6}>
                         {mode === 'TRENDING' && (
@@ -535,21 +536,25 @@ function Social() {
 
                     <Grid templateColumns={{ base: '1fr', md: '1fr 1fr', lg: 'repeat(3, 1fr)' }} gap={6}>
                         {contentType === 'COURSES'
-                            ? courses.map((course) => (
-                                <CourseCard key={course.id} course={course} />
+                            ? courses.map((course, i) => (
+                                <motion.div key={course.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05, duration: 0.35 }}>
+                                    <CourseCard course={course} />
+                                </motion.div>
                             ))
-                            : notes.map((note) => (
-                                <NoteCard
-                                    key={note.id}
-                                    note={note}
-                                    user={user}
-                                    onLike={handleNoteLike}
-                                    showActions={false}
-                                />
+                            : notes.map((note, i) => (
+                                <motion.div key={note.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05, duration: 0.35 }}>
+                                    <NoteCard
+                                        note={note}
+                                        user={user}
+                                        onLike={handleNoteLike}
+                                        showActions={false}
+                                    />
+                                </motion.div>
                             ))
                         }
                     </Grid>
                 </Box>
+                </motion.div>
             )}
         </Box>
     );

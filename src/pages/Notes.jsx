@@ -246,6 +246,7 @@ export default function Notes() {
 
       <Box maxW="6xl" mx="auto">
         {/* Search + Actions bar */}
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.4 }}>
         <Flex gap={4} align="center" mb={6} wrap="wrap">
           <Flex
             flex={1}
@@ -332,6 +333,7 @@ export default function Notes() {
             <Text ml={2}>New Note</Text>
           </Button>
         </Flex>
+        </motion.div>
 
         {loading ? (
           <Center py={12}>
@@ -386,20 +388,26 @@ export default function Notes() {
                 </Center>
               ) : (
                 <Grid templateColumns={{ base: '1fr', md: '1fr 1fr', lg: 'repeat(3, 1fr)' }} gap={6}>
-                  {filteredNotes.map((note) => (
-                    <NoteCard
+                  {filteredNotes.map((note, i) => (
+                    <motion.div
                       key={note.id}
-                      note={note}
-                      user={user}
-                      onDelete={handleDelete}
-                      onToggleVisibility={handleToggleVisibility}
-                      selectable
-                      selected={selectedNoteIds.has(note.id)}
-                      onSelect={toggleSelect}
-                      onIngest={handleIngest}
-                      ingesting={ingestingIds.has(note.id)}
-                      ingested={ingestedIds.has(note.id)}
-                    />
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05, duration: 0.35 }}
+                    >
+                      <NoteCard
+                        note={note}
+                        user={user}
+                        onDelete={handleDelete}
+                        onToggleVisibility={handleToggleVisibility}
+                        selectable
+                        selected={selectedNoteIds.has(note.id)}
+                        onSelect={toggleSelect}
+                        onIngest={handleIngest}
+                        ingesting={ingestingIds.has(note.id)}
+                        ingested={ingestedIds.has(note.id)}
+                      />
+                    </motion.div>
                   ))}
                 </Grid>
               )}
