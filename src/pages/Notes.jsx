@@ -113,7 +113,10 @@ export default function Notes() {
     setIngestingIds((prev) => new Set(prev).add(noteId));
     try {
       const plainText = tiptapToText(note.content);
-      if (!plainText.trim()) return;
+      if (!plainText.trim()) {
+        console.warn('Ingest skipped: note has no extractable text', noteId);
+        return;
+      }
       await axios.post(`${ragUrl}/ingest`, {
         content: plainText,
         source: `note-${note.id}`,

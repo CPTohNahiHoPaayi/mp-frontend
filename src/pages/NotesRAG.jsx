@@ -5,6 +5,7 @@ import {
 import { Brain, ArrowLeft, ChevronDown, ChevronUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import MarkdownRenderer from '@/components/ui/MarkdownRenderer';
 
 export default function NotesRAG() {
   const navigate = useNavigate();
@@ -119,9 +120,7 @@ export default function NotesRAG() {
         {answer && !loading && (
           <Box bg="gray.800" rounded="xl" border="1px solid" borderColor="gray.700" p={6} mb={6}>
             <Text fontSize="sm" fontWeight="semibold" color="blue.300" mb={3}>Answer</Text>
-            <Text color="gray.100" whiteSpace="pre-wrap" lineHeight="1.8">
-              {answer}
-            </Text>
+            <MarkdownRenderer content={answer} />
           </Box>
         )}
 
@@ -169,9 +168,7 @@ export default function NotesRAG() {
                     </Button>
                     {openChunks[i] && (
                       <Box px={4} pb={4}>
-                        <Text fontSize="sm" color="gray.300" lineHeight="1.6" whiteSpace="pre-wrap">
-                          {chunk}
-                        </Text>
+                        <MarkdownRenderer content={chunk} />
                       </Box>
                     )}
                   </Box>
