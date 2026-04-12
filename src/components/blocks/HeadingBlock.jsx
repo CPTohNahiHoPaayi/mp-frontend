@@ -1,91 +1,45 @@
-import { Heading, HStack, Icon, Box } from "@chakra-ui/react";
-import { BsStars } from "react-icons/bs";
+import { Heading, Box } from "@chakra-ui/react";
 
 const HeadingBlock = ({
   level = 4,
   text,
-  color,
   align = "left",
   margin = 6,
-  className = "",
-  useGradient = true,
-  showDivider = true,
 }) => {
   const sizeMap = {
-    1: ["4xl", "5xl"],
-    2: ["3xl", "4xl"],
-    3: ["2xl", "3xl"],
-    4: ["xl", "2xl"],
-    5: ["lg", "xl"],
-    6: ["md", "lg"],
+    1: { fontSize: { base: "2xl", md: "3xl" }, color: "white" },
+    2: { fontSize: { base: "xl", md: "2xl" }, color: "white" },
+    3: { fontSize: { base: "lg", md: "xl" }, color: "gray.200" },
+    4: { fontSize: { base: "md", md: "lg" }, color: "gray.200" },
+    5: { fontSize: "md", color: "gray.300" },
+    6: { fontSize: "sm", color: "gray.400" },
   };
 
-  const colorOptions = [
-    "#f9e2af", // yellow
-    "#cba6f7", // mauve
-    "#89b4fa", // blue
-    "#f5c2e7", // pink
-    "#fab387", // peach
-    "#94e2d5", // teal
-  ];
-
-  const headingColor =
-    color || colorOptions[Math.floor(Math.random() * colorOptions.length)];
-
-  const gradient = "linear(to-r, #89b4fa, #cba6f7, #f5c2e7)"; // blue → mauve → pink
+  const config = sizeMap[level] || sizeMap[4];
 
   return (
-    <Box w="full" mb={margin} className={className}>
-      {showDivider && (
+    <Box w="full" mb={margin}>
+      {level <= 2 && (
         <Box
-          as="hr"
-          borderTop="2px solid"
-          borderColor={headingColor}
+          h="2px"
+          w="40px"
+          bg="linear-gradient(90deg, #00C9A7, #3B82F6)"
+          rounded="full"
           mb={3}
-          opacity={0.5}
-          w="100%"
         />
       )}
-
-      <HStack
-        spacing={3}
-        align={align === "center" ? "center" : "flex-start"}
-        justify={align}
+      <Heading
+        as={`h${level}`}
+        fontSize={config.fontSize}
+        color={config.color}
+        fontWeight={level <= 2 ? "800" : "700"}
+        lineHeight="1.3"
+        letterSpacing="-0.01em"
+        textAlign={align}
+        wordBreak="break-word"
       >
-        <Icon
-          as={BsStars}
-          color={headingColor}
-          boxSize={level <= 3 ? 6 : 5}
-          mt="4px"
-          flexShrink={0}
-        />
-
-        <Heading
-          as={`h${level}`}
-          fontSize={sizeMap[level] || ["md", "lg"]}
-          bgGradient={useGradient ? gradient : undefined}
-          bgClip={useGradient ? "text" : undefined}
-          color={useGradient ? "white" : headingColor}
-          fontWeight="extrabold"
-          lineHeight="short"
-          letterSpacing="-0.5px"
-          textAlign={align}
-          wordBreak="break-word"
-        >
-          {text}
-        </Heading>
-      </HStack>
-
-      {showDivider && (
-        <Box
-          as="hr"
-          borderTop="2px solid"
-          borderColor={headingColor}
-          mt={3}
-          opacity={0.4}
-          w="60%"
-        />
-      )}
+        {text}
+      </Heading>
     </Box>
   );
 };

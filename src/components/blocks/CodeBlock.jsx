@@ -1,98 +1,79 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import {
-  Box,
-  Flex,
-  Text,
-  Button,
-  useClipboard,
-} from "@chakra-ui/react";
+import { Box, Flex, Text, Button, useClipboard } from "@chakra-ui/react";
 import { codeToHtml } from "shiki";
-import { toaster } from "@/components/ui/toaster"; // ✅ custom toaster
-
-const themes = [
-  "vitesse-dark",
-  "nord",
-  "github-dark",
-  "github-light",
-  "rose-pine",
-  "poimandres",
-  "slack-dark",
-  "catppuccin-mocha",
-  "dracula",
-];
+import { Copy, Check } from "lucide-react";
 
 const CodeBlock = ({ code = "", language = "javascript" }) => {
   const [html, setHtml] = useState("");
   const { hasCopied, onCopy } = useClipboard(code);
-  const [theme] = useState(themes[7]);
 
   useEffect(() => {
     const highlight = async () => {
-      const htmlResult = await codeToHtml(code, {
-        lang: language,
-        theme,
-      });
-      setHtml(htmlResult);
+      try {
+        const htmlResult = await codeToHtml(code, {
+          lang: language,
+          theme: "catppuccin-mocha",
+        });
+        setHtml(htmlResult);
+      } catch {
+        setHtml(`<pre>${code}</pre>`);
+      }
     };
     highlight();
-  }, [code, language, theme]);
-
-  const handleCopy = () => {
-    onCopy();
-    toaster.create({
-      title: "Copied!",
-      type: "success",
-    });
-  };
+  }, [code, language]);
 
   return (
     <Box
-      my={6}
-      borderRadius="lg"
+      my={5}
+      rounded="xl"
       overflow="hidden"
       border="1px solid"
-      borderColor="gray.700"
-      fontFamily="Fira Code, monospace"
+      borderColor="whiteAlpha.100"
+      fontFamily="'Fira Code', 'JetBrains Mono', monospace"
     >
       <Flex
         justify="space-between"
         align="center"
         px={4}
         py={2}
-        bg="#1e1e1e"
+        bg="rgba(255,255,255,0.03)"
         borderBottom="1px solid"
-        borderColor="gray.700"
+        borderColor="whiteAlpha.50"
       >
-        <Text
-          fontSize="sm"
-          fontWeight="medium"
-          color="gray.400"
-          textTransform="uppercase"
-        >
-          {language} / {theme}
+        <Text fontSize="xs" fontWeight="medium" color="gray.600" textTransform="uppercase" letterSpacing="wider">
+          {language}
         </Text>
         <Button
-          onClick={handleCopy}
+          onClick={onCopy}
           size="xs"
           variant="ghost"
-          fontSize="xs"
-          color="gray.300"
-          _hover={{ color: "white", bg: "gray.700" }}
+          color={hasCopied ? "#00C9A7" : "gray.500"}
+          _hover={{ color: "white", bg: "whiteAlpha.50" }}
+          rounded="lg"
+          h={7}
+          px={2}
         >
-          {hasCopied ? "✓ Copied" : "📋 Copy"}
+          {hasCopied ? <Check size={13} /> : <Copy size={13} />}
+          <Text ml={1.5} fontSize="xs">{hasCopied ? "Copied" : "Copy"}</Text>
         </Button>
       </Flex>
 
       <Box
         p={4}
         overflowX="auto"
-        background="#1e1e1e"
+        bg="#0D0F17"
         className="shiki"
         sx={{
-          '& pre': {
-            padding: '0.5rem 0',
+          "& pre": {
+            padding: "0.25rem 0",
+            margin: 0,
+            bg: "transparent !important",
+          },
+          "& code": {
+            fontSize: "0.85rem",
+            lineHeight: "1.7",
           },
         }}
         dangerouslySetInnerHTML={{ __html: html }}

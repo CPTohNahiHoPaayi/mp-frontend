@@ -15,7 +15,6 @@ import {
 import { BookOpen, Home, StickyNote, Brain, Users, LogOut } from "lucide-react";
 import { Tooltip } from "@/components/ui/tooltip";
 import MyCourseList from "./components/sidebar/MyCourseList";
-import MiniCourseCreator from "./components/sidebar/MiniCourseCreator";
 import { Outlet, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/LandingPage";
@@ -62,7 +61,7 @@ function App() {
   }
 
   const navItems = [
-    { icon: Home, label: "Home", path: "/" },
+    { icon: BookOpen, label: "Courses", path: "/" },
     { icon: StickyNote, label: "Notes", path: "/notes" },
     { icon: Brain, label: "Ask Notes", path: "/notes/rag" },
     { icon: Users, label: "Social", path: "/social" },
@@ -117,8 +116,22 @@ function App() {
           <Box flex="1" overflowY="auto" px={2}>
             <MyCourseList email={user?.email} refreshTrigger={refreshCourses} />
           </Box>
-          <Box px={3} pb={3}>
-            <MiniCourseCreator onCourseGenerated={triggerRefresh} />
+          {/* Quick links */}
+          <Box px={3} pb={3} borderTop="1px solid" borderColor="whiteAlpha.50" pt={3}>
+            <Button
+              w="full"
+              size="sm"
+              variant="ghost"
+              color="gray.500"
+              _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
+              rounded="lg"
+              justifyContent="flex-start"
+              onClick={() => navigate('/notes')}
+              h={8}
+              fontSize="xs"
+            >
+              View all notes
+            </Button>
           </Box>
         </Box>
       )}
