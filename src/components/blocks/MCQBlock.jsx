@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, Text, VStack, Button, Flex, HStack } from '@chakra-ui/react';
 import { CheckCircle, XCircle, RotateCcw, Lightbulb } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
   const [selected, setSelected] = useState(null);
@@ -8,6 +9,13 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
 
   const handleSelect = (index) => {
     if (!showAnswer) setSelected(index);
+  };
+
+  const handleCheck = () => {
+    setShowAnswer(true);
+    if (selected === correctAnswer) {
+      confetti({ particleCount: 100, spread: 70, origin: { y: 0.7 } });
+    }
   };
 
   const resetQuiz = () => {
@@ -135,7 +143,7 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
 
       <Flex gap={3}>
         <Button
-          onClick={() => setShowAnswer(true)}
+          onClick={handleCheck}
           disabled={showAnswer || selected === null}
           bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
           color="white"
@@ -151,18 +159,23 @@ const MCQBlock = ({ question, options, correctAnswer, explanation }) => {
         </Button>
 
         {showAnswer && (
-          <Button
-            onClick={resetQuiz}
-            variant="ghost"
-            color="gray.500"
-            _hover={{ color: 'white', bg: 'whiteAlpha.50' }}
-            rounded="xl"
-            size="sm"
-            h={9}
-          >
-            <RotateCcw size={14} />
-            <Text ml={1.5}>Reset</Text>
-          </Button>
+          <>
+            <Text fontSize="sm" fontWeight="500" color={selected === correctAnswer ? '#00C9A7' : '#EF4444'}>
+              {selected === correctAnswer ? '🎉 Correct!' : '😔 Not quite'}
+            </Text>
+            <Button
+              onClick={resetQuiz}
+              variant="ghost"
+              color="#4A5568"
+              _hover={{ color: '#A0AEC0' }}
+              rounded="xl"
+              size="sm"
+              h={9}
+            >
+              <RotateCcw size={14} />
+              <Text ml={1.5}>Reset</Text>
+            </Button>
+          </>
         )}
       </Flex>
 
