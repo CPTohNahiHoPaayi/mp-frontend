@@ -17,6 +17,11 @@ export default function NotesRAG() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSources, setShowSources] = useState(false);
+  const [openChunks, setOpenChunks] = useState({});
+
+  const toggleChunk = (i) => {
+    setOpenChunks((prev) => ({ ...prev, [i]: !prev[i] }));
+  };
 
   const handleAsk = async () => {
     if (!question.trim()) return;
@@ -137,20 +142,38 @@ export default function NotesRAG() {
             </Button>
 
             {showSources && (
-              <Flex direction="column" gap={3}>
+              <Flex direction="column" gap={2}>
                 {context.map((chunk, i) => (
-                  <Box key={i} bg="gray.700" rounded="lg" p={4}>
-                    <Flex justify="space-between" mb={2}>
-                      <Text fontSize="xs" color="blue.300" fontWeight="semibold">
-                        {sources[i]?.source || 'unknown'}
-                      </Text>
-                      <Text fontSize="xs" color="gray.500">
-                        Chunk #{sources[i]?.chunk_index ?? i}
-                      </Text>
-                    </Flex>
-                    <Text fontSize="sm" color="gray.300" lineHeight="1.6">
-                      {chunk}
-                    </Text>
+                  <Box key={i} bg="gray.700" rounded="lg" overflow="hidden">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      w="100%"
+                      justifyContent="space-between"
+                      onClick={() => toggleChunk(i)}
+                      px={4}
+                      py={3}
+                      h="auto"
+                      color="gray.300"
+                      _hover={{ bg: 'gray.600' }}
+                    >
+                      <Flex gap={2} align="center">
+                        <Text fontSize="xs" color="blue.300" fontWeight="semibold">
+                          {sources[i]?.source || 'unknown'}
+                        </Text>
+                        <Text fontSize="xs" color="gray.500">
+                          Chunk #{sources[i]?.chunk_index ?? i}
+                        </Text>
+                      </Flex>
+                      {openChunks[i] ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                    </Button>
+                    {openChunks[i] && (
+                      <Box px={4} pb={4}>
+                        <Text fontSize="sm" color="gray.300" lineHeight="1.6" whiteSpace="pre-wrap">
+                          {chunk}
+                        </Text>
+                      </Box>
+                    )}
                   </Box>
                 ))}
               </Flex>
