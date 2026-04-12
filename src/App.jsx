@@ -50,6 +50,7 @@ function App() {
   const { isLoading, isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
   const [refreshCourses, setRefreshCourses] = useState(false);
+  const [meta, setMeta] = useState(null);
   const triggerRefresh = () => setRefreshCourses((prev) => !prev);
 
   if (isLoading) {
@@ -222,7 +223,7 @@ function App() {
 
         {/* Page Content */}
         <Box flex={1} overflowY="auto" bg="#06080F">
-          <Outlet context={{ triggerRefresh }} />
+          <Outlet context={{ triggerRefresh, meta, setMeta }} />
         </Box>
       </Box>
     </Flex>
