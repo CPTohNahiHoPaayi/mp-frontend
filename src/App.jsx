@@ -5,201 +5,225 @@ import {
   Stack,
   IconButton,
   HStack,
-  Breadcrumb,
   Button,
   Text,
-  useBreakpointValue,
 } from "@chakra-ui/react";
-
 import {
   GoSidebarExpand,
   GoSidebarCollapse,
 } from "react-icons/go";
+import { BookOpen, Home, StickyNote, Brain, Users, LogOut } from "lucide-react";
 import { Tooltip } from "@/components/ui/tooltip";
 import MyCourseList from "./components/sidebar/MyCourseList";
 import MiniCourseCreator from "./components/sidebar/MiniCourseCreator";
-import { Outlet, useParams, useNavigate } from "react-router-dom";
-import { BreadcrumbMenuItem } from "./components/MainContent/BreadcrumbMenuItem";
+import { Outlet, useParams, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/LandingPage";
-// import { useNavigate } from "react-router-dom";
-import Sidebar from "./components/MainContent/Sidebar"
-import RightCourseDrawer from "./components/MainContent/RightCourseDrawer";
+
+function NavLink({ icon: Icon, label, path, active, onClick }) {
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      color={active ? "white" : "gray.500"}
+      bg={active ? "whiteAlpha.100" : "transparent"}
+      _hover={{ color: "white", bg: "whiteAlpha.50" }}
+      onClick={onClick}
+      rounded="lg"
+      px={3}
+      h={9}
+      fontWeight={active ? "semibold" : "medium"}
+      fontSize="sm"
+      transition="all 0.15s ease"
+    >
+      <Icon size={16} />
+      <Text ml={2} display={{ base: "none", md: "block" }}>{label}</Text>
+    </Button>
+  );
+}
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { courseId, moduleIndex = 0, lessonIndex = 0 } = useParams();
-  const [meta, setMeta] = useState(null);
-  const MAX_TITLE_LENGTH = 25;
+  const { courseId } = useParams();
+  const location = useLocation();
 
-  const {
-    isLoading,
-    isAuthenticated,
-    login,
-    logout,
-    user,
-  } = useAuth();
+  const { isLoading, isAuthenticated, logout, user } = useAuth();
   const navigate = useNavigate();
   const [refreshCourses, setRefreshCourses] = useState(false);
   const triggerRefresh = () => setRefreshCourses((prev) => !prev);
 
-  const truncate = (text) =>
-    text?.length > MAX_TITLE_LENGTH ? text.slice(0, MAX_TITLE_LENGTH) + "…" : text;
-
   if (isLoading) {
     return (
-      <Flex align="center" justify="center" h="100vh" bg="gray.900" color="white">
-        <Text>Restoring session...</Text>
+      <Flex align="center" justify="center" h="100vh" bg="#06080F" color="white">
+        <Text color="gray.500">Restoring session...</Text>
       </Flex>
     );
   }
 
+  const navItems = [
+    { icon: Home, label: "Home", path: "/" },
+    { icon: StickyNote, label: "Notes", path: "/notes" },
+    { icon: Brain, label: "Ask Notes", path: "/notes/rag" },
+    { icon: Users, label: "Social", path: "/social" },
+  ];
+
   return isAuthenticated() ? (
-    <Flex minH="100dvh" overflowX="hidden">
-      {/* Sidebar with fixed width */}
+    <Flex minH="100dvh" overflowX="hidden" bg="#06080F">
+      {/* Sidebar */}
       {sidebarOpen && (
         <Box
-          bg="black"
-          w="280px"
-          minW="400px"
-          maxW="400px"
+          bg="#0A0C14"
+          w="300px"
+          minW="300px"
+          maxW="300px"
           h="100dvh"
           overflow="hidden"
           display="flex"
           flexDirection="column"
+          borderRight="1px solid"
+          borderColor="whiteAlpha.50"
         >
-          <Tooltip content="Close sidebar" positioning={{ placement: "right-end" }} showArrow>
-            <IconButton
-              aria-label="Close sidebar"
-              size="lg"
-              variant="ghost"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <GoSidebarExpand />
-              Text To Learn
-            </IconButton>
-          </Tooltip>
-          <Box flex="1" overflowY="auto">
+          <Flex align="center" justify="space-between" px={4} py={3}>
+            <HStack gap={2}>
+              <Box
+                w={7}
+                h={7}
+                rounded="lg"
+                bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <BookOpen size={14} color="white" />
+              </Box>
+              <Text fontSize="sm" fontWeight="bold" color="white">
+                Text<Box as="span" color="#00C9A7">ToLearn</Box>
+              </Text>
+            </HStack>
+            <Tooltip content="Close sidebar" positioning={{ placement: "right-end" }} showArrow>
+              <IconButton
+                aria-label="Close sidebar"
+                size="sm"
+                variant="ghost"
+                color="gray.500"
+                _hover={{ color: "white", bg: "whiteAlpha.50" }}
+                onClick={() => setSidebarOpen(false)}
+              >
+                <GoSidebarExpand />
+              </IconButton>
+            </Tooltip>
+          </Flex>
+          <Box flex="1" overflowY="auto" px={2}>
             <MyCourseList email={user?.email} refreshTrigger={refreshCourses} />
           </Box>
-          <Box mt={4} px={2}>
+          <Box px={3} pb={3}>
             <MiniCourseCreator onCourseGenerated={triggerRefresh} />
           </Box>
         </Box>
       )}
 
       {/* Main Content */}
-      <Box flex="1" h="100dvh" overflow="hidden">
-        <Stack h="full">
-          {/* Navigation Bar */}
-          <Box
-            as="nav"
-            bg="bg.muted"
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            h="56px"
-            flexShrink={0}
-            px={4}
-          >
-            <HStack spacing={4} align="center" w="100%" justify={"space-between"}>
-              {!sidebarOpen ? (
-                <Box>
-                  <Tooltip content="Open sidebar" positioning={{ placement: "bottom-start" }} showArrow>
-                    <IconButton
-                      aria-label="Open sidebar"
-                      size="lg"
-                      variant="ghost"
-                      onClick={() => setSidebarOpen(true)}
-                    >
-                      <GoSidebarCollapse />
-                    </IconButton>
-                  </Tooltip>
+      <Box flex="1" h="100dvh" overflow="hidden" display="flex" flexDirection="column">
+        {/* Top Nav */}
+        <Box
+          as="nav"
+          bg="rgba(6,8,15,0.8)"
+          backdropFilter="blur(12px)"
+          borderBottom="1px solid"
+          borderColor="whiteAlpha.50"
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          h="52px"
+          flexShrink={0}
+          px={4}
+        >
+          {/* Left */}
+          <HStack gap={2}>
+            {!sidebarOpen && (
+              <Tooltip content="Open sidebar" positioning={{ placement: "bottom-start" }} showArrow>
+                <IconButton
+                  aria-label="Open sidebar"
+                  size="sm"
+                  variant="ghost"
+                  color="gray.500"
+                  _hover={{ color: "white", bg: "whiteAlpha.50" }}
+                  onClick={() => setSidebarOpen(true)}
+                >
+                  <GoSidebarCollapse />
+                </IconButton>
+              </Tooltip>
+            )}
+            {!sidebarOpen && (
+              <HStack gap={1} ml={2}>
+                <Box
+                  w={6}
+                  h={6}
+                  rounded="md"
+                  bg="linear-gradient(135deg, #00C9A7, #3B82F6)"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <BookOpen size={12} color="white" />
                 </Box>
-              ) : (
-                <Box w="48px" /> // Keeps layout consistent when sidebar is open
-              )}
+                <Text fontSize="sm" fontWeight="bold" color="white" display={{ base: "none", sm: "block" }}>
+                  Text<Box as="span" color="#00C9A7">ToLearn</Box>
+                </Text>
+              </HStack>
+            )}
+          </HStack>
 
-<Box >
-  {/* Navigation Links */}
-  <Button
-    variant="ghost"
-    colorScheme="blue"
-    size="lg"
-    onClick={() => navigate("/")}
-    _hover={{ bg: "blue.100", transform: "translateY(-2px)", boxShadow: "md", color:"black" }}
-    _active={{ bg: "blue.200", transform: "translateY(0px)" }}
-    transition="all 0.2s ease-in-out"
-  >
-    Home
-  </Button>
+          {/* Center — Nav links */}
+          <HStack gap={1}>
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                icon={item.icon}
+                label={item.label}
+                path={item.path}
+                active={location.pathname === item.path}
+                onClick={() => navigate(item.path)}
+              />
+            ))}
+          </HStack>
 
-  <Button
-    variant="ghost"
-    colorScheme="blue"
-    size="lg"
-    onClick={() => navigate("/notes")}
-    _hover={{ bg: "blue.100", transform: "translateY(-2px)", boxShadow: "md" ,color:"black"}}
-    _active={{ bg: "blue.200", transform: "translateY(0px)" }}
-    transition="all 0.2s ease-in-out"
-  >
-    Notes
-  </Button>
+          {/* Right — User */}
+          <HStack gap={3}>
+            {user?.picture && (
+              <img
+                src={user.picture}
+                alt="Profile"
+                referrerPolicy="no-referrer"
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  border: "2px solid rgba(255,255,255,0.1)",
+                }}
+              />
+            )}
+            <Button
+              onClick={logout}
+              size="sm"
+              variant="ghost"
+              color="gray.500"
+              _hover={{ color: "red.400", bg: "whiteAlpha.50" }}
+              rounded="lg"
+              h={8}
+              px={2}
+            >
+              <LogOut size={15} />
+              <Text ml={1.5} fontSize="xs" display={{ base: "none", md: "block" }}>Logout</Text>
+            </Button>
+          </HStack>
+        </Box>
 
-  <Button
-    variant="ghost"
-    colorScheme="purple"
-    size="lg"
-    onClick={() => navigate("/notes/rag")}
-    _hover={{ bg: "purple.100", transform: "translateY(-2px)", boxShadow: "md" ,color:"black"}}
-    _active={{ bg: "purple.200", transform: "translateY(0px)" }}
-    transition="all 0.2s ease-in-out"
-  >
-    Ask Notes
-  </Button>
-
-  <Button
-    variant="ghost"
-    colorScheme="blue"
-    size="lg"
-    onClick={() => navigate("/social")}
-    _hover={{ bg: "blue.100", transform: "translateY(-2px)", boxShadow: "md" ,color:"black"}}
-    _active={{ bg: "blue.200", transform: "translateY(0px)" }}
-    transition="all 0.2s ease-in-out"
-  >
-    Social
-  </Button>
-</Box>
-
-              <Box>
-                <HStack>
-                <img
-                  src={user?.picture}
-                  alt="Profile"
-                  referrerPolicy="no-referrer"
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '50%',
-                    objectFit: 'cover',
-                    border: '2px solid white'
-                  }}
-                />
-                <Button onClick={logout} variant="outline" colorScheme="red">
-                  Logout
-                </Button>
-                </HStack>
-              </Box>
-            </HStack>
-          </Box>
-
-          {/* Main Page Content */}
-          <Box flex={1} overflowY="auto" bg="bg.muted">
-            <Box w="100%">
-              <Outlet context={{ meta, setMeta }} />
-            </Box>
-          </Box>
-        </Stack>
+        {/* Page Content */}
+        <Box flex={1} overflowY="auto" bg="#06080F">
+          <Outlet context={{ triggerRefresh }} />
+        </Box>
       </Box>
     </Flex>
   ) : (

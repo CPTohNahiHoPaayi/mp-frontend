@@ -1,5 +1,6 @@
-import { Box, Button, Heading, HStack, Stack, Tag, Text, Tooltip } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { FiLock, FiUnlock } from 'react-icons/fi';
+import { BookOpen, Heart, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useState } from 'react';
@@ -24,7 +25,7 @@ function CourseCard({ course }) {
     }
   };
 
-  const truncate = (str, max = 70) =>
+  const truncate = (str, max = 60) =>
     str.length > max ? str.slice(0, max - 1) + '…' : str;
 
   const createdDate = new Date(...course.createdAt);
@@ -32,92 +33,95 @@ function CourseCard({ course }) {
   return (
     <Box
       w="100%"
-      maxW="320px"
-      bg="black"
+      bg="rgba(255,255,255,0.02)"
       border="1px solid"
-      borderColor="whiteAlpha.300"
-      borderRadius="lg"
+      borderColor="whiteAlpha.50"
+      borderRadius="xl"
       p={5}
-      m={3}
-      boxShadow="md"
       transition="all 0.2s ease"
       _hover={{
-        boxShadow: 'lg',
+        borderColor: 'whiteAlpha.200',
+        bg: 'rgba(255,255,255,0.04)',
         transform: 'translateY(-3px)',
+        boxShadow: '0 8px 30px rgba(0,0,0,0.3)',
       }}
+      cursor="pointer"
+      onClick={() => navigate(`/courses/${course.id}/module/0/lesson/0`)}
+      display="flex"
+      flexDirection="column"
     >
-      <Heading fontSize="lg" mb={1} color="blue.300" noOfLines={2}>
+      {/* Header */}
+      <Flex align="start" justify="space-between" mb={3}>
+        <Box
+          w={10}
+          h={10}
+          rounded="lg"
+          bg="linear-gradient(135deg, rgba(0,201,167,0.15), rgba(59,130,246,0.15))"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexShrink={0}
+        >
+          <BookOpen size={18} color="#00C9A7" />
+        </Box>
+        <Button
+          size="xs"
+          variant="ghost"
+          color={isPublic ? '#00C9A7' : 'gray.600'}
+          _hover={{ bg: 'whiteAlpha.50' }}
+          onClick={(e) => { e.stopPropagation(); toggleVisibility(); }}
+          rounded="lg"
+          h={7}
+          px={2}
+        >
+          {isPublic ? <FiUnlock size={12} /> : <FiLock size={12} />}
+          <Text ml={1} fontSize="xs">{isPublic ? 'Public' : 'Private'}</Text>
+        </Button>
+      </Flex>
+
+      {/* Title */}
+      <Heading fontSize="md" fontWeight="semibold" color="white" mb={1.5} lineHeight="1.4">
         {truncate(course.title)}
       </Heading>
 
-      <Text fontSize="sm" color="gray.400" noOfLines={1}>
-        by {course.creator.split('@')[0]}
+      {/* Meta */}
+      <Text fontSize="xs" color="gray.600" mb={3}>
+        {course.creator.split('@')[0]} · {format(createdDate, 'dd MMM yyyy')}
       </Text>
 
-      <Text fontSize="xs" color="gray.500" mt={1}>
-        {format(createdDate, 'dd MMM yyyy, hh:mm a')}
-      </Text>
-
-      <Box
-        mt={3}
-        mb={3}
-        height="1px"
-        bg="whiteAlpha.200"
-        borderRadius="full"
-      />
-
+      {/* Tags */}
       {course.tags?.length > 0 && (
-       <HStack wrap="wrap" spacing={1} mb={3} flexWrap="wrap">
-       {course.tags.slice(0, 3).map((tag, i) => (
-         <Tag.Root
-           key={i}
-           colorPalette="blue"
-           size="sm"
-           variant="solid"
-           borderRadius="full"
-         >
-           <Tag.Label>{tag}</Tag.Label>
-         </Tag.Root>
-       ))}
-     
-       {course.tags.length > 3 && (
-         <Tag.Root colorPalette="blue" size="sm" variant="outline" borderRadius="full">
-           <Tag.Label>+{course.tags.length - 3}</Tag.Label>
-         </Tag.Root>
-       )}
-     </HStack>
-     
+        <HStack gap={1.5} mb={4} flexWrap="wrap">
+          {course.tags.slice(0, 3).map((tag, i) => (
+            <Text
+              key={i}
+              fontSize="xs"
+              color="gray.500"
+              bg="whiteAlpha.50"
+              px={2}
+              py={0.5}
+              rounded="md"
+            >
+              {tag}
+            </Text>
+          ))}
+          {course.tags.length > 3 && (
+            <Text fontSize="xs" color="gray.600">+{course.tags.length - 3}</Text>
+          )}
+        </HStack>
       )}
 
-      <Stack spacing={2} mt="auto">
-        <Button
-          size="sm"
-          colorScheme="blue"
-          onClick={() => navigate(`/courses/${course.id}/module/0/lesson/0`)}
-        >
-          Start Course
-        </Button>
-
-        {/* <Tooltip
-          label={isPublic ? 'Visible to everyone' : 'Only visible to you'}
-          hasArrow
-        > */}
-          <Button
-            size="xs"
-            variant="ghost"
-       
-            onClick={toggleVisibility}
-            colorScheme={isPublic ? 'green' : 'gray'}
-          >
-             {isPublic ? <FiUnlock /> : <FiLock />}
-            {isPublic ? 'Public' : 'Private'}
-          </Button>
-        {/* </Tooltip> */}
-
-        <Text fontSize="xs" color="gray.500" textAlign="right">
-          {course.likesCount} Likes
-        </Text>
-      </Stack>
+      {/* Footer */}
+      <Flex align="center" justify="space-between" mt="auto" pt={2}>
+        <HStack gap={1} color="gray.600">
+          <Heart size={13} />
+          <Text fontSize="xs">{course.likesCount}</Text>
+        </HStack>
+        <HStack gap={1} color="#00C9A7" fontSize="xs" fontWeight="medium">
+          <Text>Start</Text>
+          <ArrowRight size={13} />
+        </HStack>
+      </Flex>
     </Box>
   );
 }
