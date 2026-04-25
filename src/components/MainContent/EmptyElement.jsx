@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Box,
   Text,
@@ -14,14 +14,16 @@ import {
   VStack,
   SimpleGrid,
   Flex,
+  Badge,
+  Code,
 } from '@chakra-ui/react';
-import { Sparkles, Send, BookOpen, Zap } from 'lucide-react';
+import { Sparkles, Send, BookOpen, Zap, Brain, ChevronDown, ChevronUp, Settings } from 'lucide-react';
 import { toaster } from '@/components/ui/toaster';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '@/context/AuthContext';
 import CourseCard from './CourseCard';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const MotionBox = motion(Box);
 
@@ -39,93 +41,374 @@ const stagger = {
   visible: { transition: { staggerChildren: 0.08 } },
 };
 
+const LEVEL_OPTIONS = [
+  { value: 0, label: 'Absolute Beginner' },
+  { value: 1, label: 'Beginner' },
+  { value: 2, label: 'Intermediate' },
+  { value: 3, label: 'Advanced' },
+  { value: 4, label: 'Expert' },
+];
+
+const STYLE_OPTIONS = [
+  { value: 'balanced', label: 'Balanced' },
+  { value: 'hands_on', label: 'Hands-On' },
+  { value: 'visual', label: 'Visual' },
+  { value: 'conceptual', label: 'Conceptual' },
+  { value: 'example_driven', label: 'Examples' },
+];
+
+
+function RLMGenerationView({ events, isComplete, error }) {
+  const bottomRef = useRef(null);
+  const [showCode, setShowCode] = useState(false);
+
+  // Scroll only WITHIN the event log container, not the whole page
+  const logContainerRef = useRef(null);
+  useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [events]);
+
+  const subCalls = events.filter(e => e.event === 'sub_llm_call').length;
+  const latestIteration = events.filter(e => e.event === 'iteration').slice(-1)[0];
+  const currentStep = latestIteration?.data?.iteration || 0;
+  const maxSteps = latestIteration?.data?.max || 15;
+  const latestCode = events.filter(e => e.event === 'code').slice(-1)[0];
+  const latestOutput = events.filter(e => e.event === 'output').slice(-1)[0];
+
+  return (
+    <Box
+      bg="var(--bg-elevated)"
+      border="1px solid"
+      borderColor="var(--border-subtle)"
+      borderRadius="xl"
+      overflow="hidden"
+      maxW="700px"
+      mx="auto"
+    >
+      {/* Header */}
+      <Flex p={3} justify="space-between" align="center" borderBottom="1px solid" borderColor="var(--border-subtle)">
+        <HStack gap={2}>
+          <Brain size={16} color={isComplete ? '#48bb78' : 'var(--accent)'} />
+          <Text fontSize="sm" fontWeight="bold" color="var(--text-primary)">RLM Agent</Text>
+          <Badge colorScheme={isComplete ? 'green' : error ? 'red' : 'blue'} fontSize="10px" variant="subtle">
+            {isComplete ? 'Complete!' : error ? 'Error' : `${currentStep} iterations`}
+          </Badge>
+        </HStack>
+        <HStack gap={2}>
+          <Badge variant="outline" fontSize="10px">{subCalls} sub-LLM calls</Badge>
+        </HStack>
+      </Flex>
+
+      {/* Progress bar */}
+      <Box h="3px" bg="var(--border-subtle)">
+        <Box
+          h="full"
+          bg={isComplete ? 'green.400' : 'var(--accent)'}
+          w={`${isComplete ? 100 : Math.round((currentStep / maxSteps) * 100)}%`}
+          transition="width 0.5s ease"
+        />
+      </Box>
+
+      {/* Event log */}
+      <div ref={logContainerRef} style={{ maxHeight: '300px', overflowY: 'auto', padding: '12px', fontFamily: 'monospace' }}>
+        {events.map((evt, idx) => {
+          const labels = {
+            iteration: `Iteration ${evt.data.iteration}`,
+            code: `Agent wrote ${evt.data.code?.split('\n').length || 0} lines of code`,
+            output: `REPL: ${evt.data.output?.slice(0, 80)}...`,
+            sub_llm_call: `Sub-LLM #${evt.data.call_number}: ${evt.data.query?.slice(0, 60)}...`,
+            sub_llm_result: `Sub-LLM #${evt.data.call_number} returned`,
+            error: evt.data.message,
+            complete: `Done! ${evt.data.iterations} steps, ${evt.data.sub_calls} sub-calls`,
+          };
+          const icons = { iteration: '🔄', code: '📝', output: '📤', sub_llm_call: '🧠', sub_llm_result: '✨', error: '❌', complete: '✅' };
+          const colors = { iteration: '#63b3ed', code: '#68d391', output: '#a0aec0', sub_llm_call: '#b794f4', sub_llm_result: '#d6bcfa', error: '#fc8181', complete: '#48bb78' };
+          const label = labels[evt.event] || evt.event;
+          const icon = icons[evt.event] || '•';
+          const color = colors[evt.event] || '#a0aec0';
+          return (
+            <p key={idx} style={{ color, fontSize: '12px', lineHeight: '1.8', margin: 0 }}>
+              {icon} {label}
+            </p>
+          );
+        })}
+        {error && <p style={{ color: '#fc8181', fontSize: '12px', margin: 0 }}>❌ {error}</p>}
+        <div ref={bottomRef} />
+      </div>
+
+      {/* Expandable code */}
+      {latestCode && (
+        <Box borderTop="1px solid" borderColor="var(--border-subtle)">
+          <Flex p={2} cursor="pointer" onClick={() => setShowCode(!showCode)} align="center" justify="space-between" _hover={{ bg: 'var(--bg-secondary)' }}>
+            <Text fontSize="xs" fontWeight="bold" color="var(--text-muted)">Latest Agent Code</Text>
+            {showCode ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          </Flex>
+          {showCode && (
+            <Box p={2} maxH="150px" overflowY="auto">
+              <Code display="block" whiteSpace="pre-wrap" fontSize="10px" p={2} bg="gray.900" color="green.300" borderRadius="md">
+                {latestCode.data.code}
+              </Code>
+            </Box>
+          )}
+        </Box>
+      )}
+    </Box>
+  );
+}
+
 function MiniCourseCreator({ onCourseGenerated }) {
   const { token } = useAuth();
+  const baseURL = import.meta.env.VITE_API_URL;
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
-  const baseURL = import.meta.env.VITE_API_URL;
+  const [showSettings, setShowSettings] = useState(false);
+  const [level, setLevel] = useState(2);
+  const [style, setStyle] = useState('balanced');
+  const [knownTopics, setKnownTopics] = useState('');
+  const [learningGoal, setLearningGoal] = useState('');
+  const [showGeneration, setShowGeneration] = useState(false);
+  const [events, setEvents] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
+  const [error, setError] = useState(null);
+  const rlmUrl = import.meta.env.VITE_RLM_URL || 'http://localhost:9000';
 
-  const handleClick = async () => {
+  const handleClick = () => {
     if (!topic.trim()) {
       toaster.create({ description: 'Topic is required.', type: 'warning' });
       return;
     }
 
     setLoading(true);
-    try {
-      await axios.post(
-        `${baseURL}/api/courses/generate`,
-        { topic },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
+    setShowGeneration(true);
+    setEvents([]);
+    setIsComplete(false);
+    setError(null);
+
+    const body = JSON.stringify({
+      topic: topic.trim(),
+      preferences: {
+        level,
+        style,
+        known_topics: knownTopics.split(',').map(s => s.trim()).filter(Boolean),
+        learning_goal: learningGoal.trim(),
+      },
+    });
+
+    fetch(`${rlmUrl}/api/rlm/generate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body,
+    })
+      .then(response => {
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        function processBuffer() {
+          // SSE events are separated by double newlines
+          const parts = buffer.split('\n\n');
+          // Keep the last incomplete part in the buffer
+          buffer = parts.pop() || '';
+
+          for (const part of parts) {
+            if (!part.trim()) continue;
+            const lines = part.split('\n');
+            let eventType = null;
+            let dataStr = null;
+
+            for (const line of lines) {
+              if (line.startsWith('event:')) {
+                eventType = line.slice(6).trim();
+              } else if (line.startsWith('data:')) {
+                dataStr = line.slice(5).trim();
+              }
+            }
+
+            if (eventType && dataStr) {
+              try {
+                const data = JSON.parse(dataStr);
+                console.log(`[SSE] ${eventType}:`, data);
+                setEvents(prev => [...prev, { event: eventType, data }]);
+                if (eventType === 'complete') {
+                  setIsComplete(true);
+                  setLoading(false);
+                  try {
+                    const courseObj = JSON.parse(data.course);
+                    // Only save if course has modules with lessons
+                    const totalLessons = (courseObj.modules || []).reduce((sum, m) => sum + (m.lessons?.length || 0), 0);
+                    if (!courseObj.modules?.length || totalLessons === 0) {
+                      console.error('[RLM] Invalid course - no modules or lessons');
+                      toaster.create({ description: 'Generation failed - empty course. Try again.', type: 'error' });
+                      return;
+                    }
+                    console.log(`[RLM] Saving course: ${courseObj.title} (${courseObj.modules.length} modules, ${totalLessons} lessons)`);
+                    axios.post(`${baseURL}/api/courses/save-rlm`, courseObj, {
+                      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    }).then(() => {
+                      toaster.create({ description: `Course saved! ${courseObj.modules.length} modules, ${totalLessons} lessons`, type: 'success' });
+                      if (onCourseGenerated) onCourseGenerated();
+                    }).catch(err => {
+                      console.error('[RLM] Save failed:', err);
+                      toaster.create({ description: 'Generated but save failed', type: 'warning' });
+                    });
+                  } catch (e) {
+                    console.error('[RLM] Parse error:', e);
+                  }
+                }
+                if (eventType === 'error') setError(data.message);
+              } catch (e) {
+                console.warn('[SSE] JSON parse error:', e, dataStr?.slice(0, 200));
+              }
+            }
+          }
         }
-      );
-      toaster.create({ description: 'Course created successfully!', type: 'success' });
-      if (onCourseGenerated) onCourseGenerated();
-    } catch (error) {
-      toaster.create({
-        description: error.response?.data?.message || error.message,
-        type: 'error',
+
+        function read() {
+          reader.read().then(({ done, value }) => {
+            if (done) { setLoading(false); return; }
+            buffer += decoder.decode(value, { stream: true });
+            processBuffer();
+            read();
+          });
+        }
+        read();
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+        toaster.create({ description: `Connection failed: ${err.message}`, type: 'error' });
       });
-    } finally {
-      setLoading(false);
-      setTopic('');
-    }
   };
 
   return (
-    <Flex
-      maxW="560px"
-      mx="auto"
-      align="center"
-      gap={3}
-      bg="var(--bg-elevated)"
-      border="1px solid"
-      borderColor="var(--border-subtle)"
-      rounded="full"
-      pl={5}
-      pr={1.5}
-      py={1.5}
-      _focusWithin={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px rgba(var(--accent-rgb),0.2)' }}
-      transition="all 0.2s ease"
-    >
-      <Sparkles size={16} color="var(--text-dim)" style={{ flexShrink: 0 }} />
-      <input
-        placeholder="What do you want to learn?"
-        value={topic}
-        onChange={(e) => setTopic(e.target.value)}
-        onKeyDown={(e) => { if (e.key === 'Enter') handleClick(); }}
-        style={{
-          background: 'transparent',
-          border: 'none',
-          outline: 'none',
-          color: 'var(--text-primary)',
-          fontSize: '14px',
-          height: '36px',
-          width: '100%',
-          caretColor: 'var(--accent)',
-        }}
-      />
-      <IconButton
-        onClick={handleClick}
-        aria-label="Create course"
-        disabled={loading}
-        size="sm"
-        rounded="full"
-        bg={topic.trim() ? 'linear-gradient(135deg, var(--accent), var(--blue))' : 'var(--border-subtle)'}
-        color={topic.trim() ? 'white' : 'gray.600'}
-        _hover={{ opacity: 0.85 }}
-        transition="all 0.15s ease"
-        w={8}
-        h={8}
-        minW={8}
+    <Box maxW="700px" mx="auto">
+      {/* Search bar */}
+      <Flex
+        align="center"
+        gap={3}
+        bg="var(--bg-elevated)"
+        border="1px solid"
+        borderColor="var(--border-subtle)"
+        rounded="2xl"
+        pl={5}
+        pr={1.5}
+        py={1.5}
+        _focusWithin={{ borderColor: 'var(--accent)', boxShadow: '0 0 0 1px rgba(var(--accent-rgb),0.2)' }}
+        transition="all 0.2s ease"
       >
-        {loading ? <Spinner size="xs" /> : <Send size={14} />}
-      </IconButton>
-    </Flex>
+        <Brain size={16} color="var(--text-dim)" style={{ flexShrink: 0 }} />
+        <input
+          placeholder="What do you want to learn?"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter' && !loading) handleClick(); }}
+          style={{
+            background: 'transparent', border: 'none', outline: 'none',
+            color: 'var(--text-primary)', fontSize: '14px', height: '36px',
+            width: '100%', caretColor: 'var(--accent)',
+          }}
+        />
+        <IconButton
+          onClick={() => setShowSettings(!showSettings)}
+          aria-label="Settings"
+          size="sm"
+          rounded="full"
+          variant="ghost"
+          color="var(--text-muted)"
+          _hover={{ color: 'var(--accent)' }}
+          w={8} h={8} minW={8}
+        >
+          <Settings size={14} />
+        </IconButton>
+        <IconButton
+          onClick={handleClick}
+          aria-label="Create course"
+          disabled={loading}
+          size="sm"
+          rounded="full"
+          bg={topic.trim() ? 'linear-gradient(135deg, var(--accent), var(--blue))' : 'var(--border-subtle)'}
+          color={topic.trim() ? 'white' : 'gray.600'}
+          _hover={{ opacity: 0.85 }}
+          transition="all 0.15s ease"
+          w={8} h={8} minW={8}
+        >
+          {loading ? <Spinner size="xs" /> : <Send size={14} />}
+        </IconButton>
+      </Flex>
+
+      {/* Settings panel */}
+      <AnimatePresence>
+        {showSettings && (
+          <MotionBox
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            overflow="hidden"
+          >
+            <Box
+              mt={2}
+              p={4}
+              bg="var(--bg-elevated)"
+              border="1px solid"
+              borderColor="var(--border-subtle)"
+              borderRadius="xl"
+            >
+              <Stack gap={3}>
+                {/* Level */}
+                <Box>
+                  <Text fontSize="xs" color="var(--text-muted)" mb={1}>Level</Text>
+                  <select value={level} onChange={(e) => setLevel(Number(e.target.value))}
+                    style={{ width: '100%', padding: '6px 8px', fontSize: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>
+                    {LEVEL_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </Box>
+
+                {/* Style */}
+                <Box>
+                  <Text fontSize="xs" color="var(--text-muted)" mb={1}>Style</Text>
+                  <Flex gap={1} flexWrap="wrap">
+                    {STYLE_OPTIONS.map(o => (
+                      <Button key={o.value} size="xs" fontSize="11px"
+                        variant={style === o.value ? 'solid' : 'outline'}
+                        colorScheme={style === o.value ? 'blue' : 'gray'}
+                        onClick={() => setStyle(o.value)}
+                      >{o.label}</Button>
+                    ))}
+                  </Flex>
+                </Box>
+
+                {/* Known topics + Goal */}
+                <Flex gap={3}>
+                  <Box flex={1}>
+                    <Text fontSize="xs" color="var(--text-muted)" mb={1}>Already know</Text>
+                    <input placeholder="Docker, Linux, REST APIs"
+                      value={knownTopics} onChange={(e) => setKnownTopics(e.target.value)}
+                      style={{ width: '100%', padding: '6px 8px', fontSize: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                    />
+                  </Box>
+                  <Box flex={1}>
+                    <Text fontSize="xs" color="var(--text-muted)" mb={1}>Goal</Text>
+                    <input placeholder="Deploy microservices"
+                      value={learningGoal} onChange={(e) => setLearningGoal(e.target.value)}
+                      style={{ width: '100%', padding: '6px 8px', fontSize: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                    />
+                  </Box>
+                </Flex>
+              </Stack>
+            </Box>
+          </MotionBox>
+        )}
+      </AnimatePresence>
+
+      {/* Live generation view */}
+      {showGeneration && (
+        <Box mt={3}>
+          <RLMGenerationView events={events} isComplete={isComplete} error={error} />
+        </Box>
+      )}
+    </Box>
   );
 }
 

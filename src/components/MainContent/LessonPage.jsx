@@ -11,7 +11,7 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { Portal } from '@chakra-ui/react';
-import { ChevronLeft, ChevronRight, List, X, Play, Volume2 } from 'lucide-react';
+import { ChevronLeft, ChevronRight, List, X, BookOpen, Layers, FileText } from 'lucide-react';
 import LessonRenderer from './LessonRenderer';
 import LessonSpeaker from './LessonSpeaker';
 import LessonPDFExporter from './LessonPDFExporter';
@@ -88,7 +88,7 @@ function LessonPage() {
   const currentModuleTitle = meta?.modules?.[mIndex]?.title || `Module ${mIndex + 1}`;
 
   return (
-    <Box h="full" display="flex" flexDir="column">
+    <Box h="calc(100vh - 52px)" display="flex" flexDir="column" overflow="hidden">
       {loading ? (
         <Flex h="100%" align="center" justify="center" gap={3}>
           <Spinner color="var(--accent)" />
@@ -101,8 +101,54 @@ function LessonPage() {
       ) : (
         <>
           {/* Lesson content */}
-          <Box flex="1" overflowY="auto">
-            <Box maxW="900px" w="100%" mx="auto" px={{ base: 4, md: 8 }} py={8} ref={printRef}>
+          <Box flex="1" overflowY="auto" overscrollBehavior="contain">
+            <Box maxW="900px" w="100%" mx="auto" px={{ base: 4, md: 8 }} py={8} pb={2} ref={printRef}>
+              {/* Breadcrumb: Course → Module → Lesson */}
+              <Flex
+                align="center"
+                gap={2.5}
+                mb={6}
+                flexWrap="wrap"
+                fontSize="sm"
+                color="var(--text-muted)"
+              >
+                <HStack gap={2} flexShrink={0}>
+                  <BookOpen size={16} color="var(--accent)" />
+                  <Text
+                    fontWeight="semibold"
+                    color="var(--text-secondary)"
+                    maxW={{ base: '150px', md: '250px' }}
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                  >
+                    {meta?.title || `Course`}
+                  </Text>
+                </HStack>
+                <Text color="var(--text-dim)" fontSize="md">/</Text>
+                <HStack gap={2} flexShrink={0}>
+                  <Layers size={15} color="var(--text-dim)" />
+                  <Text
+                    maxW={{ base: '150px', md: '260px' }}
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                  >
+                    {currentModuleTitle}
+                  </Text>
+                </HStack>
+                <Text color="var(--text-dim)" fontSize="md">/</Text>
+                <HStack gap={2}>
+                  <FileText size={15} color="var(--text-dim)" style={{ flexShrink: 0 }} />
+                  <Text
+                    fontWeight="semibold"
+                    color="var(--accent)"
+                  >
+                    {currentLessonTitle}
+                  </Text>
+                </HStack>
+              </Flex>
+
               <LessonRenderer lesson={lesson} />
             </Box>
           </Box>
