@@ -358,23 +358,28 @@ function MiniCourseCreator({ onCourseGenerated }) {
               <Stack gap={3}>
                 {/* Level */}
                 <Box>
-                  <Text fontSize="xs" color="var(--text-muted)" mb={1}>Level</Text>
+                  <Text fontSize="xs" fontWeight="600" color="var(--text-secondary)" mb={1}>Level</Text>
                   <select value={level} onChange={(e) => setLevel(Number(e.target.value))}
-                    style={{ width: '100%', padding: '6px 8px', fontSize: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}>
+                    style={{ width: '100%', padding: '8px 10px', fontSize: '13px', borderRadius: '8px', border: '1.5px solid var(--border-base, #d0d5dd)', background: 'transparent', color: 'var(--text-primary, #1a1a1a)' }}>
                     {LEVEL_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
                   </select>
                 </Box>
 
                 {/* Style */}
                 <Box>
-                  <Text fontSize="xs" color="var(--text-muted)" mb={1}>Style</Text>
-                  <Flex gap={1} flexWrap="wrap">
+                  <Text fontSize="xs" fontWeight="600" color="var(--text-secondary)" mb={1}>Style</Text>
+                  <Flex gap={1.5} flexWrap="wrap">
                     {STYLE_OPTIONS.map(o => (
-                      <Button key={o.value} size="xs" fontSize="11px"
-                        variant={style === o.value ? 'solid' : 'outline'}
-                        colorScheme={style === o.value ? 'blue' : 'gray'}
+                      <button key={o.value}
                         onClick={() => setStyle(o.value)}
-                      >{o.label}</Button>
+                        style={{
+                          padding: '5px 12px', fontSize: '12px', fontWeight: style === o.value ? '600' : '400',
+                          borderRadius: '6px', cursor: 'pointer', transition: 'all 0.15s ease',
+                          border: style === o.value ? '1.5px solid var(--accent, #3182ce)' : '1.5px solid var(--border-base, #d0d5dd)',
+                          background: style === o.value ? 'var(--accent, #3182ce)' : 'transparent',
+                          color: style === o.value ? '#fff' : 'var(--text-primary, #1a1a1a)',
+                        }}
+                      >{o.label}</button>
                     ))}
                   </Flex>
                 </Box>
@@ -382,17 +387,17 @@ function MiniCourseCreator({ onCourseGenerated }) {
                 {/* Known topics + Goal */}
                 <Flex gap={3}>
                   <Box flex={1}>
-                    <Text fontSize="xs" color="var(--text-muted)" mb={1}>Already know</Text>
+                    <Text fontSize="xs" fontWeight="600" color="var(--text-secondary)" mb={1}>Already know</Text>
                     <input placeholder="Docker, Linux, REST APIs"
                       value={knownTopics} onChange={(e) => setKnownTopics(e.target.value)}
-                      style={{ width: '100%', padding: '6px 8px', fontSize: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                      style={{ width: '100%', padding: '8px 10px', fontSize: '13px', borderRadius: '8px', border: '1.5px solid var(--border-base, #d0d5dd)', background: 'transparent', color: 'var(--text-primary, #1a1a1a)' }}
                     />
                   </Box>
                   <Box flex={1}>
-                    <Text fontSize="xs" color="var(--text-muted)" mb={1}>Goal</Text>
+                    <Text fontSize="xs" fontWeight="600" color="var(--text-secondary)" mb={1}>Goal</Text>
                     <input placeholder="Deploy microservices"
                       value={learningGoal} onChange={(e) => setLearningGoal(e.target.value)}
-                      style={{ width: '100%', padding: '6px 8px', fontSize: '12px', borderRadius: '8px', border: '1px solid var(--border-subtle)', background: 'var(--bg-secondary)', color: 'var(--text-primary)' }}
+                      style={{ width: '100%', padding: '8px 10px', fontSize: '13px', borderRadius: '8px', border: '1.5px solid var(--border-base, #d0d5dd)', background: 'transparent', color: 'var(--text-primary, #1a1a1a)' }}
                     />
                   </Box>
                 </Flex>
