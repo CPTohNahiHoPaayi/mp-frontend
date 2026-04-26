@@ -563,7 +563,7 @@ function EmptyElement() {
             >
               {[...courses].sort((a, b) => {
                 const toDate = (c) => {
-                  if (Array.isArray(c)) { const [y,m,d,...r] = c; return new Date(y, (m||1)-1, d||1, ...(r||[])); }
+                  if (Array.isArray(c)) { const [y,m,d,h=0,min=0,s=0] = c; return new Date(y, (m||1)-1, d||1, h, min, s); }
                   return new Date(c || 0);
                 };
                 const dateA = toDate(a.createdAt);

@@ -756,8 +756,8 @@ function LandingPage() {
               lineHeight="1.8"
               textShadow="0 2px 20px rgba(0,0,0,0.6)"
             >
-              Generate AI courses, capture smart notes, and recall anything instantly.
-              Your knowledge, always at your fingertips.
+              You remember everything when your knowledge is structured right.
+              AI-generated courses, smart notes, and instant recall — built around you.
             </Text>
           </MotionBox>
 
@@ -927,11 +927,12 @@ function LandingPage() {
               maxW="650px"
               color="var(--text-primary)"
             >
-              "The <Box as="span" color="var(--accent)">method of loci</Box> has been
-              used for millennia to organize knowledge. We just made it digital."
+              "You can remember anything once your information is{' '}
+              <Box as="span" color="var(--accent)">structured correctly</Box>.
+              That's the idea behind every Mind Palace — from Sherlock's to yours."
             </Text>
             <Text fontSize="sm" color="var(--text-muted)" mt={6}>
-              — The Mind Palace philosophy
+              — Inspired by the Mind Palace technique
             </Text>
           </Flex>
         </RevealBlock>

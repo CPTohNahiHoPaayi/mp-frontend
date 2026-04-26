@@ -26,10 +26,11 @@ function CourseCard({ course }) {
     }
   };
 
-  // Java LocalDateTime serializes as [year, month, day, ...] with 1-indexed month
-  // JS Date() uses 0-indexed month, so subtract 1
-  const [y, m, d, ...rest] = course.createdAt || [];
-  const createdDate = new Date(y, (m || 1) - 1, d || 1, ...(rest || []));
+  // Java LocalDateTime serializes as [year, month, day, hour, minute, second, nanosecond]
+  // Month is 1-indexed; JS Date() uses 0-indexed. Only use h/m/s — ignore nanoseconds
+  // (passing nanos as the ms arg overflows and shifts the date forward).
+  const [y, m, d, h = 0, min = 0, s = 0] = course.createdAt || [];
+  const createdDate = new Date(y, (m || 1) - 1, d || 1, h, min, s);
 
   return (
     <Box
@@ -84,7 +85,7 @@ function CourseCard({ course }) {
 
       {/* Meta */}
       <Text fontSize="xs" color="var(--text-muted)" mb={3}>
-        {course.creator.split('@')[0]} · {format(createdDate, 'MMM yyyy')}
+        {course.creator.split('@')[0]} · {format(createdDate, 'dd MMM yyyy, HH:mm')}
       </Text>
 
       {/* Tags */}
