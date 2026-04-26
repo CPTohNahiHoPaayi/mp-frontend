@@ -562,8 +562,12 @@ function EmptyElement() {
               gap={5}
             >
               {[...courses].sort((a, b) => {
-                const dateA = Array.isArray(a.createdAt) ? new Date(...a.createdAt) : new Date(a.createdAt || 0);
-                const dateB = Array.isArray(b.createdAt) ? new Date(...b.createdAt) : new Date(b.createdAt || 0);
+                const toDate = (c) => {
+                  if (Array.isArray(c)) { const [y,m,d,...r] = c; return new Date(y, (m||1)-1, d||1, ...(r||[])); }
+                  return new Date(c || 0);
+                };
+                const dateA = toDate(a.createdAt);
+                const dateB = toDate(b.createdAt);
                 if (sortBy === 'newest') return dateB - dateA;
                 if (sortBy === 'oldest') return dateA - dateB;
                 if (sortBy === 'az') return (a.title || '').localeCompare(b.title || '');

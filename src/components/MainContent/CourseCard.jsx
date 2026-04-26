@@ -26,7 +26,10 @@ function CourseCard({ course }) {
     }
   };
 
-  const createdDate = new Date(...course.createdAt);
+  // Java LocalDateTime serializes as [year, month, day, ...] with 1-indexed month
+  // JS Date() uses 0-indexed month, so subtract 1
+  const [y, m, d, ...rest] = course.createdAt || [];
+  const createdDate = new Date(y, (m || 1) - 1, d || 1, ...(rest || []));
 
   return (
     <Box
