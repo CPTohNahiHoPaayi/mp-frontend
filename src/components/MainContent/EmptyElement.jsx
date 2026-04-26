@@ -163,7 +163,7 @@ function MiniCourseCreator({ onCourseGenerated }) {
   const baseURL = import.meta.env.VITE_API_URL;
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(true);
   const [level, setLevel] = useState(2);
   const [style, setStyle] = useState('balanced');
   const [knownTopics, setKnownTopics] = useState('');
@@ -422,6 +422,7 @@ function EmptyElement() {
   const { token, user } = useAuth();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState('newest');
 
   const fetchCourses = async () => {
     try {
@@ -512,14 +513,23 @@ function EmptyElement() {
           transition={{ delay: 0.5 }}
         >
           {courses.length > 0 && (
-            <Flex align="center" gap={2} mb={6}>
-              <BookOpen size={18} color="var(--accent)" />
-              <Text fontSize="lg" fontWeight="semibold" color="var(--text-primary)">
-                Your Courses
-              </Text>
-              <Text fontSize="sm" color="var(--text-muted)">
-                ({courses.length})
-              </Text>
+            <Flex align="center" justify="space-between" mb={6}>
+              <Flex align="center" gap={2}>
+                <BookOpen size={18} color="var(--accent)" />
+                <Text fontSize="lg" fontWeight="semibold" color="var(--text-primary)">
+                  Your Courses
+                </Text>
+                <Text fontSize="sm" color="var(--text-muted)">
+                  ({courses.length})
+                </Text>
+              </Flex>
+              <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
+                style={{ padding: '4px 8px', fontSize: '12px', borderRadius: '6px', border: '1.5px solid var(--border-base, #d0d5dd)', background: 'transparent', color: 'var(--text-primary, #1a1a1a)', cursor: 'pointer' }}>
+                <option value="newest">Newest</option>
+                <option value="oldest">Oldest</option>
+                <option value="az">A → Z</option>
+                <option value="za">Z → A</option>
+              </select>
             </Flex>
           )}
 
@@ -550,7 +560,13 @@ function EmptyElement() {
               columns={{ base: 1, md: 2, lg: 3 }}
               gap={5}
             >
-              {courses.map((course, i) => (
+              {[...courses].sort((a, b) => {
+                if (sortBy === 'newest') return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                if (sortBy === 'oldest') return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+                if (sortBy === 'az') return (a.title || '').localeCompare(b.title || '');
+                if (sortBy === 'za') return (b.title || '').localeCompare(a.title || '');
+                return 0;
+              }).map((course, i) => (
                 <MotionBox
                   key={course.id}
                   initial={{ opacity: 0, y: 20 }}
