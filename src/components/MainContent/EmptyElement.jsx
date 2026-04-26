@@ -248,7 +248,8 @@ function MiniCourseCreator({ onCourseGenerated }) {
                       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
                     }).then(() => {
                       toaster.create({ description: `Course saved! ${courseObj.modules.length} modules, ${totalLessons} lessons`, type: 'success' });
-                      if (onCourseGenerated) onCourseGenerated();
+                      // Refetch courses after a brief delay to ensure DB write is complete
+                      setTimeout(() => { if (onCourseGenerated) onCourseGenerated(); }, 500);
                     }).catch(err => {
                       console.error('[RLM] Save failed:', err);
                       toaster.create({ description: 'Generated but save failed', type: 'warning' });
