@@ -124,17 +124,17 @@ function RLMGenerationView({ events, isComplete, error }) {
             complete: `Done! ${evt.data.iterations} steps, ${evt.data.sub_calls} sub-calls`,
           };
           const icons = { iteration: '🔄', code: '📝', output: '📤', sub_llm_call: '🧠', sub_llm_result: '✨', error: '❌', complete: '✅' };
-          const colors = { iteration: '#63b3ed', code: '#68d391', output: '#a0aec0', sub_llm_call: '#b794f4', sub_llm_result: '#d6bcfa', error: '#fc8181', complete: '#48bb78' };
+          const colors = { iteration: 'var(--accent, #2b6cb0)', code: 'var(--text-primary, #276749)', output: 'var(--text-secondary, #4a5568)', sub_llm_call: 'var(--accent, #6b46c1)', sub_llm_result: 'var(--text-muted, #805ad5)', error: '#e53e3e', complete: 'var(--text-primary, #276749)' };
           const label = labels[evt.event] || evt.event;
           const icon = icons[evt.event] || '•';
-          const color = colors[evt.event] || '#a0aec0';
+          const color = colors[evt.event] || 'var(--text-secondary, #4a5568)';
           return (
             <p key={idx} style={{ color, fontSize: '12px', lineHeight: '1.8', margin: 0 }}>
               {icon} {label}
             </p>
           );
         })}
-        {error && <p style={{ color: '#fc8181', fontSize: '12px', margin: 0 }}>❌ {error}</p>}
+        {error && <p style={{ color: '#e53e3e', fontSize: '12px', margin: 0 }}>❌ {error}</p>}
         <div ref={bottomRef} />
       </div>
 
